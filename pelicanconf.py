@@ -3,20 +3,26 @@
 
 AUTHOR = u'Keith Gray'
 SITENAME = u"Keith's Blog"
-SITEURL = ''
+SITEURL = 'http://idahogray.github.com/blog'
 
-TIMEZONE = 'Europe/Paris'
+TIMEZONE = 'America/Chicago'
 
 DEFAULT_LANG = u'en'
 
 # Blogroll
-LINKS =  (('Pelican', 'http://docs.notmyidea.org/alexis/pelican/'),
+LINKS =  (
+          ('POWER Engineers', 'http://www.powereng.com'),
           ('Python.org', 'http://python.org'),
+          ('Pelican', 'http://docs.notmyidea.org/alexis/pelican/'),
           ('Jinja2', 'http://jinja.pocoo.org'),
-          ('You can modify those links in your config file', '#'),)
+          )
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('twitter', 'http://twitter.com/idahogray'),
+          ('github', 'http://github.com/idahogray'),)
 
 DEFAULT_PAGINATION = 10
+
+THEME = 'bootstrap'
+DISQUS_SITENAME = 'keithgraysblog'
+GITHUB_URL = 'http://github.com/idahogray/'
