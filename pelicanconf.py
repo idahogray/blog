@@ -26,3 +26,6 @@ DEFAULT_PAGINATION = 10
 THEME = 'bootstrap'
 DISQUS_SITENAME = 'keithgraysblog'
 GITHUB_URL = 'http://github.com/idahogray/'
+
+FEED_DOMAIN = 'http://idahogray.github.com'
+FEED_RSS = 'feeds/rss.xml'
