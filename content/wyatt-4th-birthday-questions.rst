@@ -5,7 +5,6 @@ Wyatt's 4th Birthday Questions
 :tags: wyatt birthday
 :category: kids
 :summary: Wyatt's answers to the birthday questions - 4th Birthday
-:status: draft
 
 What is your favorite color?
     Red
