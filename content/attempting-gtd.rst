@@ -49,11 +49,9 @@ Voicemail
 I have started to forward my office phone to my cell phone, always. This has a
 couple of advantages.
 
-#. Reduces the number of inboxes by 1 since all of my voicemails will end up on
-my cell phone.
+#. Reduces the number of inboxes by 1 since all of my voicemails will end up on my cell phone.
 
-#. I use Google Voice so all of the voicemails will get translated to text and
-texted to me as well as show up in my email.
+#. I use Google Voice so all of the voicemails will get translated to text and texted to me as well as show up in my email.
 
 So far the only problem with this has been my cell phone headset.  A headset
 is mandatory for me because I am on the phone a lot. I didn't want a bluetooth
