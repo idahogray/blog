@@ -51,6 +51,7 @@ couple of advantages.
 
 #. Reduces the number of inboxes by 1 since all of my voicemails will end up on
 my cell phone.
+
 #. I use Google Voice so all of the voicemails will get translated to text and
 texted to me as well as show up in my email.
 
