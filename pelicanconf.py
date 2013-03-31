@@ -29,3 +29,5 @@ GITHUB_URL = 'http://github.com/idahogray/'
 
 FEED_DOMAIN = 'http://idahogray.github.com'
 FEED_RSS = 'feeds/rss.xml'
+
+STATIC_PATHS = ["images", ]

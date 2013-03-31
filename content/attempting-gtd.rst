@@ -14,7 +14,7 @@ History
 I first read about GTD soon after I started my first job out of school.
 I read the book as well as some websites/blogs.  This was around 2005 or 2006.
 I tried to make it work but it didn't stick.  I am not positive what the 
-problem was.  It might have been that I didn't fully understand it or maybe
+nm  2  w  w cvtfgmnfnn nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn problem was.  It might have been that I didn't fully understand it or maybe
 I failed to find a system that worked the way I did.  There was too much
 friction.
 
@@ -68,6 +68,7 @@ that they have reached the right person.
 l
 l
 l
-l
-l
-
+l4l
+    s¸p54r0o545 p;
+ <S-
+^*&>01oi454yij<C-S-F6> <C-S-07 
