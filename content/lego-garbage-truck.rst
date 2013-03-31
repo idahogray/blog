@@ -5,7 +5,6 @@ Lego Garbage Truck
 :tags: wyatt lego
 :category: kids
 :summary: Wyatt did his first "Big Boy" Lego Set
-:status: draft
 
 Nonna_ and Grandpa_ bought Wyatt a garbage truck lego set for Easter this year. Wyatt and I
 started building it on Thursday night.  We only made it a few pages into the
