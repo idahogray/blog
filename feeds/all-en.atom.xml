@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.com/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/all-en.atom.xml" rel="self"></link><id>http://idahogray.github.com/</id><updated>2013-04-07T00:00:00-05:00</updated><entry><title>First Bowling Games</title><link href="http://idahogray.github.com/first-bowling-games.html" rel="alternate"></link><updated>2013-04-07T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-04-07:first-bowling-games.html</id><summary type="html">&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.com/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/all-en.atom.xml" rel="self"></link><id>http://idahogray.github.com/</id><updated>2013-04-20T00:00:00-05:00</updated><entry><title>Thoughts On Email</title><link href="http://idahogray.github.com/thoughts-on-email.html" rel="alternate"></link><updated>2013-04-20T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-04-20:thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
+Kevin were talking about email and getting to Inbox Zero and so on. One of their
+comments was that email fails because it is a TODO list that other people can
+add items to. This is not the first time I have heard this and I don't know
+who originally said it, I couldn't find it in quick Google search. They
+also made a comment about training other people that emailing you does not
+mean an immediate response is coming.&lt;/p&gt;
+&lt;p&gt;This comment got me thinking, again, about how I use email at work. I currently
+have about 71 emails that I feel like I need to respond to. This weighs on
+me and I can never feel like I am caught up.&lt;/p&gt;
+&lt;p&gt;This episode got me thinking about sending an automatic response to incoming
+emails. Something like:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+Thank you for your email. If this email contains a task you would like
+me to complete, I would appreciate it if you would call me. This would allow
+us to properly discuss the task, its schedule, my availability, and
+possible alternatives if those items don't line up.
+&lt;/pre&gt;
+&lt;p&gt;The problem with something like this is that I am an Engineering consultant.
+We make money by being responsive to clients. The more responsive we can be,
+the more likely we are to get repeat business and repeat business is the best
+kind.&lt;/p&gt;
+&lt;p&gt;I think a good compromise would be to have this response be sent to anyone
+inside my company but not to our clients.&lt;/p&gt;
+&lt;p&gt;I am just not sure how my peers and managers would respond to something like
+this. So much of our business is done over email that this response may appear
+to be in bad form. I think an argument could be made that a response like this
+is more honest and will possibly generate more realistic discussions about
+tasks and schedules than the current alternatives.&lt;/p&gt;
+&lt;p&gt;I would like to hear any reader's thoughts, especially from those in similar
+businesses.&lt;/p&gt;
+</summary><category term="work email"></category></entry><entry><title>First Bowling Games</title><link href="http://idahogray.github.com/first-bowling-games.html" rel="alternate"></link><updated>2013-04-07T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-04-07:first-bowling-games.html</id><summary type="html">&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
 They both had a lot of fun and so did &lt;a class="reference external" href="https://plus.google.com/u/0/104461654563341959829"&gt;Amy&lt;/a&gt; and I.&lt;/p&gt;
 &lt;p&gt;Please ignore my score. My excuse is that I was helping Wyatt and Ava and therefore
 not able to concentrate on my own game.&lt;/p&gt;
