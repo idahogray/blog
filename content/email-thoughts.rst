@@ -5,7 +5,6 @@ Thoughts On Email
 :tags: work email
 :category: work
 :summary: Some thoughts on email
-:status: draft
 
 I was listing to this `In Beta`_ episode today while mowing the lawn. Gina and
 Kevin were talking about email and getting to Inbox Zero and so on. One of their
