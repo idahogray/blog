@@ -87,6 +87,20 @@ the initial configuration of the pair of radios. There are places online
 to get the same information, but I recommend buying the book from
 O'Reilly so it is DRM free and supporting the author.</p>
 </div>
+<div class="section" id="raspberry-pi-to-xbee-connection">
+<h3>Raspberry Pi to XBee Connection</h3>
+<p>The connection from the Raspberry Pi to the first XBee is really easy. I used
+the <a class="reference external" href="http://www.adafruit.com/products/247">USB XBee Adapter</a> from Adafruit to connect it to one of the USB ports
+of the Raspberry Pi.</p>
+</div>
+<div class="section" id="arduino-to-xbee-connection">
+<h3>Arduino to XBee Connection</h3>
+<p>The connection to the Arduino is only slightly more difficult. I again used the
+<a class="reference external" href="http://www.adafruit.com/products/247">USB XBee Adapter</a> from Adafruit. This time I connected Arduino Uno pin 10
+to the adapter's pin DOUT. Arduino pin 11 is connected to the adapter's pin DIN.
+You will see below that I am using the SoftwareSerial library in the Arduino
+to communicate with the XBee.</p>
+</div>
 </div>
 </div>
 		<div>
