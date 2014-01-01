@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.io/feeds/work.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2013-04-20T00:00:00-05:00</updated><entry><title>Thoughts On Email</title><link href="http://idahogray.github.io/blog/thoughts-on-email.html" rel="alternate"></link><updated>2013-04-20T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-04-20:thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.com/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/work.atom.xml" rel="self"></link><id>http://idahogray.github.com/</id><updated>2013-08-09T00:00:00-05:00</updated><entry><title>SVG Animations</title><link href="http://idahogray.github.com/svg-animations.html" rel="alternate"></link><updated>2013-08-09T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-08-09:svg-animations.html</id><summary type="html">&lt;p&gt;I am preparing a 2 hour tutorial for work and need to have slides prepared.
+I don't want to use the typical PowerPoint for a number of reasons, none of
+which are important to this post.&lt;/p&gt;
+&lt;p&gt;The nature of the tutorial lends itself to having some animations.
+I chose to use SVG images with animations because I had previously
+chosen to use a web based presentation application.&lt;/p&gt;
+</summary><category term="work svg animation"></category></entry><entry><title>Thoughts On Email</title><link href="http://idahogray.github.com/thoughts-on-email.html" rel="alternate"></link><updated>2013-04-20T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-04-20:thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
 Kevin were talking about email and getting to Inbox Zero and so on. One of their
 comments was that email fails because it is a TODO list that other people can
 add items to. This is not the first time I have heard this and I don't know
