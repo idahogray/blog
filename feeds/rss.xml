@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Keith's Blog</title><link>http://idahogray.github.com/</link><description></description><atom:link href="http://idahogray.github.com/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 09 Aug 2013 00:00:00 -0500</lastBuildDate><item><title>SVG Animations</title><link>http://idahogray.github.com/svg-animations.html</link><description>&lt;p&gt;I am preparing a 2 hour tutorial for work and need to have slides prepared.
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Keith's Blog</title><link>http://idahogray.github.com/</link><description></description><atom:link href="http://idahogray.github.com/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 01 Jan 2014 00:00:00 -0600</lastBuildDate><item><title>2014 Goals</title><link>http://idahogray.github.com/2014-goals.html</link><description>&lt;p&gt;I don't like the idea of new years resolutions but I do think this is a good
+oppportunity to set some goals for the new year. I am not sure if that is
+different than resolutions, but it is in my head.&lt;/p&gt;
+&lt;div class="section" id="goals-for-2014"&gt;
+&lt;h2&gt;Goals for 2014&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Continue to get as close to &amp;quot;Paleo&amp;quot; eating as possible in order to keep
+improving my health&lt;/li&gt;
+&lt;li&gt;Add in &amp;quot;Paleo&amp;quot; exercises to my routine&lt;/li&gt;
+&lt;li&gt;Travel less (Only making Gold Medallion on Delta in 2014 is the goal)&lt;/li&gt;
+&lt;li&gt;Build things with my kids&lt;/li&gt;
+&lt;li&gt;Spend more time with Amy, just the two of us&lt;/li&gt;
+&lt;li&gt;Finish my garage automation project&lt;/li&gt;
+&lt;li&gt;Do stuff around the house without Amy asking me to&lt;/li&gt;
+&lt;li&gt;Walk Bella at least 3 times a week, even when the weather is bad/cold&lt;/li&gt;
+&lt;li&gt;Reduce the amount of gluten my kids eat&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Wed, 01 Jan 2014 00:00:00 -0600</pubDate><guid>tag:idahogray.github.com,2014-01-01:2014-goals.html</guid><category>goals</category></item><item><title>SVG Animations</title><link>http://idahogray.github.com/svg-animations.html</link><description>&lt;p&gt;I am preparing a 2 hour tutorial for work and need to have slides prepared.
 I don't want to use the typical PowerPoint for a number of reasons, none of
 which are important to this post.&lt;/p&gt;
 &lt;p&gt;The nature of the tutorial lends itself to having some animations.
