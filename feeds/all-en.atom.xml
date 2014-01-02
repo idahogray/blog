@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/all-en.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2014-01-01T00:00:00-06:00</updated><entry><title>2014 Goals</title><link href="http://idahogray.github.io/blog/2014-goals.html" rel="alternate"></link><updated>2014-01-01T00:00:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2014-01-01:2014-goals.html</id><summary type="html">&lt;p&gt;I don't like the idea of new years resolutions but I do think this is a good
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.com/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/all-en.atom.xml" rel="self"></link><id>http://idahogray.github.com/</id><updated>2014-01-01T00:00:00-06:00</updated><entry><title>2014 Goals</title><link href="http://idahogray.github.com/2014-goals.html" rel="alternate"></link><updated>2014-01-01T00:00:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2014-01-01:2014-goals.html</id><summary type="html">&lt;p&gt;I don't like the idea of new years resolutions but I do think this is a good
 oppportunity to set some goals for the new year. I am not sure if that is
 different than resolutions, but it is in my head.&lt;/p&gt;
 &lt;div class="section" id="goals-for-2014"&gt;
@@ -17,13 +17,13 @@ improving my health&lt;/li&gt;
 &lt;li&gt;Reduce the amount of gluten my kids eat&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-</summary><category term="goals"></category></entry><entry><title>SVG Animations</title><link href="http://idahogray.github.io/blog/svg-animations.html" rel="alternate"></link><updated>2013-08-09T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-08-09:svg-animations.html</id><summary type="html">&lt;p&gt;I am preparing a 2 hour tutorial for work and need to have slides prepared.
+</summary><category term="goals"></category></entry><entry><title>SVG Animations</title><link href="http://idahogray.github.com/svg-animations.html" rel="alternate"></link><updated>2013-08-09T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-08-09:svg-animations.html</id><summary type="html">&lt;p&gt;I am preparing a 2 hour tutorial for work and need to have slides prepared.
 I don't want to use the typical PowerPoint for a number of reasons, none of
 which are important to this post.&lt;/p&gt;
 &lt;p&gt;The nature of the tutorial lends itself to having some animations.
 I chose to use SVG images with animations because I had previously
 chosen to use a web based presentation application.&lt;/p&gt;
-</summary><category term="work svg animation"></category></entry><entry><title>Thoughts On Email</title><link href="http://idahogray.github.io/blog/thoughts-on-email.html" rel="alternate"></link><updated>2013-04-20T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-04-20:thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
+</summary><category term="work svg animation"></category></entry><entry><title>Thoughts On Email</title><link href="http://idahogray.github.com/thoughts-on-email.html" rel="alternate"></link><updated>2013-04-20T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-04-20:thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
 Kevin were talking about email and getting to Inbox Zero and so on. One of their
 comments was that email fails because it is a TODO list that other people can
 add items to. This is not the first time I have heard this and I don't know
@@ -54,12 +54,12 @@ is more honest and will possibly generate more realistic discussions about
 tasks and schedules than the current alternatives.&lt;/p&gt;
 &lt;p&gt;I would like to hear any reader's thoughts, especially from those in similar
 businesses.&lt;/p&gt;
-</summary><category term="work email"></category></entry><entry><title>First Bowling Games</title><link href="http://idahogray.github.io/blog/first-bowling-games.html" rel="alternate"></link><updated>2013-04-07T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-04-07:first-bowling-games.html</id><summary type="html">&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
+</summary><category term="work email"></category></entry><entry><title>First Bowling Games</title><link href="http://idahogray.github.com/first-bowling-games.html" rel="alternate"></link><updated>2013-04-07T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-04-07:first-bowling-games.html</id><summary type="html">&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
 They both had a lot of fun and so did &lt;a class="reference external" href="https://plus.google.com/u/0/104461654563341959829"&gt;Amy&lt;/a&gt; and I.&lt;/p&gt;
 &lt;p&gt;Please ignore my score. My excuse is that I was helping Wyatt and Ava and therefore
 not able to concentrate on my own game.&lt;/p&gt;
 &lt;img alt="" src="http://farm9.staticflickr.com/8253/8628196983_d4a0605846.jpg" /&gt;
-</summary><category term="wyatt ava"></category></entry><entry><title>Lego Garbage Truck</title><link href="http://idahogray.github.io/blog/lego-garbage-truck.html" rel="alternate"></link><updated>2013-03-30T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-03-30:lego-garbage-truck.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="https://plus.google.com/101549244886183119915"&gt;Nonna&lt;/a&gt; and &lt;a class="reference external" href="https://plus.google.com/u/0/106042062414239481427"&gt;Grandpa&lt;/a&gt; bought Wyatt a garbage truck lego set for Easter this year. Wyatt and I
+</summary><category term="wyatt ava"></category></entry><entry><title>Lego Garbage Truck</title><link href="http://idahogray.github.com/lego-garbage-truck.html" rel="alternate"></link><updated>2013-03-30T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-03-30:lego-garbage-truck.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="https://plus.google.com/101549244886183119915"&gt;Nonna&lt;/a&gt; and &lt;a class="reference external" href="https://plus.google.com/u/0/106042062414239481427"&gt;Grandpa&lt;/a&gt; bought Wyatt a garbage truck lego set for Easter this year. Wyatt and I
 started building it on Thursday night.  We only made it a few pages into the
 instruction book.&lt;/p&gt;
 &lt;img alt="" src="http://farm9.staticflickr.com/8533/8604852882_9c53b485ec.jpg" /&gt;
@@ -72,7 +72,7 @@ above his age but he stuck with it. It took 3 days to finish it and he loves it.
 &lt;p&gt;He played with it quite a bit today. He is a little rough with it and it
 comes apart sometimes. He repeats what I told him about Legos: &amp;quot;The good
 thing about Legos is that you can always put it back together&amp;quot;.&lt;/p&gt;
-</summary><category term="wyatt lego"></category></entry><entry><title>Saving for College</title><link href="http://idahogray.github.io/blog/saving-for-college.html" rel="alternate"></link><updated>2013-02-22T00:00:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-02-22:saving-for-college.html</id><summary type="html">&lt;p&gt;Amy and I have been talking about setting up college funds for Wyatt and Ava
+</summary><category term="wyatt lego"></category></entry><entry><title>Saving for College</title><link href="http://idahogray.github.com/saving-for-college.html" rel="alternate"></link><updated>2013-02-22T00:00:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-02-22:saving-for-college.html</id><summary type="html">&lt;p&gt;Amy and I have been talking about setting up college funds for Wyatt and Ava
 for a while now.  As part of our New Years resolutions, we decided to make it
 happen this year.  We set up a visit with a financial planner and he guided us
 through the process.  As of tonight, both Wyatt and Ava have 529 Plans set
@@ -87,7 +87,7 @@ accounts.&lt;/p&gt;
 the kids is projected to cost $66,000 or more.  That is insane.  I guess that
 is why we are saving now.&lt;/p&gt;
 &lt;/div&gt;
-</summary><category term="wyatt ava college"></category></entry><entry><title>Wyatt's 4th Birthday Questions</title><link href="http://idahogray.github.io/blog/wyatts-4th-birthday-questions.html" rel="alternate"></link><updated>2013-01-26T00:00:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-01-26:wyatts-4th-birthday-questions.html</id><summary type="html">&lt;dl class="docutils"&gt;
+</summary><category term="wyatt ava college"></category></entry><entry><title>Wyatt's 4th Birthday Questions</title><link href="http://idahogray.github.com/wyatts-4th-birthday-questions.html" rel="alternate"></link><updated>2013-01-26T00:00:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.com,2013-01-26:wyatts-4th-birthday-questions.html</id><summary type="html">&lt;dl class="docutils"&gt;
 &lt;dt&gt;What is your favorite color?&lt;/dt&gt;
 &lt;dd&gt;Red&lt;/dd&gt;
 &lt;dt&gt;What is your favorite toy?&lt;/dt&gt;
