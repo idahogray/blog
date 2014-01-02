@@ -21,5 +21,8 @@ Goals for 2014
 * Spend more time with Amy, just the two of us
 * Finish my garage automation project
 * Do stuff around the house without Amy asking me to
+
+  * Don't go to bed with any dirty dishes in the sink (hand-wash if needed)
+
 * Walk Bella at least 3 times a week, even when the weather is bad/cold
 * Reduce the amount of gluten my kids eat

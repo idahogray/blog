@@ -3,7 +3,8 @@
 
 AUTHOR = u'Keith Gray'
 SITENAME = u"Keith's Blog"
-SITEURL = 'http://idahogray.github.com/blog'
+SITEURL = 'http://idahogray.github.io/blog'
+#RELATIVE_URLS = True
 
 TIMEZONE = 'America/Chicago'
 
@@ -23,7 +24,7 @@ SOCIAL = (('twitter', 'http://twitter.com/idahogray'),
 
 DEFAULT_PAGINATION = 10
 
-THEME = 'bootstrap'
+THEME = '../pelican-themes/bootstrap'
 DISQUS_SITENAME = 'keithgraysblog'
 GITHUB_URL = 'http://github.com/idahogray/'
 
