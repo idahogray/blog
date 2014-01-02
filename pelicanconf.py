@@ -31,3 +31,4 @@ FEED_DOMAIN = 'http://idahogray.github.com'
 FEED_RSS = 'feeds/rss.xml'
 
 STATIC_PATHS = ["images", ]
+PATH = 'content'
