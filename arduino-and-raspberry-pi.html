@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Keith's Blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Keith Gray">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://idahogray.github.io/blog/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://idahogray.github.io/blog/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/local.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/pygments.css" rel="stylesheet">
+
+    <!-- Feeds -->
+    <link href="http://idahogray.github.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Keith's Blog Atom Feed" />
+
+<script type="text/javascript">
+	var disqus_identifier = "arduino-and-raspberry-pi.html";
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://keithgraysblog.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+</head>
+<body>
+<a href="http://github.com/idahogray/"><img style="position: absolute; top: 39px; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" /></a>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://idahogray.github.io/blog/">Keith's Blog</a>
+			<ul class="nav">
+					<li ><a href="http://idahogray.github.io/blog/category/kids.html">kids</a></li>
+					<li class="active"><a href="http://idahogray.github.io/blog/category/personal.html">personal</a></li>
+					<li ><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://idahogray.github.io/blog/archives.html">[archives]</a> <a href="http://idahogray.github.io/blog/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+				<li><a href="http://www.powereng.com">POWER Engineers</a></li>
+				<li><a href="http://python.org">Python.org</a></li>
+				<li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+				<li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="http://twitter.com/idahogray">twitter</a></li>
+				<li><a href="http://github.com/idahogray">github</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>Arduino and Raspberry Pi</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/arduino-and-raspberry-pi.html">2014-01-04 00:00:00</a>
+by <a class="url fn" href="http://idahogray.github.io/blog/author/keith-gray.html">Keith Gray </a>
+ in <a href="http://idahogray.github.io/blog/category/personal.html">personal</a>
+tags: <a href="http://idahogray.github.io/blog/tag/arduino.html">arduino</a> </div>
+		<div><p>My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
+about the arduino and raspberry pi. It will also give us a scheduled time to work on a project.
+Finally, it will be good time spent together for the three of us.</p>
+<div class="section" id="session-1-agenda-and-links">
+<h2>Session 1 Agenda and Links</h2>
+<ol class="arabic">
+<li><p class="first">Introduction to the <a class="reference external" href="http://arduino.cc">Arduino</a> boards and software</p>
+<blockquote>
+<ul class="simple">
+<li>Uno</li>
+<li>Leonardo</li>
+<li>Others</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">Install the <a class="reference external" href="http://arduino.cc/en/Main/Software">Arduino Software</a> in Windows or Linux</p>
+</li>
+<li><p class="first">Connect the Arduino to the PC and make sure the software can communicate with it</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Choose the Leonardo from the list of boards</li>
+<li>Choose the correct serial port</li>
+<li>Choose the blink example from the menus, compile it, and send it to the Arduino</li>
+<li>Make sure there are no errors</li>
+<li>Make sure the onboard LED connected to pin 13 is blinking</li>
+</ol>
+</blockquote>
+</li>
+<li><p class="first">Visually insped the code and describe how it works</p>
+<blockquote>
+<ul class="simple">
+<li>Declaring constants (different than what is in the examples)</li>
+<li>setup function</li>
+<li>loop function</li>
+<li>Built in function: <a class="reference external" href="http://arduino.cc/en/Reference/PinMode">pinMode</a></li>
+<li>Built in function: <a class="reference external" href="http://arduino.cc/en/Reference/DigitalWrite">digitalWrite</a></li>
+<li>Built in function: <a class="reference external" href="http://arduino.cc/en/Reference/Delay">delay</a></li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">Use an external LED</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Wire up and external LED with the correct resistor value</li>
+<li>Alter the Arduino code to choose the correct pin</li>
+<li>Compile and send to the Arduino</li>
+<li>Verify the LED blinks</li>
+</ol>
+</blockquote>
+</li>
+<li><p class="first">Play with the code a little bit</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Make the LED stay on longer</li>
+<li>Make the LED stay off longer</li>
+<li>Make the LED blink faster with equal on/off times (duty cycle)</li>
+</ol>
+</blockquote>
+</li>
+<li><p class="first">Talk about Pulse Width Modulation (PWM) (A form of analog output)</p>
+<blockquote>
+<ul class="simple">
+<li>Built in function: <a class="reference external" href="http://arduino.cc/en/Reference/AnalogWrite">analogWrite</a></li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">Use PWM to fade an LED</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Open the Fade example from the Arduino IDE menu</li>
+<li>Inspect the code to see what it does</li>
+<li>Set the led pin correctly in the code for how the LED is connected</li>
+<li>Compile and send the code to the Arduino</li>
+<li>Verify the LED fades in and out</li>
+</ol>
+</blockquote>
+</li>
+<li><p class="first">Play with the code a little bit</p>
+<blockquote>
+<ol class="arabic simple">
+<li>Make it take longer to fade in and out</li>
+<li>Make it fade faster</li>
+<li>Make it so it only fades out and then goes immediately to full brightness again</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="references">
+<h2>References</h2>
+</div>
+</div>
+		<div>
+			<h2>Comments</h2>
+<div id="disqus_thread"></div>		<div>
+	</div>	
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Keith Gray</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>
