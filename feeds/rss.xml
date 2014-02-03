@@ -1,5 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><atom:link href="http://idahogray.github.com/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 04 Jan 2014 00:00:00 -0600</lastBuildDate><item><title>Arduino and Raspberry Pi</title><link>http://idahogray.github.io/blog/arduino-and-raspberry-pi.html</link><description>&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><atom:link href="http://idahogray.github.com/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 02 Feb 2014 00:00:00 -0600</lastBuildDate><item><title>Wyatt's First Program</title><link>http://idahogray.github.io/blog/wyatt-programming-1.html</link><description>&lt;p&gt;Wyatt has shown interest in programming computers. I saw a tweet or google+ post
+this week (sorry I couldn't find it again) where a father had written out
+a program on a white board for his daughter to type in and run. I thought
+this was a really great way to get started.&lt;/p&gt;
+&lt;p&gt;I have KTurtle installed on my
+desktop at home and thought that would be a good way to get started. We have
+played with Scratch a little bit but it was still a little old for him.&lt;/p&gt;
+&lt;p&gt;I opened one of the example programs and wrote it out on piece of paper.
+Wyatt and I worked together, with him at the keyboard, to type it in.
+He then ran it. Of course it didn't work the first time, what program does.
+So we started debugging. I read every character in the program and he checked
+to make sure his program matched. He still gets confused about some letters
+so I helped him out a little bit. We got it to run!&lt;/p&gt;
+&lt;p&gt;Next, we modified the program to make the turtle draw a different shape.
+I asked if he was interested in doing more of this and he said he was.
+I told him that I would print out a program for him to type in every day
+before I go to work. He would type it out and tell me what the turtle
+drew.&lt;/p&gt;
+&lt;p&gt;I did the first one last night. The turtle drew a triangle and then wrote
+the word &amp;quot;triangle&amp;quot; underneath it. Here is the program.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;reset
+repeat 3 {
+    forward 100
+    turnleft 120
+}
+
+go 130, 200
+print &amp;quot;triangle&amp;quot;
+
+go 0, 0
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I really like this exercise for a number of reasons.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Wyatt gets to learn the letters of the alphabet&lt;/li&gt;
+&lt;li&gt;Wyatt gets to learn the keys on the keyboard&lt;/li&gt;
+&lt;li&gt;Wyatt get introduced to logic, programming, and problem solving&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I think #3 is probably the most important. I know that problem solving
+is one of the most important things in my job. People who can think
+through a problem, figure out what is causing it, and fix it are
+extremely valuable people.&lt;/p&gt;
+&lt;p&gt;I can't wait to get Ava going on this as well!&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sun, 02 Feb 2014 00:00:00 -0600</pubDate><guid>tag:idahogray.github.io/blog,2014-02-02:wyatt-programming-1.html</guid><category>kids</category><category>programming</category></item><item><title>Arduino and Raspberry Pi</title><link>http://idahogray.github.io/blog/arduino-and-raspberry-pi.html</link><description>&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
 about the arduino and raspberry pi. It will also give us a scheduled time to work on a project.
 Finally, it will be good time spent together for the three of us.&lt;/p&gt;
 &lt;div class="section" id="session-1-agenda-and-links"&gt;
