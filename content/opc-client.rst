@@ -2,11 +2,11 @@ Writing a OPC Client
 ====================
 
 :date: 2014-03-07
+:modified: 2014-03-09
 :tags: python programming work
 :category: work
 :summary: Short introduction to writing an OPC client
 
-Some text here.
 
 Introduction
 ------------
