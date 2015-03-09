@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/work.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2014-03-07T00:00:00+01:00</updated><entry><title>Writing a OPC Client</title><link href="http://idahogray.github.io/blog/writing-a-opc-client.html" rel="alternate"></link><updated>2014-03-07T00:00:00+01:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</id><summary type="html">&lt;p&gt;Some text here.&lt;/p&gt;
-&lt;div class="section" id="introduction"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/work.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2014-03-09T00:00:00+01:00</updated><entry><title>Writing a OPC Client</title><link href="http://idahogray.github.io/blog/writing-a-opc-client.html" rel="alternate"></link><updated>2014-03-09T00:00:00+01:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</id><summary type="html">&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;OPC is something I see quite often in my job as a SCADA engineer.
 Up until recently, all I knew about OPC was that it relied on

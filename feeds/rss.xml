@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><atom:link href="http://idahogray.github.com/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 07 Mar 2014 00:00:00 +0100</lastBuildDate><item><title>Writing a OPC Client</title><link>http://idahogray.github.io/blog/writing-a-opc-client.html</link><description>&lt;p&gt;Some text here.&lt;/p&gt;
-&lt;div class="section" id="introduction"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><atom:link href="http://idahogray.github.com/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 09 Mar 2014 00:00:00 +0100</lastBuildDate><item><title>Writing a OPC Client</title><link>http://idahogray.github.io/blog/writing-a-opc-client.html</link><description>&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;OPC is something I see quite often in my job as a SCADA engineer.
 Up until recently, all I knew about OPC was that it relied on
@@ -90,7 +89,7 @@ at a time. Your client can subscribe to events and get notified when a
 point value changes. I didn't make use of that functionality in my
 project but I probably will in the future.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Fri, 07 Mar 2014 00:00:00 +0100</pubDate><guid>tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</guid><category>python programming work</category></item><item><title>Arduino and Raspberry Pi</title><link>http://idahogray.github.io/blog/arduino-and-raspberry-pi.html</link><description>&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sun, 09 Mar 2014 00:00:00 +0100</pubDate><guid>tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</guid><category>python programming work</category></item><item><title>Arduino and Raspberry Pi</title><link>http://idahogray.github.io/blog/arduino-and-raspberry-pi.html</link><description>&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
 about the arduino and raspberry pi. It will also give us a scheduled time to work on a project.
 Finally, it will be good time spent together for the three of us.&lt;/p&gt;
 &lt;div class="section" id="session-1-agenda-and-links"&gt;
