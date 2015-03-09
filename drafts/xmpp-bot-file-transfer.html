@@ -24,7 +24,7 @@
         <link href="feeds/rss.xml" rel="alternate" title="Keith's Blog" type="application/rss+xml">
 
 <script type="text/javascript">
-	var disqus_identifier = "drafts/how-i-work-commissioning.html";
+	var disqus_identifier = "drafts/xmpp-bot-file-transfer.html";
 	(function() {
 		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 		dsq.src = 'http://keithgraysblog.disqus.com/embed.js';
@@ -41,7 +41,7 @@
 			<ul class="nav">
 					<li ><a href="http://idahogray.github.io/blog/category/kids.html">kids</a></li>
 					<li ><a href="http://idahogray.github.io/blog/category/personal.html">personal</a></li>
-					<li ><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
+					<li class="active"><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
 			</ul>
 			<p class="pull-right"><a href="http://idahogray.github.io/blog/archives.html">[archives]</a> <a href="http://idahogray.github.io/blog/tags.html">[tags]</a></p>
 		</div>
@@ -69,66 +69,48 @@
 	  </div>
 	  <div class="content">
 	<div class='article'>
-		<div class="page-header"><h1>How I Work - Commissioning</h1></div>
-		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/drafts/how-i-work-commissioning.html">2013-02-06 08:22:00+01:00</a>
+		<div class="page-header"><h1>XMPP Bot File Transfer</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/drafts/xmpp-bot-file-transfer.html">2014-06-21 00:00:00+02:00</a>
 by <a class="url fn" href="http://idahogray.github.io/blog/author/keith-gray.html">Keith Gray </a>
- in <a href="http://idahogray.github.io/blog/category/how-i-work.html">how-i-work</a>
-tags: <a href="http://idahogray.github.io/blog/tag/how-i-work.html">how-i-work</a> <a href="http://idahogray.github.io/blog/tag/commissioning.html">commissioning</a> <a href="http://idahogray.github.io/blog/tag/open-source.html">open-source</a> </div>
-		<div><p>I would like to describe how I work when commissioning a substation SCADA project.
-This post describes the software that I use during commissioning.</p>
-<div class="section" id="novatech-orionlx-communications-processor">
-<h2>NovaTech OrionLX Communications Processor</h2>
-<p>Most of my commissioning work over the last few years has involved the NovaTech Orion family of communications processors.
-Therefore, this post will describe my work with that equipment.  Some of the
-content could be applied to other processors, but not all of it.</p>
-<p>One of the Orion features that I really like is the ASCII text configuration file format.  This allows for doing things like</p>
-<ul class="simple">
-<li>Editing the configuration outside of the NovaTech Communications Director software in any text editor</li>
-<li>Comparing revisions using common diff tools</li>
-<li>Managing revisions of a configuration using commonly available revision control software</li>
-<li>Automating creation of the configuration file using common programming languages (Python being my favorite)</li>
-<li>Automating checking/verification of the configuration file</li>
-</ul>
+ in <a href="http://idahogray.github.io/blog/category/work.html">work</a>
+tags: <a href="http://idahogray.github.io/blog/tag/python-xmpp-programming.html">python xmpp programming</a> </div>
+		<div><div class="section" id="purpose">
+<h2>Purpose</h2>
+<p>I have set up a XMPP server at work. People from all over our business unit use
+the server to chat with each other. I have been thinking about writing a bot
+to help automate some tasks. One of the first tasks I wanted to automate was
+getting a project's status report from our intranet. I am imagining that a user
+would send the project number to the bot, the bot would download the report,
+the bot would then use XMPP to transfer the file to the user.</p>
 </div>
-<div class="section" id="software-applications">
-<h2>Software Applications</h2>
-<p>During commissioning I use many software applications, most of which are
-freely available open source tools.  These tools
-assist me in ensuring commissioning goes smoothly. I will describe each of
-the tools listed here and how I employ them.</p>
-<ul>
-<li><p class="first">Open Source</p>
-<blockquote>
-<ul>
-<li><p class="first">Mercurial</p>
-</li>
-<li><p class="first">Subversion</p>
-</li>
-<li><p class="first">Notepad++</p>
-</li>
-<li><p class="first">Firefox</p>
-<blockquote>
-<ul class="simple">
-<li>Firebug</li>
-</ul>
-</blockquote>
-</li>
-<li><p class="first">putty</p>
-</li>
-<li><p class="first">Inkscape</p>
-</li>
-<li><p class="first">Teraterm</p>
-</li>
-<li><p class="first">Wireshark</p>
-</li>
-<li><p class="first">Winscp</p>
-</li>
-</ul>
-</blockquote>
-</li>
-<li><p class="first">Closed SourceDNC DØÚ</p>
-</li>
-</ul>
+<div class="section" id="tools">
+<h2>Tools</h2>
+<p>I have been doing a bit of Python programming over the last few years and I
+wanted to write the bot in Python. A few of the libraries I looked at did not
+support file transfer and I eventually settled on the <a class="reference external" href="https://github.com/fritzy/SleekXMPP">SleekXMPP</a> library. The
+server is running <a class="reference external" href="http://www.ejabberd.im/">ejabberd</a>. Most, if not all, of the users are running
+<a class="reference external" href="https://pidgin.im/">Pidgin</a> as their XMPP client.</p>
+</div>
+<div class="section" id="first-try">
+<h2>First Try</h2>
+<p>After doing some initial research, I determined that there were two ways to
+do file transfer with XMPP. The first was in-band bytestreams (ibb) (XEP-0047).
+The second method was SOCKS5 bytestreams (XEP-0065).</p>
+<p>IBB appeared to be the easier of the two methods even with the understanding
+that ibb was intended for small transfers. I decided to give ibb a shot.</p>
+<div class="section" id="echobot">
+<h3>EchoBot</h3>
+<p>I first built the example in the SleekXMPP README file. It is called EchoBot.
+The bot connects to the server and echos back everything that is said to it.
+The only thing I had to change in order for it to work with my set up was to
+pass the server IP and TCP port as a tuple to the connect() method.</p>
+<p>The source for this first version of <a class="reference external" href="https://bitbucket.org/idahogray/xmpp-bot/src/bb92bc4f6808f8d5c381e7ef6df77e2379cd98a4/xmpp_bot/echo_bot.py?at=default">EchoBot</a> is hosted at bitbucket.org.</p>
+</div>
+<div class="section" id="ibb">
+<h3>IBB</h3>
+<p>Once I was able to successfully connect to the server, receive messages, and
+send messages I attempted file transfer.</p>
+</div>
 </div>
 </div>
 		<div>

@@ -1,11 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/work.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2013-08-09T00:00:00-05:00</updated><entry><title>SVG Animations</title><link href="http://idahogray.github.io/blog/svg-animations.html" rel="alternate"></link><updated>2013-08-09T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-08-09:svg-animations.html</id><summary type="html">&lt;p&gt;I am preparing a 2 hour tutorial for work and need to have slides prepared.
-I don't want to use the typical PowerPoint for a number of reasons, none of
-which are important to this post.&lt;/p&gt;
-&lt;p&gt;The nature of the tutorial lends itself to having some animations.
-I chose to use SVG images with animations because I had previously
-chosen to use a web based presentation application.&lt;/p&gt;
-</summary><category term="work svg animation"></category></entry><entry><title>Thoughts On Email</title><link href="http://idahogray.github.io/blog/thoughts-on-email.html" rel="alternate"></link><updated>2013-04-20T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io/blog,2013-04-20:thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/work.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2014-03-07T00:00:00+01:00</updated><entry><title>Writing a OPC Client</title><link href="http://idahogray.github.io/blog/writing-a-opc-client.html" rel="alternate"></link><updated>2014-03-07T00:00:00+01:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</id><summary type="html">&lt;p&gt;Some text here.&lt;/p&gt;
+&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;OPC is something I see quite often in my job as a SCADA engineer.
+Up until recently, all I knew about OPC was that it relied on
+Microsoft Windows' Object Linking and Embedding (OLE).
+In fact OPC is short for &lt;strong&gt;O&lt;/strong&gt;LE for &lt;strong&gt;P&lt;/strong&gt;rocess Control.
+Even though OPC was always a problem on projects,
+I thought of it as a black box because of its relationship to
+Windows.&lt;/p&gt;
+&lt;p&gt;However, on a recent project, I had the need to automate some tests.
+I had two choices:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Develop or purchase a DNP3 communication library to communicate with
+the device being tested.&lt;/li&gt;
+&lt;li&gt;Use an OPC Server to speak DNP3 and then get the data out of the OPC
+server.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I had previously looked into what it would take to develop a DNP3
+driver and it wasn't going to be cheap or easy. I needed this
+application and I needed it yesterday. Therefore, I decided to
+investigate what it would take to communicate with the OPC server.&lt;/p&gt;
+&lt;div class="section" id="background"&gt;
+&lt;h3&gt;Background&lt;/h3&gt;
+&lt;p&gt;I have quite a bit of Python programming experience and I knew
+that the pywin32 library supported Windows COM. COM is what
+OPC uses for communication on a Windows system.&lt;/p&gt;
+&lt;p&gt;I spent one weekend poking around on Google, playing with pywin32,
+and using the demo mode of the Kepware OPC platform. I was able to
+connect to the kepware server and get data out of it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="opc-client"&gt;
+&lt;h2&gt;OPC Client&lt;/h2&gt;
+&lt;p&gt;The OPC client I am going to show here is by no means a complete
+implementation. However, this simple application met the needs
+of my project and is relatively simple to get set up.&lt;/p&gt;
+&lt;div class="section" id="prerequisites"&gt;
+&lt;h3&gt;Prerequisites&lt;/h3&gt;
+&lt;p&gt;This application was written on a Windows 7 machine. I have started
+using the Anaconda python distribution on Windows because it is
+so easy to get the packages I need installed without having a full
+C/C++ development environment. The pywin32 library is required and
+can be installed via anaconda.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;conda install pywin32
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It is also required to have the OPC Server configured. In this case,
+I simply created a channel and device in the Kepware server. The channel
+used the Simulator driver and I named it 'Simulator'. I also named the
+device 'Simulator'.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-code"&gt;
+&lt;h3&gt;The Code&lt;/h3&gt;
+&lt;p&gt;The code below is really simple. It connects to the Kepware OPC client,
+creates a group, adds one binary tag to the group, retrieves the value,
+quality, and timestamp of the tag (which should be False), writes a value
+of True to the tag, then rereads the value, quality, and timestamp. Finally
+it disconnects from the OPC Server.&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;win32com&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dispatch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;OPC.Automation.1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;KEPware.KEPServerEX.V5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCGroups&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Test Group&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IsActive&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
+&lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCItems&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Simulator.Simulator.K0000.00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;constants&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCDevice&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Value: {}; Quality: {}; Time: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;constants&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCDevice&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Value: {}; Quality: {}; Time: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Disconnect&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="what-s-next"&gt;
+&lt;h2&gt;What's Next&lt;/h2&gt;
+&lt;p&gt;OPC has a lot more options than just reading or writing to a single point
+at a time. Your client can subscribe to events and get notified when a
+point value changes. I didn't make use of that functionality in my
+project but I probably will in the future.&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="python programming work"></category></entry><entry><title>Thoughts On Email</title><link href="http://idahogray.github.io/blog/thoughts-on-email.html" rel="alternate"></link><updated>2013-04-20T00:00:00+02:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-04-20:blog/thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
 Kevin were talking about email and getting to Inbox Zero and so on. One of their
 comments was that email fails because it is a TODO list that other people can
 add items to. This is not the first time I have heard this and I don't know

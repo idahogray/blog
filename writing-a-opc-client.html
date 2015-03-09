@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Keith's Blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Keith Gray">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://idahogray.github.io/blog/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://idahogray.github.io/blog/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/local.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/pygments.css" rel="stylesheet">
+
+	<!-- Feeds -->
+	<link href="http://idahogray.github.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Keith's Blog Atom Feed" />
+
+
+
+        <link href="feeds/rss.xml" rel="alternate" title="Keith's Blog" type="application/rss+xml">
+
+<script type="text/javascript">
+	var disqus_identifier = "writing-a-opc-client.html";
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://keithgraysblog.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+</head>
+<body>
+<a href="http://github.com/idahogray/"><img style="position: absolute; top: 39px; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" /></a>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://idahogray.github.io/blog/">Keith's Blog</a>
+			<ul class="nav">
+					<li ><a href="http://idahogray.github.io/blog/category/kids.html">kids</a></li>
+					<li ><a href="http://idahogray.github.io/blog/category/personal.html">personal</a></li>
+					<li class="active"><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://idahogray.github.io/blog/archives.html">[archives]</a> <a href="http://idahogray.github.io/blog/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+				<li><a href="http://www.powereng.com">POWER Engineers</a></li>
+				<li><a href="http://python.org">Python.org</a></li>
+				<li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+				<li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="http://twitter.com/idahogray">twitter</a></li>
+				<li><a href="http://github.com/idahogray">github</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>Writing a OPC Client</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/writing-a-opc-client.html">2014-03-07 00:00:00+01:00</a>
+by <a class="url fn" href="http://idahogray.github.io/blog/author/keith-gray.html">Keith Gray </a>
+ in <a href="http://idahogray.github.io/blog/category/work.html">work</a>
+tags: <a href="http://idahogray.github.io/blog/tag/python-programming-work.html">python programming work</a> </div>
+		<div><p>Some text here.</p>
+<div class="section" id="introduction">
+<h2>Introduction</h2>
+<p>OPC is something I see quite often in my job as a SCADA engineer.
+Up until recently, all I knew about OPC was that it relied on
+Microsoft Windows' Object Linking and Embedding (OLE).
+In fact OPC is short for <strong>O</strong>LE for <strong>P</strong>rocess Control.
+Even though OPC was always a problem on projects,
+I thought of it as a black box because of its relationship to
+Windows.</p>
+<p>However, on a recent project, I had the need to automate some tests.
+I had two choices:</p>
+<ol class="arabic simple">
+<li>Develop or purchase a DNP3 communication library to communicate with
+the device being tested.</li>
+<li>Use an OPC Server to speak DNP3 and then get the data out of the OPC
+server.</li>
+</ol>
+<p>I had previously looked into what it would take to develop a DNP3
+driver and it wasn't going to be cheap or easy. I needed this
+application and I needed it yesterday. Therefore, I decided to
+investigate what it would take to communicate with the OPC server.</p>
+<div class="section" id="background">
+<h3>Background</h3>
+<p>I have quite a bit of Python programming experience and I knew
+that the pywin32 library supported Windows COM. COM is what
+OPC uses for communication on a Windows system.</p>
+<p>I spent one weekend poking around on Google, playing with pywin32,
+and using the demo mode of the Kepware OPC platform. I was able to
+connect to the kepware server and get data out of it.</p>
+</div>
+</div>
+<div class="section" id="opc-client">
+<h2>OPC Client</h2>
+<p>The OPC client I am going to show here is by no means a complete
+implementation. However, this simple application met the needs
+of my project and is relatively simple to get set up.</p>
+<div class="section" id="prerequisites">
+<h3>Prerequisites</h3>
+<p>This application was written on a Windows 7 machine. I have started
+using the Anaconda python distribution on Windows because it is
+so easy to get the packages I need installed without having a full
+C/C++ development environment. The pywin32 library is required and
+can be installed via anaconda.</p>
+<div class="highlight"><pre><span class="nv">$ </span>conda install pywin32
+</pre></div>
+<p>It is also required to have the OPC Server configured. In this case,
+I simply created a channel and device in the Kepware server. The channel
+used the Simulator driver and I named it 'Simulator'. I also named the
+device 'Simulator'.</p>
+</div>
+<div class="section" id="the-code">
+<h3>The Code</h3>
+<p>The code below is really simple. It connects to the Kepware OPC client,
+creates a group, adds one binary tag to the group, retrieves the value,
+quality, and timestamp of the tag (which should be False), writes a value
+of True to the tag, then rereads the value, quality, and timestamp. Finally
+it disconnects from the OPC Server.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">win32com</span> <span class="kn">import</span> <span class="n">client</span>
+<span class="n">opc</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">Dispatch</span><span class="p">(</span><span class="s">&#39;OPC.Automation.1&#39;</span><span class="p">)</span>
+<span class="n">opc</span><span class="o">.</span><span class="n">Connect</span><span class="p">(</span><span class="s">&#39;KEPware.KEPServerEX.V5&#39;</span><span class="p">)</span>
+<span class="n">group</span> <span class="o">=</span> <span class="n">opc</span><span class="o">.</span><span class="n">OPCGroups</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&#39;Test Group&#39;</span><span class="p">)</span>
+<span class="n">group</span><span class="o">.</span><span class="n">IsActive</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">item</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">OPCItems</span><span class="o">.</span><span class="n">AddItem</span><span class="p">(</span><span class="s">&#39;Simulator.Simulator.K0000.00&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">value</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">OPCDevice</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Value: {}; Quality: {}; Time: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">time</span><span class="p">))</span>
+<span class="n">item</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">value</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">OPCDevice</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Value: {}; Quality: {}; Time: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">quality</span><span class="p">,</span> <span class="n">time</span><span class="p">))</span>
+<span class="n">opc</span><span class="o">.</span><span class="n">Disconnect</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="what-s-next">
+<h2>What's Next</h2>
+<p>OPC has a lot more options than just reading or writing to a single point
+at a time. Your client can subscribe to events and get notified when a
+point value changes. I didn't make use of that functionality in my
+project but I probably will in the future.</p>
+</div>
+</div>
+		<div>
+			<h2>Comments</h2>
+<div id="disqus_thread"></div>		<div>
+	</div>
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Keith Gray</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>
