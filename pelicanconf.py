@@ -2,18 +2,22 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = 'Keith Gray'
-SITENAME = "Keith's Blog"
-SITEURL = 'http://idahogray.github.io/blog'
+AUTHOR = u'Keith Gray'
+SITENAME = u"Keith's Blog"
+SITEURL = ''
 
-TIMEZONE = 'Europe/Paris'
+PATH = 'content'
 
-DEFAULT_LANG = 'en'
+TIMEZONE = 'America/Chicago'
+
+DEFAULT_LANG = u'en'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
+AUTHOR_FEED_ATOM = None
+AUTHOR_FEED_RSS = None
 
 # Blogroll
 LINKS = (
@@ -24,14 +28,12 @@ LINKS = (
 )
 
 # Social widget
-SOCIAL = (('twitter', 'http://twitter.com/idahogray'),
-          ('github', 'http://github.com/idahogray'),)
+SOCIAL = (
+    ('twitter', 'http://twitter.com/idahogray'),
+    ('github', 'http://github.com/idahogray'),
+)
 
-DEFAULT_PAGINATION = 10
-
-# Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
-
+DEFAULT_PAGINATION = 50
 THEME = 'bootstrap'
 DISQUS_SITENAME = 'keithgraysblog'
 GITHUB_URL = 'http://github.com/idahogray/'
@@ -43,3 +45,6 @@ STATIC_PATHS = ["images", ]
 PATH = 'content'
 
 DEFAULT_DATE_FORMAT = '%Y-%m-%d'
+
+# Uncomment following line if you want document-relative URLs when developing
+#RELATIVE_URLS = True
