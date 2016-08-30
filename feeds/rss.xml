@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Keith's Blog</title><link>/</link><description></description><lastBuildDate>Sun, 09 Mar 2014 00:00:00 -0600</lastBuildDate><item><title>Writing a OPC Client</title><link>/writing-a-opc-client.html</link><description>&lt;div class="section" id="introduction"&gt;
+<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Sun, 09 Mar 2014 00:00:00 -0600</lastBuildDate><item><title>Writing a OPC Client</title><link>http://idahogray.github.io/blog/writing-a-opc-client.html</link><description>&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;OPC is something I see quite often in my job as a SCADA engineer.
 Up until recently, all I knew about OPC was that it relied on
@@ -89,7 +89,7 @@ at a time. Your client can subscribe to events and get notified when a
 point value changes. I didn't make use of that functionality in my
 project but I probably will in the future.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sun, 09 Mar 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:,2014-03-07:writing-a-opc-client.html</guid><category>python programming work</category></item><item><title>Arduino and Raspberry Pi</title><link>/arduino-and-raspberry-pi.html</link><description>&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sun, 09 Mar 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</guid><category>python programming work</category></item><item><title>Arduino and Raspberry Pi</title><link>http://idahogray.github.io/blog/arduino-and-raspberry-pi.html</link><description>&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
 about the arduino and raspberry pi. It will also give us a scheduled time to work on a project.
 Finally, it will be good time spent together for the three of us.&lt;/p&gt;
 &lt;div class="section" id="session-1-agenda-and-links"&gt;
@@ -180,7 +180,7 @@ Finally, it will be good time spent together for the three of us.&lt;/p&gt;
 &lt;div class="section" id="references"&gt;
 &lt;h2&gt;References&lt;/h2&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 04 Jan 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:,2014-01-04:arduino-and-raspberry-pi.html</guid><category>arduino</category></item><item><title>2014 Goals</title><link>/2014-goals.html</link><description>&lt;p&gt;I don't like the idea of new years resolutions but I do think this is a good
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 04 Jan 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2014-01-04:blog/arduino-and-raspberry-pi.html</guid><category>arduino</category></item><item><title>2014 Goals</title><link>http://idahogray.github.io/blog/2014-goals.html</link><description>&lt;p&gt;I don't like the idea of new years resolutions but I do think this is a good
 oppportunity to set some goals for the new year. I am not sure if that is
 different than resolutions, but it is in my head.&lt;/p&gt;
 &lt;div class="section" id="goals-for-2014"&gt;
@@ -201,7 +201,7 @@ improving my health&lt;/li&gt;
 &lt;li&gt;Reduce the amount of gluten my kids eat&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Wed, 01 Jan 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:,2014-01-01:2014-goals.html</guid><category>goals</category></item><item><title>Thoughts On Email</title><link>/thoughts-on-email.html</link><description>&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Wed, 01 Jan 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2014-01-01:blog/2014-goals.html</guid><category>goals</category></item><item><title>Thoughts On Email</title><link>http://idahogray.github.io/blog/thoughts-on-email.html</link><description>&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
 Kevin were talking about email and getting to Inbox Zero and so on. One of their
 comments was that email fails because it is a TODO list that other people can
 add items to. This is not the first time I have heard this and I don't know
@@ -232,12 +232,12 @@ is more honest and will possibly generate more realistic discussions about
 tasks and schedules than the current alternatives.&lt;/p&gt;
 &lt;p&gt;I would like to hear any reader's thoughts, especially from those in similar
 businesses.&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 20 Apr 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:,2013-04-20:thoughts-on-email.html</guid><category>work email</category></item><item><title>First Bowling Games</title><link>/first-bowling-games.html</link><description>&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 20 Apr 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-04-20:blog/thoughts-on-email.html</guid><category>work email</category></item><item><title>First Bowling Games</title><link>http://idahogray.github.io/blog/first-bowling-games.html</link><description>&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
 They both had a lot of fun and so did &lt;a class="reference external" href="https://plus.google.com/u/0/104461654563341959829"&gt;Amy&lt;/a&gt; and I.&lt;/p&gt;
 &lt;p&gt;Please ignore my score. My excuse is that I was helping Wyatt and Ava and therefore
 not able to concentrate on my own game.&lt;/p&gt;
 &lt;img alt="" src="http://farm9.staticflickr.com/8253/8628196983_d4a0605846.jpg" /&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sun, 07 Apr 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:,2013-04-07:first-bowling-games.html</guid><category>wyatt ava</category></item><item><title>Lego Garbage Truck</title><link>/lego-garbage-truck.html</link><description>&lt;p&gt;&lt;a class="reference external" href="https://plus.google.com/101549244886183119915"&gt;Nonna&lt;/a&gt; and &lt;a class="reference external" href="https://plus.google.com/u/0/106042062414239481427"&gt;Grandpa&lt;/a&gt; bought Wyatt a garbage truck lego set for Easter this year. Wyatt and I
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sun, 07 Apr 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-04-07:blog/first-bowling-games.html</guid><category>wyatt ava</category></item><item><title>Lego Garbage Truck</title><link>http://idahogray.github.io/blog/lego-garbage-truck.html</link><description>&lt;p&gt;&lt;a class="reference external" href="https://plus.google.com/101549244886183119915"&gt;Nonna&lt;/a&gt; and &lt;a class="reference external" href="https://plus.google.com/u/0/106042062414239481427"&gt;Grandpa&lt;/a&gt; bought Wyatt a garbage truck lego set for Easter this year. Wyatt and I
 started building it on Thursday night.  We only made it a few pages into the
 instruction book.&lt;/p&gt;
 &lt;img alt="" src="http://farm9.staticflickr.com/8533/8604852882_9c53b485ec.jpg" /&gt;
@@ -250,7 +250,7 @@ above his age but he stuck with it. It took 3 days to finish it and he loves it.
 &lt;p&gt;He played with it quite a bit today. He is a little rough with it and it
 comes apart sometimes. He repeats what I told him about Legos: &amp;quot;The good
 thing about Legos is that you can always put it back together&amp;quot;.&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 30 Mar 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:,2013-03-30:lego-garbage-truck.html</guid><category>wyatt lego</category></item><item><title>Saving for College</title><link>/saving-for-college.html</link><description>&lt;p&gt;Amy and I have been talking about setting up college funds for Wyatt and Ava
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 30 Mar 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-03-30:blog/lego-garbage-truck.html</guid><category>wyatt lego</category></item><item><title>Saving for College</title><link>http://idahogray.github.io/blog/saving-for-college.html</link><description>&lt;p&gt;Amy and I have been talking about setting up college funds for Wyatt and Ava
 for a while now.  As part of our New Years resolutions, we decided to make it
 happen this year.  We set up a visit with a financial planner and he guided us
 through the process.  As of tonight, both Wyatt and Ava have 529 Plans set
@@ -265,7 +265,7 @@ accounts.&lt;/p&gt;
 the kids is projected to cost $66,000 or more.  That is insane.  I guess that
 is why we are saving now.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Fri, 22 Feb 2013 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:,2013-02-22:saving-for-college.html</guid><category>wyatt ava college</category></item><item><title>Wyatt's 4th Birthday Questions</title><link>/wyatts-4th-birthday-questions.html</link><description>&lt;dl class="docutils"&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Fri, 22 Feb 2013 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-02-22:blog/saving-for-college.html</guid><category>wyatt ava college</category></item><item><title>Wyatt's 4th Birthday Questions</title><link>http://idahogray.github.io/blog/wyatts-4th-birthday-questions.html</link><description>&lt;dl class="docutils"&gt;
 &lt;dt&gt;What is your favorite color?&lt;/dt&gt;
 &lt;dd&gt;Red&lt;/dd&gt;
 &lt;dt&gt;What is your favorite toy?&lt;/dt&gt;
@@ -297,4 +297,4 @@ is why we are saving now.&lt;/p&gt;
 &lt;dt&gt;What do you want to be when you grow up?&lt;/dt&gt;
 &lt;dd&gt;Just want to be a Wyatt&lt;/dd&gt;
 &lt;/dl&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 26 Jan 2013 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:,2013-01-26:wyatts-4th-birthday-questions.html</guid><category>wyatt birthday</category></item></channel></rss>
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 26 Jan 2013 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-01-26:blog/wyatts-4th-birthday-questions.html</guid><category>wyatt birthday</category></item></channel></rss>
