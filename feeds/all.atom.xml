@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/all.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2016-08-30T00:00:00-05:00</updated><entry><title>2016-08-30 Notes</title><link href="http://idahogray.github.io/blog/2016-08-30-notes.html" rel="alternate"></link><published>2016-08-30T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-08-30:blog/2016-08-30-notes.html</id><summary type="html">&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://selinc.com"&gt;SEL&lt;/a&gt; is introducing a new networking product for the
+utility market based on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.
+The fact that this technology is making it into the electric utility
+industry is pretty amazing considering how new it is.&lt;/p&gt;
+&lt;p&gt;A recent &lt;a class="reference external" href="https://selinc.com/company/news/116217/"&gt;article&lt;/a&gt; sparked some
+conversation inside my group at work. I decided I should do some more
+research. I started reading about &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; by purchasing
+&lt;a class="reference external" href="https://www.packtpub.com/networking-and-servers/software-defined-networking-openflow"&gt;Software Defined Networking with OpenFlow&lt;/a&gt;.
+This book served as a good introduction to &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; and using a
+simulation platform called &lt;a class="reference external" href="http://mininet.org/"&gt;Mininet&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;One question I still have is how to achieve fast failovers with &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;I plan to keep researching this and playing with the simulations.&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="work networking sdn"></category></entry><entry><title>Writing a OPC Client</title><link href="http://idahogray.github.io/blog/writing-a-opc-client.html" rel="alternate"></link><published>2014-03-09T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</id><summary type="html">&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;OPC is something I see quite often in my job as a SCADA engineer.
+Up until recently, all I knew about OPC was that it relied on
+Microsoft Windows' Object Linking and Embedding (OLE).
+In fact OPC is short for &lt;strong&gt;O&lt;/strong&gt;LE for &lt;strong&gt;P&lt;/strong&gt;rocess Control.
+Even though OPC was always a problem on projects,
+I thought of it as a black box because of its relationship to
+Windows.&lt;/p&gt;
+&lt;p&gt;However, on a recent project, I had the need to automate some tests.
+I had two choices:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Develop or purchase a DNP3 communication library to communicate with
+the device being tested.&lt;/li&gt;
+&lt;li&gt;Use an OPC Server to speak DNP3 and then get the data out of the OPC
+server.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I had previously looked into what it would take to develop a DNP3
+driver and it wasn't going to be cheap or easy. I needed this
+application and I needed it yesterday. Therefore, I decided to
+investigate what it would take to communicate with the OPC server.&lt;/p&gt;
+&lt;div class="section" id="background"&gt;
+&lt;h3&gt;Background&lt;/h3&gt;
+&lt;p&gt;I have quite a bit of Python programming experience and I knew
+that the pywin32 library supported Windows COM. COM is what
+OPC uses for communication on a Windows system.&lt;/p&gt;
+&lt;p&gt;I spent one weekend poking around on Google, playing with pywin32,
+and using the demo mode of the Kepware OPC platform. I was able to
+connect to the kepware server and get data out of it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="opc-client"&gt;
+&lt;h2&gt;OPC Client&lt;/h2&gt;
+&lt;p&gt;The OPC client I am going to show here is by no means a complete
+implementation. However, this simple application met the needs
+of my project and is relatively simple to get set up.&lt;/p&gt;
+&lt;div class="section" id="prerequisites"&gt;
+&lt;h3&gt;Prerequisites&lt;/h3&gt;
+&lt;p&gt;This application was written on a Windows 7 machine. I have started
+using the Anaconda python distribution on Windows because it is
+so easy to get the packages I need installed without having a full
+C/C++ development environment. The pywin32 library is required and
+can be installed via anaconda.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ conda install pywin32
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It is also required to have the OPC Server configured. In this case,
+I simply created a channel and device in the Kepware server. The channel
+used the Simulator driver and I named it 'Simulator'. I also named the
+device 'Simulator'.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-code"&gt;
+&lt;h3&gt;The Code&lt;/h3&gt;
+&lt;p&gt;The code below is really simple. It connects to the Kepware OPC client,
+creates a group, adds one binary tag to the group, retrieves the value,
+quality, and timestamp of the tag (which should be False), writes a value
+of True to the tag, then rereads the value, quality, and timestamp. Finally
+it disconnects from the OPC Server.&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;win32com&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dispatch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;OPC.Automation.1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;KEPware.KEPServerEX.V5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCGroups&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Test Group&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IsActive&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
+&lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCItems&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Simulator.Simulator.K0000.00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;constants&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCDevice&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Value: {}; Quality: {}; Time: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;constants&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCDevice&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Value: {}; Quality: {}; Time: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Disconnect&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="what-s-next"&gt;
+&lt;h2&gt;What's Next&lt;/h2&gt;
+&lt;p&gt;OPC has a lot more options than just reading or writing to a single point
+at a time. Your client can subscribe to events and get notified when a
+point value changes. I didn't make use of that functionality in my
+project but I probably will in the future.&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="python programming work"></category></entry><entry><title>Arduino and Raspberry Pi</title><link href="http://idahogray.github.io/blog/arduino-and-raspberry-pi.html" rel="alternate"></link><published>2014-01-04T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-01-04:blog/arduino-and-raspberry-pi.html</id><summary type="html">&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
+about the arduino and raspberry pi. It will also give us a scheduled time to work on a project.
+Finally, it will be good time spent together for the three of us.&lt;/p&gt;
+&lt;div class="section" id="session-1-agenda-and-links"&gt;
+&lt;h2&gt;Session 1 Agenda and Links&lt;/h2&gt;
+&lt;ol class="arabic"&gt;
+&lt;li&gt;&lt;p class="first"&gt;Introduction to the &lt;a class="reference external" href="http://arduino.cc"&gt;Arduino&lt;/a&gt; boards and software&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Uno&lt;/li&gt;
+&lt;li&gt;Leonardo&lt;/li&gt;
+&lt;li&gt;Others&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Install the &lt;a class="reference external" href="http://arduino.cc/en/Main/Software"&gt;Arduino Software&lt;/a&gt; in Windows or Linux&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Connect the Arduino to the PC and make sure the software can communicate with it&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Choose the Leonardo from the list of boards&lt;/li&gt;
+&lt;li&gt;Choose the correct serial port&lt;/li&gt;
+&lt;li&gt;Choose the blink example from the menus, compile it, and send it to the Arduino&lt;/li&gt;
+&lt;li&gt;Make sure there are no errors&lt;/li&gt;
+&lt;li&gt;Make sure the onboard LED connected to pin 13 is blinking&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Visually insped the code and describe how it works&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Declaring constants (different than what is in the examples)&lt;/li&gt;
+&lt;li&gt;setup function&lt;/li&gt;
+&lt;li&gt;loop function&lt;/li&gt;
+&lt;li&gt;Built in function: &lt;a class="reference external" href="http://arduino.cc/en/Reference/PinMode"&gt;pinMode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Built in function: &lt;a class="reference external" href="http://arduino.cc/en/Reference/DigitalWrite"&gt;digitalWrite&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Built in function: &lt;a class="reference external" href="http://arduino.cc/en/Reference/Delay"&gt;delay&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Use an external LED&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Wire up and external LED with the correct resistor value&lt;/li&gt;
+&lt;li&gt;Alter the Arduino code to choose the correct pin&lt;/li&gt;
+&lt;li&gt;Compile and send to the Arduino&lt;/li&gt;
+&lt;li&gt;Verify the LED blinks&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Play with the code a little bit&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Make the LED stay on longer&lt;/li&gt;
+&lt;li&gt;Make the LED stay off longer&lt;/li&gt;
+&lt;li&gt;Make the LED blink faster with equal on/off times (duty cycle)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Talk about Pulse Width Modulation (PWM) (A form of analog output)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Built in function: &lt;a class="reference external" href="http://arduino.cc/en/Reference/AnalogWrite"&gt;analogWrite&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Use PWM to fade an LED&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Open the Fade example from the Arduino IDE menu&lt;/li&gt;
+&lt;li&gt;Inspect the code to see what it does&lt;/li&gt;
+&lt;li&gt;Set the led pin correctly in the code for how the LED is connected&lt;/li&gt;
+&lt;li&gt;Compile and send the code to the Arduino&lt;/li&gt;
+&lt;li&gt;Verify the LED fades in and out&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Play with the code a little bit&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Make it take longer to fade in and out&lt;/li&gt;
+&lt;li&gt;Make it fade faster&lt;/li&gt;
+&lt;li&gt;Make it so it only fades out and then goes immediately to full brightness again&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class="section" id="references"&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;/div&gt;
+</summary><category term="arduino"></category></entry><entry><title>2014 Goals</title><link href="http://idahogray.github.io/blog/2014-goals.html" rel="alternate"></link><published>2014-01-01T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-01-01:blog/2014-goals.html</id><summary type="html">&lt;p&gt;I don't like the idea of new years resolutions but I do think this is a good
+oppportunity to set some goals for the new year. I am not sure if that is
+different than resolutions, but it is in my head.&lt;/p&gt;
+&lt;div class="section" id="goals-for-2014"&gt;
+&lt;h2&gt;Goals for 2014&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Continue to get as close to &amp;quot;Paleo&amp;quot; eating as possible in order to keep
+improving my health&lt;/li&gt;
+&lt;li&gt;Add in &amp;quot;Paleo&amp;quot; exercises to my routine&lt;/li&gt;
+&lt;li&gt;Travel less (Only making Gold Medallion on Delta in 2014 is the goal)&lt;/li&gt;
+&lt;li&gt;Build things with my kids&lt;/li&gt;
+&lt;li&gt;Spend more time with Amy, just the two of us&lt;/li&gt;
+&lt;li&gt;Finish my garage automation project&lt;/li&gt;
+&lt;li&gt;Do stuff around the house without Amy asking me to&lt;ul&gt;
+&lt;li&gt;Don't go to bed with any dirty dishes in the sink (hand-wash if needed)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Walk Bella at least 3 times a week, even when the weather is bad/cold&lt;/li&gt;
+&lt;li&gt;Reduce the amount of gluten my kids eat&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</summary><category term="goals"></category></entry><entry><title>Thoughts On Email</title><link href="http://idahogray.github.io/blog/thoughts-on-email.html" rel="alternate"></link><published>2013-04-20T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-04-20:blog/thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
+Kevin were talking about email and getting to Inbox Zero and so on. One of their
+comments was that email fails because it is a TODO list that other people can
+add items to. This is not the first time I have heard this and I don't know
+who originally said it, I couldn't find it in quick Google search. They
+also made a comment about training other people that emailing you does not
+mean an immediate response is coming.&lt;/p&gt;
+&lt;p&gt;This comment got me thinking, again, about how I use email at work. I currently
+have about 71 emails that I feel like I need to respond to. This weighs on
+me and I can never feel like I am caught up.&lt;/p&gt;
+&lt;p&gt;This episode got me thinking about sending an automatic response to incoming
+emails. Something like:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+Thank you for your email. If this email contains a task you would like
+me to complete, I would appreciate it if you would call me. This would allow
+us to properly discuss the task, its schedule, my availability, and
+possible alternatives if those items don't line up.
+&lt;/pre&gt;
+&lt;p&gt;The problem with something like this is that I am an Engineering consultant.
+We make money by being responsive to clients. The more responsive we can be,
+the more likely we are to get repeat business and repeat business is the best
+kind.&lt;/p&gt;
+&lt;p&gt;I think a good compromise would be to have this response be sent to anyone
+inside my company but not to our clients.&lt;/p&gt;
+&lt;p&gt;I am just not sure how my peers and managers would respond to something like
+this. So much of our business is done over email that this response may appear
+to be in bad form. I think an argument could be made that a response like this
+is more honest and will possibly generate more realistic discussions about
+tasks and schedules than the current alternatives.&lt;/p&gt;
+&lt;p&gt;I would like to hear any reader's thoughts, especially from those in similar
+businesses.&lt;/p&gt;
+</summary><category term="work email"></category></entry><entry><title>First Bowling Games</title><link href="http://idahogray.github.io/blog/first-bowling-games.html" rel="alternate"></link><published>2013-04-07T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-04-07:blog/first-bowling-games.html</id><summary type="html">&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
+They both had a lot of fun and so did &lt;a class="reference external" href="https://plus.google.com/u/0/104461654563341959829"&gt;Amy&lt;/a&gt; and I.&lt;/p&gt;
+&lt;p&gt;Please ignore my score. My excuse is that I was helping Wyatt and Ava and therefore
+not able to concentrate on my own game.&lt;/p&gt;
+&lt;img alt="" src="http://farm9.staticflickr.com/8253/8628196983_d4a0605846.jpg" /&gt;
+</summary><category term="wyatt ava"></category></entry><entry><title>Lego Garbage Truck</title><link href="http://idahogray.github.io/blog/lego-garbage-truck.html" rel="alternate"></link><published>2013-03-30T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-03-30:blog/lego-garbage-truck.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="https://plus.google.com/101549244886183119915"&gt;Nonna&lt;/a&gt; and &lt;a class="reference external" href="https://plus.google.com/u/0/106042062414239481427"&gt;Grandpa&lt;/a&gt; bought Wyatt a garbage truck lego set for Easter this year. Wyatt and I
+started building it on Thursday night.  We only made it a few pages into the
+instruction book.&lt;/p&gt;
+&lt;img alt="" src="http://farm9.staticflickr.com/8533/8604852882_9c53b485ec.jpg" /&gt;
+&lt;p&gt;He did really well looking for the pieces that matched the picture in the
+instruction book. We played games like &amp;quot;You're getting Warmer&amp;quot; to help him
+find the pieces. He pretended his arm was a crane when he found the pieces.&lt;/p&gt;
+&lt;p&gt;I had a lot of fun building it and I think he did too. This kit was a little
+above his age but he stuck with it. It took 3 days to finish it and he loves it.&lt;/p&gt;
+&lt;img alt="" src="http://farm9.staticflickr.com/8528/8604854386_7c3c769cba.jpg" /&gt;
+&lt;p&gt;He played with it quite a bit today. He is a little rough with it and it
+comes apart sometimes. He repeats what I told him about Legos: &amp;quot;The good
+thing about Legos is that you can always put it back together&amp;quot;.&lt;/p&gt;
+</summary><category term="wyatt lego"></category></entry><entry><title>Saving for College</title><link href="http://idahogray.github.io/blog/saving-for-college.html" rel="alternate"></link><published>2013-02-22T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-02-22:blog/saving-for-college.html</id><summary type="html">&lt;p&gt;Amy and I have been talking about setting up college funds for Wyatt and Ava
+for a while now.  As part of our New Years resolutions, we decided to make it
+happen this year.  We set up a visit with a financial planner and he guided us
+through the process.  As of tonight, both Wyatt and Ava have 529 Plans set
+up through the Missouri MOST program.&lt;/p&gt;
+&lt;p&gt;Both accounts currently have a $0 balance but that is just until we can move
+some money from their savings accounts.&lt;/p&gt;
+&lt;p&gt;Next on the list: set up automatic deposit from my paycheck to their new
+accounts.&lt;/p&gt;
+&lt;div class="section" id="side-note"&gt;
+&lt;h2&gt;Side Note&lt;/h2&gt;
+&lt;p&gt;According to the software the financial planner used, one year of college for
+the kids is projected to cost $66,000 or more.  That is insane.  I guess that
+is why we are saving now.&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="wyatt ava college"></category></entry><entry><title>Wyatt's 4th Birthday Questions</title><link href="http://idahogray.github.io/blog/wyatts-4th-birthday-questions.html" rel="alternate"></link><published>2013-01-26T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-01-26:blog/wyatts-4th-birthday-questions.html</id><summary type="html">&lt;dl class="docutils"&gt;
+&lt;dt&gt;What is your favorite color?&lt;/dt&gt;
+&lt;dd&gt;Red&lt;/dd&gt;
+&lt;dt&gt;What is your favorite toy?&lt;/dt&gt;
+&lt;dd&gt;Fire Truck&lt;/dd&gt;
+&lt;dt&gt;What is your favorite fruit?&lt;/dt&gt;
+&lt;dd&gt;Banana&lt;/dd&gt;
+&lt;dt&gt;What is your favorite tv show?&lt;/dt&gt;
+&lt;dd&gt;Bob the Builder&lt;/dd&gt;
+&lt;dt&gt;What is your favorite song?&lt;/dt&gt;
+&lt;dd&gt;Jingle Bell Rock and In the Jungle&lt;/dd&gt;
+&lt;dt&gt;What is your favorite food?&lt;/dt&gt;
+&lt;dd&gt;Fettuccine Alfredo&lt;/dd&gt;
+&lt;dt&gt;What is your favorite outfit?&lt;/dt&gt;
+&lt;dd&gt;PJs - Bear Brushing His Teeth&lt;/dd&gt;
+&lt;dt&gt;What is your favorite game?&lt;/dt&gt;
+&lt;dd&gt;Angry Birds&lt;/dd&gt;
+&lt;dt&gt;What is your favorite snack?&lt;/dt&gt;
+&lt;dd&gt;Wyatt Bars (Kids Cliff Bars)&lt;/dd&gt;
+&lt;dt&gt;What is your favorite animal?&lt;/dt&gt;
+&lt;dd&gt;Goat, moose, and deer&lt;/dd&gt;
+&lt;dt&gt;What is your favorite book?&lt;/dt&gt;
+&lt;dd&gt;Fire Truck Book&lt;/dd&gt;
+&lt;dt&gt;What is your favorite outside activity?&lt;/dt&gt;
+&lt;dd&gt;Play at the playground&lt;/dd&gt;
+&lt;dt&gt;What is your favorite dring?&lt;/dt&gt;
+&lt;dd&gt;Orange Juice&lt;/dd&gt;
+&lt;dt&gt;What is your favorite holiday?&lt;/dt&gt;
+&lt;dd&gt;Christmas&lt;/dd&gt;
+&lt;dt&gt;What do you want to be when you grow up?&lt;/dt&gt;
+&lt;dd&gt;Just want to be a Wyatt&lt;/dd&gt;
+&lt;/dl&gt;
+</summary><category term="wyatt birthday"></category></entry></feed>

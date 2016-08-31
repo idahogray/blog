@@ -1,8 +1,0 @@
-*.py[cod]
-output
-*.pid
-*.swp
-pelican-themes/*
-pelican/*
-cache/*
-.ropeproject/*
