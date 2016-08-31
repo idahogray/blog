@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Sun, 09 Mar 2014 00:00:00 -0600</lastBuildDate><item><title>Writing a OPC Client</title><link>http://idahogray.github.io/blog/writing-a-opc-client.html</link><description>&lt;div class="section" id="introduction"&gt;
+<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Tue, 30 Aug 2016 00:00:00 -0500</lastBuildDate><item><title>2016-08-30 Notes</title><link>http://idahogray.github.io/blog/2016-08-30-notes.html</link><description>&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://selinc.com"&gt;SEL&lt;/a&gt; is introducing a new networking product for the
+utility market based on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.
+The fact that this technology is making it into the electric utility
+industry is pretty amazing considering how new it is.&lt;/p&gt;
+&lt;p&gt;A recent &lt;a class="reference external" href="https://selinc.com/company/news/116217/"&gt;article&lt;/a&gt; sparked some
+conversation inside my group at work. I decided I should do some more
+research. I started reading about &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; by purchasing
+&lt;a class="reference external" href="https://www.packtpub.com/networking-and-servers/software-defined-networking-openflow"&gt;Software Defined Networking with OpenFlow&lt;/a&gt;.
+This book served as a good introduction to &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; and using a
+simulation platform called &lt;a class="reference external" href="http://mininet.org/"&gt;Mininet&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;One question I still have is how to achieve fast failovers with &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;I plan to keep researching this and playing with the simulations.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Tue, 30 Aug 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-08-30:blog/2016-08-30-notes.html</guid><category>work networking sdn</category></item><item><title>Writing a OPC Client</title><link>http://idahogray.github.io/blog/writing-a-opc-client.html</link><description>&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;OPC is something I see quite often in my job as a SCADA engineer.
 Up until recently, all I knew about OPC was that it relied on
