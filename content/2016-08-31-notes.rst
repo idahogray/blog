@@ -1,0 +1,31 @@
+2016-08-31
+==========
+
+:date: 2016-08-31
+:modified: 2016-08-31
+:tags: work networking sdn
+:category: work
+:summary: Some notes from today
+
+Today
+-----
+
+I did some more research on |sdn| today. I learned that my suspicion was correct
+in that if a port fails the switch would have to request a new flow from the controller.
+This would significantly increase the failover time, I read some examples of 300ms.
+Obviously this is too slow for protection applications and is even slower than
+|rstp|.
+
+However, version 1.1 of the OpenFlow standard introduced the idea of *Groups*.
+According to this article_,
+OpenFlow Fast Failover groups are specifically meant to address this issue.
+The article says the failover times are not defined by the standard but
+are meant to be faster than having to request a new flow from the controller.
+
+I believe this is how `SEL <http://selinc.com>`_ is achieving :math:`100\mu S` 
+failover times with their |sdn| switch product.
+
+.. |sdn| replace:: :abbr:`SDN (Software Defined Networking)`
+.. |rstp| replace:: :abbr:`RSTP (Rapid Spanning Tree Protocol)`
+
+.. _article: https://floodlight.atlassian.net/wiki/display/floodlightcontroller/How+to+Work+with+Fast-Failover+OpenFlow+Groups
