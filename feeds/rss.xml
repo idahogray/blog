@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Tue, 30 Aug 2016 00:00:00 -0500</lastBuildDate><item><title>2016-08-30 Notes</title><link>http://idahogray.github.io/blog/2016-08-30-notes.html</link><description>&lt;div class="section" id="introduction"&gt;
+<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Wed, 31 Aug 2016 00:00:00 -0500</lastBuildDate><item><title>2016-08-31</title><link>http://idahogray.github.io/blog/2016-08-31.html</link><description>&lt;div class="section" id="today"&gt;
+&lt;h2&gt;Today&lt;/h2&gt;
+&lt;p&gt;I did some more research on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; today. I learned that my suspicion was correct
+in that if a port fails the switch would have to request a new flow from the controller.
+This would significantly increase the failover time, I read some examples of 300ms.
+Obviously this is too slow for protection applications and is even slower than
+&lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;However, version 1.1 of the OpenFlow standard introduced the idea of &lt;em&gt;Groups&lt;/em&gt;.
+According to this &lt;a class="reference external" href="https://floodlight.atlassian.net/wiki/display/floodlightcontroller/How+to+Work+with+Fast-Failover+OpenFlow+Groups"&gt;article&lt;/a&gt;,
+OpenFlow Fast Failover groups are specifically meant to address this issue.
+The article says the failover times are not defined by the standard but
+are meant to be faster than having to request a new flow from the controller.&lt;/p&gt;
+&lt;p&gt;I believe this is how &lt;a class="reference external" href="http://selinc.com"&gt;SEL&lt;/a&gt; is achieving &lt;span class="formula"&gt;100&lt;i&gt;μ&lt;/i&gt;&lt;i&gt;S&lt;/i&gt;&lt;/span&gt;
+failover times with their &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; switch product.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Wed, 31 Aug 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-08-31:blog/2016-08-31.html</guid><category>work networking sdn</category></item><item><title>2016-08-30 Notes</title><link>http://idahogray.github.io/blog/2016-08-30-notes.html</link><description>&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://selinc.com"&gt;SEL&lt;/a&gt; is introducing a new networking product for the
 utility market based on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.
