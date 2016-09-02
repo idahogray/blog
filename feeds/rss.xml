@@ -1,5 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Fri, 02 Sep 2016 00:00:00 -0500</lastBuildDate><item><title>2016-09-01</title><link>http://idahogray.github.io/blog/2016-09-01.html</link><description>&lt;div class="section" id="today"&gt;
+<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Fri, 02 Sep 2016 00:00:00 -0500</lastBuildDate><item><title>2016-09-02</title><link>http://idahogray.github.io/blog/2016-09-02.html</link><description>&lt;div class="section" id="today"&gt;
+&lt;h2&gt;Today&lt;/h2&gt;
+&lt;p&gt;I am continuing to research &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;
+in an effort to produce a design guide at work.
+I started the guide and realized I don't know as much as I
+thought about &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;abbr title="Spanning Tree Protocol"&gt;STP&lt;/abbr&gt;, &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;'s predicessor was originally defined in IEEE 802.1D.
+&lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt; was initially defined in IEEE 802.1w. However, IEEE 802.1w was
+incorporated into the 2004 version of IEEE 802.1D. &lt;abbr title="Spanning Tree Protocol"&gt;STP&lt;/abbr&gt; was removed from
+IEEE 802.1D-2004.&lt;/p&gt;
+&lt;p&gt;I printed out the IEEE 802.1D-2004 standard and have begun reviewing it.
+This is one that is going to take a few readings to fully understand.
+I am trying to keep notes as I go through it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ieee-802-1d-2004"&gt;
+&lt;h2&gt;IEEE 802.1D-2004&lt;/h2&gt;
+&lt;p&gt;&lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt; is defined in Clause 17 of IEEE 802.1D-2004. Item i) in 17.1 is
+interesting. It states &amp;quot;In normal operation, the time taken to configure the
+active topology of a network comprising point-to-point LANs is independent of
+the timer values of the protocol.&amp;quot;. I am curious what &amp;quot;normal operation&amp;quot;
+referrs to.&lt;/p&gt;
+&lt;p&gt;Clause 17.2 referrs to Clause 7.12.3 which defines the Group MAC Address
+that identifies the Spanning Tree Protocol. This MAC address is called as
+the &lt;strong&gt;Bridge Group Address&lt;/strong&gt; and is defined as 01-80-C2-00-00-00. This adress
+is a Multicast Ethernet Address because the least-significant bit of the first
+octet is a 1.&lt;/p&gt;
+&lt;div class="section" id="port-states"&gt;
+&lt;h3&gt;Port States&lt;/h3&gt;
+&lt;p&gt;Clause 17.3 references Clause 7.4 to define the port states controlled by
+&lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;. The port states defined by IEEE 802.1D-2004 are:&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;Discarding&lt;/dt&gt;
+&lt;dd&gt;Any port that is not enabled or has been dynamically excluded from
+forwarding and learning from MAC frames.&lt;/dd&gt;
+&lt;dt&gt;Learning&lt;/dt&gt;
+&lt;dd&gt;Any port where Learning is enabled for Forwarding is disabled.&lt;/dd&gt;
+&lt;dt&gt;Forwarding&lt;/dt&gt;
+&lt;dd&gt;Any port that both learns and forwards frames.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;div class="section" id="priority-vectors"&gt;
+&lt;h3&gt;Priority Vectors&lt;/h3&gt;
+&lt;p&gt;Clause 17.3 references Clause 17.5 to define &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt; Priority Vectors.
+The Priority Vector is the information sent by each switch when selecting
+the Root Bridge and the shortest path to it. Priority Vectors contain the
+following information:&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;Root Bridge Identifier&lt;/dt&gt;
+&lt;dd&gt;The Bridge Identifier of the Bridge believed to be the Root by the
+transmitter.&lt;/dd&gt;
+&lt;dt&gt;Root Path Cost&lt;/dt&gt;
+&lt;dd&gt;Path cost from the transmitting Bridge what is believed to be the Root
+Bridge.&lt;/dd&gt;
+&lt;dt&gt;Bridge Identifier&lt;/dt&gt;
+&lt;dd&gt;Bridge Identifier of the transmitting Bridge&lt;/dd&gt;
+&lt;dt&gt;Port Identifier&lt;/dt&gt;
+&lt;dd&gt;Port through which the message was transmitted&lt;/dd&gt;
+&lt;dt&gt;Port Identifier&lt;/dt&gt;
+&lt;dd&gt;Port through which the message was received (where relevant)&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;div class="section" id="port-roles"&gt;
+&lt;h3&gt;Port Roles&lt;/h3&gt;
+&lt;div class="warning"&gt;
+&lt;p class="first admonition-title"&gt;Warning&lt;/p&gt;
+&lt;p class="last"&gt;This section will need more development as I get further into this.
+See the &lt;strong&gt;WTF?&lt;/strong&gt; items.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Clause 17.3 references Clause 17.7 to define the port roles. The Port Roles
+defined by IEEE 802.1D-2004 are:&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;Disabled Port&lt;/dt&gt;
+&lt;dd&gt;Port is disabled if it is not operational or if it is excluded from the
+active topology by management. This can occur if the MAC_Operational status
+is False, if it is disabled by 802.1X, or if it is disabled by the
+administrator.&lt;/dd&gt;
+&lt;dt&gt;Root Port&lt;/dt&gt;
+&lt;dd&gt;The source of the root priority vector is the Root Port on every bridge
+except the Root Bridge. The Root Bridge does not have a Root Port. This is
+the one port on the Bridge that provides the lowest cost path to the
+Root Bridge.&lt;/dd&gt;
+&lt;dt&gt;Designated Port&lt;/dt&gt;
+&lt;dd&gt;Port whose port priority vector is its designated priority vector
+(&lt;strong&gt;WTF?&lt;/strong&gt;). This is the one port attached to each LAN that provides the
+lowest cost path from that LAN to the Root Bridge.&lt;/dd&gt;
+&lt;dt&gt;Alternate Port&lt;/dt&gt;
+&lt;dd&gt;Port (not including the Root Port) whose priority vector has been received
+from another Bridge is an Alternate Port (&lt;strong&gt;WTF?&lt;/strong&gt;). Ports that can provide
+connectivity if other network components fail.&lt;/dd&gt;
+&lt;dt&gt;Backup Port&lt;/dt&gt;
+&lt;dd&gt;Port that has a priority vector that has been received from another port
+on this Bridge (&lt;strong&gt;WTF?&lt;/strong&gt;). Ports that can provide connectivity if other
+network components fail.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;div class="section" id="edge-ports"&gt;
+&lt;h3&gt;Edge Ports&lt;/h3&gt;
+&lt;p&gt;Bridge ports attached to a LAN that has no other Bridges attached to it
+may be administratively configured as an Edge Port. Edge Ports transition
+directly to the Forwarding Port State since there is no possibility of it
+participating in a loop.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I made it Clause 17.3.2 which contains example topologies. I will be studying
+this over the weekend.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Fri, 02 Sep 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-09-02:blog/2016-09-02.html</guid><category>rstp</category></item><item><title>2016-09-01</title><link>http://idahogray.github.io/blog/2016-09-01.html</link><description>&lt;div class="section" id="today"&gt;
 &lt;h2&gt;Today&lt;/h2&gt;
 &lt;p&gt;I watched a really interesting video about Python last night.
 I recommend anyone interested in Python check this video out.

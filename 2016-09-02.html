@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Keith's Blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Keith Gray">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://idahogray.github.io/blog/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://idahogray.github.io/blog/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/local.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/pygments.css" rel="stylesheet">
+
+	<!-- Feeds -->
+
+
+
+        <link href="feeds/rss.xml" rel="alternate" title="Keith's Blog" type="application/rss+xml">
+
+<script type="text/javascript">
+	var disqus_identifier = "2016-09-02.html";
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://keithgraysblog.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+</head>
+<body>
+<a href="http://github.com/idahogray/"><img style="position: absolute; top: 39px; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" /></a>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://idahogray.github.io/blog/">Keith's Blog</a>
+			<ul class="nav">
+					<li ><a href="http://idahogray.github.io/blog/category/kids.html">kids</a></li>
+					<li ><a href="http://idahogray.github.io/blog/category/personal.html">personal</a></li>
+					<li class="active"><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://idahogray.github.io/blog/archives.html">[archives]</a> <a href="http://idahogray.github.io/blog/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+				<li><a href="http://www.powereng.com">POWER Engineers</a></li>
+				<li><a href="http://python.org">Python.org</a></li>
+				<li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+				<li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="http://twitter.com/idahogray">twitter</a></li>
+				<li><a href="http://github.com/idahogray">github</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>2016-09-02</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/2016-09-02.html">2016-09-02 18:00:00-05:00</a>
+by <a class="url fn" href="http://idahogray.github.io/blog/author/keith-gray.html">Keith Gray </a>
+ in <a href="http://idahogray.github.io/blog/category/work.html">work</a>
+tags: <a href="http://idahogray.github.io/blog/tag/rstp.html">rstp</a> </div>
+		<div><div class="section" id="today">
+<h2>Today</h2>
+<p>I am continuing to research <abbr title="Rapid Spanning Tree Protocol">RSTP</abbr>
+in an effort to produce a design guide at work.
+I started the guide and realized I don't know as much as I
+thought about <abbr title="Rapid Spanning Tree Protocol">RSTP</abbr>.</p>
+<p><abbr title="Spanning Tree Protocol">STP</abbr>, <abbr title="Rapid Spanning Tree Protocol">RSTP</abbr>'s predicessor was originally defined in IEEE 802.1D.
+<abbr title="Rapid Spanning Tree Protocol">RSTP</abbr> was initially defined in IEEE 802.1w. However, IEEE 802.1w was
+incorporated into the 2004 version of IEEE 802.1D. <abbr title="Spanning Tree Protocol">STP</abbr> was removed from
+IEEE 802.1D-2004.</p>
+<p>I printed out the IEEE 802.1D-2004 standard and have begun reviewing it.
+This is one that is going to take a few readings to fully understand.
+I am trying to keep notes as I go through it.</p>
+</div>
+<div class="section" id="ieee-802-1d-2004">
+<h2>IEEE 802.1D-2004</h2>
+<p><abbr title="Rapid Spanning Tree Protocol">RSTP</abbr> is defined in Clause 17 of IEEE 802.1D-2004. Item i) in 17.1 is
+interesting. It states &quot;In normal operation, the time taken to configure the
+active topology of a network comprising point-to-point LANs is independent of
+the timer values of the protocol.&quot;. I am curious what &quot;normal operation&quot;
+referrs to.</p>
+<p>Clause 17.2 referrs to Clause 7.12.3 which defines the Group MAC Address
+that identifies the Spanning Tree Protocol. This MAC address is called as
+the <strong>Bridge Group Address</strong> and is defined as 01-80-C2-00-00-00. This adress
+is a Multicast Ethernet Address because the least-significant bit of the first
+octet is a 1.</p>
+<div class="section" id="port-states">
+<h3>Port States</h3>
+<p>Clause 17.3 references Clause 7.4 to define the port states controlled by
+<abbr title="Rapid Spanning Tree Protocol">RSTP</abbr>. The port states defined by IEEE 802.1D-2004 are:</p>
+<dl class="docutils">
+<dt>Discarding</dt>
+<dd>Any port that is not enabled or has been dynamically excluded from
+forwarding and learning from MAC frames.</dd>
+<dt>Learning</dt>
+<dd>Any port where Learning is enabled for Forwarding is disabled.</dd>
+<dt>Forwarding</dt>
+<dd>Any port that both learns and forwards frames.</dd>
+</dl>
+</div>
+<div class="section" id="priority-vectors">
+<h3>Priority Vectors</h3>
+<p>Clause 17.3 references Clause 17.5 to define <abbr title="Rapid Spanning Tree Protocol">RSTP</abbr> Priority Vectors.
+The Priority Vector is the information sent by each switch when selecting
+the Root Bridge and the shortest path to it. Priority Vectors contain the
+following information:</p>
+<dl class="docutils">
+<dt>Root Bridge Identifier</dt>
+<dd>The Bridge Identifier of the Bridge believed to be the Root by the
+transmitter.</dd>
+<dt>Root Path Cost</dt>
+<dd>Path cost from the transmitting Bridge what is believed to be the Root
+Bridge.</dd>
+<dt>Bridge Identifier</dt>
+<dd>Bridge Identifier of the transmitting Bridge</dd>
+<dt>Port Identifier</dt>
+<dd>Port through which the message was transmitted</dd>
+<dt>Port Identifier</dt>
+<dd>Port through which the message was received (where relevant)</dd>
+</dl>
+</div>
+<div class="section" id="port-roles">
+<h3>Port Roles</h3>
+<div class="warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This section will need more development as I get further into this.
+See the <strong>WTF?</strong> items.</p>
+</div>
+<p>Clause 17.3 references Clause 17.7 to define the port roles. The Port Roles
+defined by IEEE 802.1D-2004 are:</p>
+<dl class="docutils">
+<dt>Disabled Port</dt>
+<dd>Port is disabled if it is not operational or if it is excluded from the
+active topology by management. This can occur if the MAC_Operational status
+is False, if it is disabled by 802.1X, or if it is disabled by the
+administrator.</dd>
+<dt>Root Port</dt>
+<dd>The source of the root priority vector is the Root Port on every bridge
+except the Root Bridge. The Root Bridge does not have a Root Port. This is
+the one port on the Bridge that provides the lowest cost path to the
+Root Bridge.</dd>
+<dt>Designated Port</dt>
+<dd>Port whose port priority vector is its designated priority vector
+(<strong>WTF?</strong>). This is the one port attached to each LAN that provides the
+lowest cost path from that LAN to the Root Bridge.</dd>
+<dt>Alternate Port</dt>
+<dd>Port (not including the Root Port) whose priority vector has been received
+from another Bridge is an Alternate Port (<strong>WTF?</strong>). Ports that can provide
+connectivity if other network components fail.</dd>
+<dt>Backup Port</dt>
+<dd>Port that has a priority vector that has been received from another port
+on this Bridge (<strong>WTF?</strong>). Ports that can provide connectivity if other
+network components fail.</dd>
+</dl>
+</div>
+<div class="section" id="edge-ports">
+<h3>Edge Ports</h3>
+<p>Bridge ports attached to a LAN that has no other Bridges attached to it
+may be administratively configured as an Edge Port. Edge Ports transition
+directly to the Forwarding Port State since there is no possibility of it
+participating in a loop.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion</h2>
+<p>I made it Clause 17.3.2 which contains example topologies. I will be studying
+this over the weekend.</p>
+</div>
+</div>
+		<div>
+			<h2>Comments</h2>
+<div id="disqus_thread"></div>		<div>
+	</div>
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Keith Gray</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>
