@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Wed, 31 Aug 2016 00:00:00 -0500</lastBuildDate><item><title>2016-08-31</title><link>http://idahogray.github.io/blog/2016-08-31.html</link><description>&lt;div class="section" id="today"&gt;
+<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Fri, 02 Sep 2016 00:00:00 -0500</lastBuildDate><item><title>2016-09-01</title><link>http://idahogray.github.io/blog/2016-09-01.html</link><description>&lt;div class="section" id="today"&gt;
+&lt;h2&gt;Today&lt;/h2&gt;
+&lt;p&gt;I watched a really interesting video about Python last night.
+I recommend anyone interested in Python check this video out.
+&lt;a class="reference external" href="https://www.youtube.com/watch?v=j6VSAsKAj98"&gt;Builtin Superheroes&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Fri, 02 Sep 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-09-02:blog/2016-09-01.html</guid><category>python</category></item><item><title>2016-08-31</title><link>http://idahogray.github.io/blog/2016-08-31.html</link><description>&lt;div class="section" id="today"&gt;
 &lt;h2&gt;Today&lt;/h2&gt;
 &lt;p&gt;I did some more research on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; today. I learned that my suspicion was correct
 in that if a port fails the switch would have to request a new flow from the controller.
