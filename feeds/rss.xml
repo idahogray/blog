@@ -1,5 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Fri, 02 Sep 2016 00:00:00 -0500</lastBuildDate><item><title>2016-09-02</title><link>http://idahogray.github.io/blog/2016-09-02.html</link><description>&lt;div class="section" id="today"&gt;
+<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Sat, 03 Sep 2016 00:00:00 -0500</lastBuildDate><item><title>2016-09-03</title><link>http://idahogray.github.io/blog/2016-09-03.html</link><description>&lt;div class="section" id="simulations"&gt;
+&lt;h2&gt;Simulations&lt;/h2&gt;
+&lt;p&gt;I am attempting to figure out how to do some network simulations
+using Linux. I learned about network namespaces when I was reading
+about Mininet and how it simulates &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;. Some googling pointed me
+to this &lt;a class="reference external" href="http://blog.scottlowe.org/2013/09/04/introducing-linux-network-namespaces/"&gt;article&lt;/a&gt;. It states that network namespaces give you the
+ability to have different and separate instances of network interfaces
+and routing tables. These instances are completely independent of each
+other.&lt;/p&gt;
+&lt;div class="note"&gt;
+&lt;p class="first admonition-title"&gt;Note&lt;/p&gt;
+&lt;p class="last"&gt;Please note that all of the commands shown in this post are run at
+the Linux terminal as root. If you are not root, you must add &lt;em&gt;sudo&lt;/em&gt;
+in front of each command.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="host-host-ping"&gt;
+&lt;h2&gt;Host-Host Ping&lt;/h2&gt;
+&lt;p&gt;This &lt;a class="reference external" href="http://blog.scottlowe.org/2013/09/04/introducing-linux-network-namespaces/"&gt;article&lt;/a&gt; makes me think I can do some simulations using
+network namespaces. The first thing I want to try is to set up
+two network namespaces and have them ping each other. The
+network topology is shown below.&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+--------         --------
+|      |         |      |
+|  H1  |&amp;lt;-------&amp;gt;|  H2  |
+|      |         |      |
+--------         --------
+&lt;/pre&gt;
+&lt;p&gt;I used the following steps to accomplish that.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns add host1
+ip netns add host2
+ip link add h1 &lt;span class="nb"&gt;type&lt;/span&gt; veth peer name h2
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; h1 netns host1
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; h2 netns host2
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ip address add 10.0.0.1/24 dev h1
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ip address add 10.0.0.2/24 dev h2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The first two commands above create two network namespaces
+(host1 and host2).  The purpose of those two namespaces to
+simulate two different hosts. The third line creates a Linux
+virtual Ethernet port pair. The two interfaces are called
+h1 and h2. The fourth and fifth lines assign interface h1
+to the host1 namespace and interface h2 to the host2 namespace.
+The last two lines assign IP addresses to those two interfaces.&lt;/p&gt;
+&lt;p&gt;Once all of that setup is complete, I can ping each &amp;quot;host&amp;quot; from the
+other.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ping 10.0.0.2
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ping 10.0.0.1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;These two &amp;quot;hosts&amp;quot; are isolated from each other. Their interfaces do
+not appear on my default host when I run &lt;em&gt;ip address`&lt;/em&gt;. They
+can only communicate with each other because of the virtual Ethernet
+Port pair that was created. I understand the virtual Ethernet Port pair
+to basically be two ports that are directly connected to each other.
+Data into one comes out the other and vice versa.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="bridge"&gt;
+&lt;h2&gt;Bridge&lt;/h2&gt;
+&lt;p&gt;Now that I can set up two &amp;quot;hosts&amp;quot; to talk to each other, I want to
+add a Bridge (switch) to the topology. The topology is shown below.&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+--------         ---------         --------
+|      |         |       |         |      |
+|  H1  |&amp;lt;-------&amp;gt;|1 SW1 2|&amp;lt;-------&amp;gt;|  H2  |
+|      |         |       |         |      |
+--------         ---------         --------
+&lt;/pre&gt;
+&lt;p&gt;The commands below assume starting from scratch and do not build
+upon the commands above.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns add host1
+ip netns add host2
+ip netns add sw1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above create the network namespaces for the two hosts
+and the switch.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip link add h1 &lt;span class="nb"&gt;type&lt;/span&gt; veth peer name sw1p1
+ip link add h2 &lt;span class="nb"&gt;type&lt;/span&gt; veth peer name sw1p2
+ip link add bridge1 &lt;span class="nb"&gt;type&lt;/span&gt; bridge
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above create two virtual Ethernet port pairs plus one
+Ethernet bridge. The first virtual Ethernet pair is the
+the link between H1 and SW1. The second is for the link
+between H2 and SW2. The bridge will be used on the switch.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip link &lt;span class="nb"&gt;set&lt;/span&gt; h1 netns host1
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; h2 netns host2
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p1 netns sw1
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p2 netns sw1
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; bridge1 netns sw1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above assign the interfaces to the appropriate network
+namespaces. h1 goes in host1. h2 goes in host2. sw1p1 and sw1p2 go
+in sw1. Finally, the bridge interface goes in sw1.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p1 master bridge1
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p2 master bridge1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above assign the two ports, sw1p1 and sw1p2, to
+the bridge bridge1.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; h1 up
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ip link &lt;span class="nb"&gt;set&lt;/span&gt; h2 up
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; bridge1 up
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p1 up
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p2 up
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above bring all of the interfaces up.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ip address add 10.0.0.1/24 dev h1
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ip address add 10.0.0.2/24 dev h2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above assign IP addresses to host1 and host2.&lt;/p&gt;
+&lt;p&gt;Once all of that setup is complete, I can ping each &amp;quot;host&amp;quot; from the
+other.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ping 10.0.0.2
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ping 10.0.0.1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 03 Sep 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-09-03:blog/2016-09-03.html</guid><category>rstp</category><category>linux</category><category>network namespaces</category></item><item><title>2016-09-02</title><link>http://idahogray.github.io/blog/2016-09-02.html</link><description>&lt;div class="section" id="today"&gt;
 &lt;h2&gt;Today&lt;/h2&gt;
 &lt;p&gt;I am continuing to research &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;
 in an effort to produce a design guide at work.
