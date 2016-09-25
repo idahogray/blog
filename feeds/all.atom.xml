@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Sat, 24 Sep 2016 00:00:00 -0500</lastBuildDate><item><title>2016-09-24</title><link>http://idahogray.github.io/blog/2016-09-24.html</link><description>&lt;div class="section" id="generating-goose-messages"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/all.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2016-09-24T00:00:00-05:00</updated><entry><title>2016-09-24</title><link href="http://idahogray.github.io/blog/2016-09-24.html" rel="alternate"></link><published>2016-09-24T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-24:blog/2016-09-24.html</id><summary type="html">&lt;div class="section" id="generating-goose-messages"&gt;
 &lt;h2&gt;Generating GOOSE Messages&lt;/h2&gt;
 &lt;p&gt;I want to be able to generate GOOSE messages as part of my network simlulation
 testing described in previous posts. My goal is to be able to show how VLANs
@@ -69,7 +69,7 @@ against a single captured GOOSE message.&lt;/p&gt;
 packet created with &lt;a class="reference external" href="http://www.secdev.org/projects/scapy/"&gt;scapy&lt;/a&gt; and transmit it on a network simulated using Linux
 Network Namespaces, as described in earlier posts.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 24 Sep 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-09-24:blog/2016-09-24.html</guid><category>GOOSE</category><category>python</category><category>IEC 61850</category></item><item><title>2016-09-03</title><link>http://idahogray.github.io/blog/2016-09-03.html</link><description>&lt;div class="section" id="simulations"&gt;
+</summary><category term="GOOSE"></category><category term="python"></category><category term="IEC 61850"></category></entry><entry><title>2016-09-03</title><link href="http://idahogray.github.io/blog/2016-09-03.html" rel="alternate"></link><published>2016-09-03T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-03:blog/2016-09-03.html</id><summary type="html">&lt;div class="section" id="simulations"&gt;
 &lt;h2&gt;Simulations&lt;/h2&gt;
 &lt;p&gt;I am attempting to figure out how to do some network simulations
 using Linux. I learned about network namespaces when I was reading
@@ -184,7 +184,7 @@ other.&lt;/p&gt;
 ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ping 10.0.0.1
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 03 Sep 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-09-03:blog/2016-09-03.html</guid><category>rstp</category><category>linux</category><category>network namespaces</category></item><item><title>2016-09-02</title><link>http://idahogray.github.io/blog/2016-09-02.html</link><description>&lt;div class="section" id="today"&gt;
+</summary><category term="rstp"></category><category term="linux"></category><category term="network namespaces"></category></entry><entry><title>2016-09-02</title><link href="http://idahogray.github.io/blog/2016-09-02.html" rel="alternate"></link><published>2016-09-02T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-02:blog/2016-09-02.html</id><summary type="html">&lt;div class="section" id="today"&gt;
 &lt;h2&gt;Today&lt;/h2&gt;
 &lt;p&gt;I am continuing to research &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;
 in an effort to produce a design guide at work.
@@ -292,13 +292,13 @@ participating in a loop.&lt;/p&gt;
 &lt;p&gt;I made it Clause 17.3.2 which contains example topologies. I will be studying
 this over the weekend.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Fri, 02 Sep 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-09-02:blog/2016-09-02.html</guid><category>rstp</category></item><item><title>2016-09-01</title><link>http://idahogray.github.io/blog/2016-09-01.html</link><description>&lt;div class="section" id="today"&gt;
+</summary><category term="rstp"></category></entry><entry><title>2016-09-01</title><link href="http://idahogray.github.io/blog/2016-09-01.html" rel="alternate"></link><published>2016-09-02T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-02:blog/2016-09-01.html</id><summary type="html">&lt;div class="section" id="today"&gt;
 &lt;h2&gt;Today&lt;/h2&gt;
 &lt;p&gt;I watched a really interesting video about Python last night.
 I recommend anyone interested in Python check this video out.
 &lt;a class="reference external" href="https://www.youtube.com/watch?v=j6VSAsKAj98"&gt;Builtin Superheroes&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Fri, 02 Sep 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-09-02:blog/2016-09-01.html</guid><category>python</category></item><item><title>2016-08-31</title><link>http://idahogray.github.io/blog/2016-08-31.html</link><description>&lt;div class="section" id="today"&gt;
+</summary><category term="python"></category></entry><entry><title>2016-08-31</title><link href="http://idahogray.github.io/blog/2016-08-31.html" rel="alternate"></link><published>2016-08-31T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-08-31:blog/2016-08-31.html</id><summary type="html">&lt;div class="section" id="today"&gt;
 &lt;h2&gt;Today&lt;/h2&gt;
 &lt;p&gt;I did some more research on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; today. I learned that my suspicion was correct
 in that if a port fails the switch would have to request a new flow from the controller.
@@ -313,7 +313,7 @@ are meant to be faster than having to request a new flow from the controller.&lt
 &lt;p&gt;I believe this is how &lt;a class="reference external" href="http://selinc.com"&gt;SEL&lt;/a&gt; is achieving &lt;span class="formula"&gt;100&lt;i&gt;μ&lt;/i&gt;&lt;i&gt;S&lt;/i&gt;&lt;/span&gt;
 failover times with their &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; switch product.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Wed, 31 Aug 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-08-31:blog/2016-08-31.html</guid><category>work networking sdn</category></item><item><title>2016-08-30 Notes</title><link>http://idahogray.github.io/blog/2016-08-30-notes.html</link><description>&lt;div class="section" id="introduction"&gt;
+</summary><category term="work networking sdn"></category></entry><entry><title>2016-08-30 Notes</title><link href="http://idahogray.github.io/blog/2016-08-30-notes.html" rel="alternate"></link><published>2016-08-30T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-08-30:blog/2016-08-30-notes.html</id><summary type="html">&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://selinc.com"&gt;SEL&lt;/a&gt; is introducing a new networking product for the
 utility market based on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.
@@ -328,7 +328,7 @@ simulation platform called &lt;a class="reference external" href="http://mininet
 &lt;p&gt;One question I still have is how to achieve fast failovers with &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.&lt;/p&gt;
 &lt;p&gt;I plan to keep researching this and playing with the simulations.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Tue, 30 Aug 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-08-30:blog/2016-08-30-notes.html</guid><category>work networking sdn</category></item><item><title>Writing a OPC Client</title><link>http://idahogray.github.io/blog/writing-a-opc-client.html</link><description>&lt;div class="section" id="introduction"&gt;
+</summary><category term="work networking sdn"></category></entry><entry><title>Writing a OPC Client</title><link href="http://idahogray.github.io/blog/writing-a-opc-client.html" rel="alternate"></link><published>2014-03-09T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</id><summary type="html">&lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;OPC is something I see quite often in my job as a SCADA engineer.
 Up until recently, all I knew about OPC was that it relied on
@@ -418,7 +418,7 @@ at a time. Your client can subscribe to events and get notified when a
 point value changes. I didn't make use of that functionality in my
 project but I probably will in the future.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sun, 09 Mar 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2014-03-07:blog/writing-a-opc-client.html</guid><category>python programming work</category></item><item><title>Arduino and Raspberry Pi</title><link>http://idahogray.github.io/blog/arduino-and-raspberry-pi.html</link><description>&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
+</summary><category term="python programming work"></category></entry><entry><title>Arduino and Raspberry Pi</title><link href="http://idahogray.github.io/blog/arduino-and-raspberry-pi.html" rel="alternate"></link><published>2014-01-04T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-01-04:blog/arduino-and-raspberry-pi.html</id><summary type="html">&lt;p&gt;My father, brother, and I are starting to have weekly or bi-weekly sessions so I can teach them
 about the arduino and raspberry pi. It will also give us a scheduled time to work on a project.
 Finally, it will be good time spent together for the three of us.&lt;/p&gt;
 &lt;div class="section" id="session-1-agenda-and-links"&gt;
@@ -509,7 +509,7 @@ Finally, it will be good time spent together for the three of us.&lt;/p&gt;
 &lt;div class="section" id="references"&gt;
 &lt;h2&gt;References&lt;/h2&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 04 Jan 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2014-01-04:blog/arduino-and-raspberry-pi.html</guid><category>arduino</category></item><item><title>2014 Goals</title><link>http://idahogray.github.io/blog/2014-goals.html</link><description>&lt;p&gt;I don't like the idea of new years resolutions but I do think this is a good
+</summary><category term="arduino"></category></entry><entry><title>2014 Goals</title><link href="http://idahogray.github.io/blog/2014-goals.html" rel="alternate"></link><published>2014-01-01T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-01-01:blog/2014-goals.html</id><summary type="html">&lt;p&gt;I don't like the idea of new years resolutions but I do think this is a good
 oppportunity to set some goals for the new year. I am not sure if that is
 different than resolutions, but it is in my head.&lt;/p&gt;
 &lt;div class="section" id="goals-for-2014"&gt;
@@ -530,7 +530,7 @@ improving my health&lt;/li&gt;
 &lt;li&gt;Reduce the amount of gluten my kids eat&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Wed, 01 Jan 2014 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2014-01-01:blog/2014-goals.html</guid><category>goals</category></item><item><title>Thoughts On Email</title><link>http://idahogray.github.io/blog/thoughts-on-email.html</link><description>&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
+</summary><category term="goals"></category></entry><entry><title>Thoughts On Email</title><link href="http://idahogray.github.io/blog/thoughts-on-email.html" rel="alternate"></link><published>2013-04-20T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-04-20:blog/thoughts-on-email.html</id><summary type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
 Kevin were talking about email and getting to Inbox Zero and so on. One of their
 comments was that email fails because it is a TODO list that other people can
 add items to. This is not the first time I have heard this and I don't know
@@ -561,12 +561,12 @@ is more honest and will possibly generate more realistic discussions about
 tasks and schedules than the current alternatives.&lt;/p&gt;
 &lt;p&gt;I would like to hear any reader's thoughts, especially from those in similar
 businesses.&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 20 Apr 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-04-20:blog/thoughts-on-email.html</guid><category>work email</category></item><item><title>First Bowling Games</title><link>http://idahogray.github.io/blog/first-bowling-games.html</link><description>&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
+</summary><category term="work email"></category></entry><entry><title>First Bowling Games</title><link href="http://idahogray.github.io/blog/first-bowling-games.html" rel="alternate"></link><published>2013-04-07T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-04-07:blog/first-bowling-games.html</id><summary type="html">&lt;p&gt;We took Wyatt and Ava bowling on Saturday. This was the first time for both of them.
 They both had a lot of fun and so did &lt;a class="reference external" href="https://plus.google.com/u/0/104461654563341959829"&gt;Amy&lt;/a&gt; and I.&lt;/p&gt;
 &lt;p&gt;Please ignore my score. My excuse is that I was helping Wyatt and Ava and therefore
 not able to concentrate on my own game.&lt;/p&gt;
 &lt;img alt="" src="http://farm9.staticflickr.com/8253/8628196983_d4a0605846.jpg" /&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sun, 07 Apr 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-04-07:blog/first-bowling-games.html</guid><category>wyatt ava</category></item><item><title>Lego Garbage Truck</title><link>http://idahogray.github.io/blog/lego-garbage-truck.html</link><description>&lt;p&gt;&lt;a class="reference external" href="https://plus.google.com/101549244886183119915"&gt;Nonna&lt;/a&gt; and &lt;a class="reference external" href="https://plus.google.com/u/0/106042062414239481427"&gt;Grandpa&lt;/a&gt; bought Wyatt a garbage truck lego set for Easter this year. Wyatt and I
+</summary><category term="wyatt ava"></category></entry><entry><title>Lego Garbage Truck</title><link href="http://idahogray.github.io/blog/lego-garbage-truck.html" rel="alternate"></link><published>2013-03-30T00:00:00-05:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-03-30:blog/lego-garbage-truck.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="https://plus.google.com/101549244886183119915"&gt;Nonna&lt;/a&gt; and &lt;a class="reference external" href="https://plus.google.com/u/0/106042062414239481427"&gt;Grandpa&lt;/a&gt; bought Wyatt a garbage truck lego set for Easter this year. Wyatt and I
 started building it on Thursday night.  We only made it a few pages into the
 instruction book.&lt;/p&gt;
 &lt;img alt="" src="http://farm9.staticflickr.com/8533/8604852882_9c53b485ec.jpg" /&gt;
@@ -579,7 +579,7 @@ above his age but he stuck with it. It took 3 days to finish it and he loves it.
 &lt;p&gt;He played with it quite a bit today. He is a little rough with it and it
 comes apart sometimes. He repeats what I told him about Legos: &amp;quot;The good
 thing about Legos is that you can always put it back together&amp;quot;.&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 30 Mar 2013 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-03-30:blog/lego-garbage-truck.html</guid><category>wyatt lego</category></item><item><title>Saving for College</title><link>http://idahogray.github.io/blog/saving-for-college.html</link><description>&lt;p&gt;Amy and I have been talking about setting up college funds for Wyatt and Ava
+</summary><category term="wyatt lego"></category></entry><entry><title>Saving for College</title><link href="http://idahogray.github.io/blog/saving-for-college.html" rel="alternate"></link><published>2013-02-22T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-02-22:blog/saving-for-college.html</id><summary type="html">&lt;p&gt;Amy and I have been talking about setting up college funds for Wyatt and Ava
 for a while now.  As part of our New Years resolutions, we decided to make it
 happen this year.  We set up a visit with a financial planner and he guided us
 through the process.  As of tonight, both Wyatt and Ava have 529 Plans set
@@ -594,7 +594,7 @@ accounts.&lt;/p&gt;
 the kids is projected to cost $66,000 or more.  That is insane.  I guess that
 is why we are saving now.&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Fri, 22 Feb 2013 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-02-22:blog/saving-for-college.html</guid><category>wyatt ava college</category></item><item><title>Wyatt's 4th Birthday Questions</title><link>http://idahogray.github.io/blog/wyatts-4th-birthday-questions.html</link><description>&lt;dl class="docutils"&gt;
+</summary><category term="wyatt ava college"></category></entry><entry><title>Wyatt's 4th Birthday Questions</title><link href="http://idahogray.github.io/blog/wyatts-4th-birthday-questions.html" rel="alternate"></link><published>2013-01-26T00:00:00-06:00</published><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-01-26:blog/wyatts-4th-birthday-questions.html</id><summary type="html">&lt;dl class="docutils"&gt;
 &lt;dt&gt;What is your favorite color?&lt;/dt&gt;
 &lt;dd&gt;Red&lt;/dd&gt;
 &lt;dt&gt;What is your favorite toy?&lt;/dt&gt;
@@ -626,4 +626,4 @@ is why we are saving now.&lt;/p&gt;
 &lt;dt&gt;What do you want to be when you grow up?&lt;/dt&gt;
 &lt;dd&gt;Just want to be a Wyatt&lt;/dd&gt;
 &lt;/dl&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Sat, 26 Jan 2013 00:00:00 -0600</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2013-01-26:blog/wyatts-4th-birthday-questions.html</guid><category>wyatt birthday</category></item></channel></rss>
+</summary><category term="wyatt birthday"></category></entry></feed>
