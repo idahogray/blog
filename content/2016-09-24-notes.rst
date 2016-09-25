@@ -71,10 +71,26 @@ The GOOSE definitions also rely on some subtypes.
 Implementation
 --------------
 
-The implementation of these |asn.1| rules can be found in the
+The implementation of these |asn.1| rules can be found on `github <https://github.com/keith-gray-powereng/goose-asn1>`_.
+The goose_asn_ file contains the GOOSE |asn.1| definitions along with some
+test code located in the *if __name__ == '__main__'* block at the end
+of the file. The test code builds the same GOOSE messages that is located
+in the packet capture shown in the goose_txt_ file. The goose_txt_ capture
+was taken from a lab test from an actual IED being used in a project.
+The test code can recreate the GOOSE message exactly.
+
+Next Steps
+----------
+
+The next step in this experiment will be to use this GOOSE message in a network
+packet created with scapy_ and transmit it on a network simulated using Linux
+Network Namespaces, as described in earlier posts.
+
 .. _scapy: http://www.secdev.org/projects/scapy/
 .. _Wikipedia: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
 .. _pyasn1: http://pyasn1.sourceforge.net/
 .. |asn.1| replace:: :abbr:`ASN.1 (Abstract Syntax Notation One)`
 .. |ber| replace:: :abbr:`BER (Basic Encoding Rules)`
 .. _ber: https://en.wikipedia.org/wiki/X.690#BER_encoding
+.. _goose_txt: https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt
+.. _goose_asn: https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose_asn.py
