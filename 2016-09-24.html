@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Keith's Blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Keith Gray">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://idahogray.github.io/blog/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://idahogray.github.io/blog/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/local.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/pygments.css" rel="stylesheet">
+
+	<!-- Feeds -->
+	<link href="http://idahogray.github.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Keith's Blog Atom Feed" />
+
+
+
+        <link href="feeds/rss.xml" rel="alternate" title="Keith's Blog" type="application/rss+xml">
+
+<script type="text/javascript">
+	var disqus_identifier = "2016-09-24.html";
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'https://keithgraysblog.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+</head>
+<body>
+<a href="http://github.com/idahogray/"><img style="position: absolute; top: 39px; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" /></a>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://idahogray.github.io/blog/">Keith's Blog</a>
+			<ul class="nav">
+					<li ><a href="http://idahogray.github.io/blog/category/kids.html">kids</a></li>
+					<li ><a href="http://idahogray.github.io/blog/category/personal.html">personal</a></li>
+					<li class="active"><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://idahogray.github.io/blog/archives.html">[archives]</a> <a href="http://idahogray.github.io/blog/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+				<li><a href="http://www.powereng.com">POWER Engineers</a></li>
+				<li><a href="http://python.org">Python.org</a></li>
+				<li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+				<li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="http://twitter.com/idahogray">twitter</a></li>
+				<li><a href="http://github.com/idahogray">github</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>2016-09-24</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/2016-09-24.html">2016-09-24 19:00:00-05:00</a>
+by <a class="url fn" href="http://idahogray.github.io/blog/author/keith-gray.html">Keith Gray </a>
+ in <a href="http://idahogray.github.io/blog/category/work.html">work</a>
+tags: <a href="http://idahogray.github.io/blog/tag/goose.html">GOOSE</a> <a href="http://idahogray.github.io/blog/tag/python.html">python</a> <a href="http://idahogray.github.io/blog/tag/iec-61850.html">IEC 61850</a> </div>
+		<div><div class="section" id="generating-goose-messages">
+<h2>Generating GOOSE Messages</h2>
+<p>I want to be able to generate GOOSE messages as part of my network simlulation
+testing described in previous posts. My goal is to be able to show how VLANs
+and multicast filtering can affect the reception of GOOSE messages.</p>
+<p>I had heard of the <a class="reference external" href="http://www.secdev.org/projects/scapy/">scapy</a> Python library
+previously but never found a need to deploy it. I knew that it made it possible
+to construct network packets from scratch, bypassing the network stack of the
+operating system. I thought that generating GOOSE messages would be a great
+application for <a class="reference external" href="http://www.secdev.org/projects/scapy/">scapy</a>.</p>
+<p>I started playing with <a class="reference external" href="http://www.secdev.org/projects/scapy/">scapy</a> and reached a point where I needed to learn
+how the data was encoded in the message. A future post will describe more about
+<a class="reference external" href="http://www.secdev.org/projects/scapy/">scapy</a>. This post continues with details about encoding the data in the GOOSE
+message.</p>
+</div>
+<div class="section" id="goose-data-encoding">
+<h2>GOOSE Data Encoding</h2>
+<p>I read IEC 61850-8-1 and saw that data was encoded using <abbr title="Abstract Syntax Notation One">ASN.1</abbr>. According to
+<a class="reference external" href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One">Wikipedia</a>, <abbr title="Abstract Syntax Notation One">ASN.1</abbr> &quot;...describes rules and structures for representing,
+encoding, transmitting, and decoding data...&quot;. Various ways to encode/decode
+the data are provided by <abbr title="Abstract Syntax Notation One">ASN.1</abbr>. GOOSE messaging has chosen to use <abbr title="Basic Encoding Rules">BER</abbr>.
+<abbr title="Basic Encoding Rules">BER</abbr> is specified in ITU-T standard X.690. Data encoded in <abbr title="Basic Encoding Rules">BER</abbr> consists of
+three pieces of information.</p>
+<ol class="arabic simple">
+<li>Type</li>
+<li>Length</li>
+<li>Contents (or Values)</li>
+</ol>
+<p>This is sometimes referred to as the (T, L, V) triple. You can see Wikipedia
+for more information about <a class="reference external" href="https://en.wikipedia.org/wiki/X.690#BER_encoding">ber</a>.</p>
+<p>I looked for a Python library that could do the <abbr title="Basic Encoding Rules">BER</abbr> encoding/decoding and
+found <a class="reference external" href="http://pyasn1.sourceforge.net/">pyasn1</a>. The next step was to find the <abbr title="Abstract Syntax Notation One">ASN.1</abbr> model used by GOOSE.</p>
+<p>Searching around led me to this <a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm">IEC 61850 ASN.1 encodings page</a>.
+I was able to use those definitions, along with the <a class="reference external" href="http://pyasn1.sourceforge.net/">pyasn1</a> documentation
+to build the GOOSE definitions. The GOOSE definitions are made up of two
+main components.</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#IEC61850.IECGoosePdu">IECGoosePdu</a></li>
+<li><a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.Data">Data</a></li>
+</ol>
+<p>The GOOSE definitions also rely on some subtypes.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.FloatingPoint">FloatingPoint</a></li>
+<li><a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.TimeOfDay">TimeOfDay</a></li>
+<li><a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.MMSString">MMSstring</a></li>
+<li><a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.UtcTime">UtcTime</a></li>
+</ul>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation</h2>
+<p>The implementation of these <abbr title="Abstract Syntax Notation One">ASN.1</abbr> rules can be found on <a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1">github</a>.
+The <a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose_asn.py">goose_asn</a> file contains the GOOSE <abbr title="Abstract Syntax Notation One">ASN.1</abbr> definitions along with some
+test code located in the <em>if __name__ == '__main__'</em> block at the end
+of the file. The test code builds the same GOOSE messages that is located
+in the packet capture shown in the <a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt">goose_txt</a> file. The <a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt">goose_txt</a> capture
+was taken from a lab test from an actual IED being used in a project.
+The test code can recreate the GOOSE message exactly.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">This implementation is known to be incomplete. There are unimplemented
+features of the GOOSE description. Also, it has only ever been tested
+against a single captured GOOSE message.</p>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h2>Next Steps</h2>
+<p>The next step in this experiment will be to use this GOOSE message in a network
+packet created with <a class="reference external" href="http://www.secdev.org/projects/scapy/">scapy</a> and transmit it on a network simulated using Linux
+Network Namespaces, as described in earlier posts.</p>
+</div>
+</div>
+		<div>
+			<h2>Comments</h2>
+<div id="disqus_thread"></div>		<div>
+	</div>
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Keith Gray</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>

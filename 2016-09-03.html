@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Keith's Blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Keith Gray">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://idahogray.github.io/blog/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://idahogray.github.io/blog/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/local.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/pygments.css" rel="stylesheet">
+
+	<!-- Feeds -->
+	<link href="http://idahogray.github.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Keith's Blog Atom Feed" />
+
+
+
+        <link href="feeds/rss.xml" rel="alternate" title="Keith's Blog" type="application/rss+xml">
+
+<script type="text/javascript">
+	var disqus_identifier = "2016-09-03.html";
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'https://keithgraysblog.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+</head>
+<body>
+<a href="http://github.com/idahogray/"><img style="position: absolute; top: 39px; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" /></a>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://idahogray.github.io/blog/">Keith's Blog</a>
+			<ul class="nav">
+					<li ><a href="http://idahogray.github.io/blog/category/kids.html">kids</a></li>
+					<li ><a href="http://idahogray.github.io/blog/category/personal.html">personal</a></li>
+					<li class="active"><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://idahogray.github.io/blog/archives.html">[archives]</a> <a href="http://idahogray.github.io/blog/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+				<li><a href="http://www.powereng.com">POWER Engineers</a></li>
+				<li><a href="http://python.org">Python.org</a></li>
+				<li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+				<li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="http://twitter.com/idahogray">twitter</a></li>
+				<li><a href="http://github.com/idahogray">github</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>2016-09-03</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/2016-09-03.html">2016-09-03 19:00:00-05:00</a>
+by <a class="url fn" href="http://idahogray.github.io/blog/author/keith-gray.html">Keith Gray </a>
+ in <a href="http://idahogray.github.io/blog/category/work.html">work</a>
+tags: <a href="http://idahogray.github.io/blog/tag/rstp.html">rstp</a> <a href="http://idahogray.github.io/blog/tag/linux.html">linux</a> <a href="http://idahogray.github.io/blog/tag/network-namespaces.html">network namespaces</a> </div>
+		<div><div class="section" id="simulations">
+<h2>Simulations</h2>
+<p>I am attempting to figure out how to do some network simulations
+using Linux. I learned about network namespaces when I was reading
+about Mininet and how it simulates <abbr title="Software Defined Networking">SDN</abbr>. Some googling pointed me
+to this <a class="reference external" href="http://blog.scottlowe.org/2013/09/04/introducing-linux-network-namespaces/">article</a>. It states that network namespaces give you the
+ability to have different and separate instances of network interfaces
+and routing tables. These instances are completely independent of each
+other.</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please note that all of the commands shown in this post are run at
+the Linux terminal as root. If you are not root, you must add <em>sudo</em>
+in front of each command.</p>
+</div>
+</div>
+<div class="section" id="host-host-ping">
+<h2>Host-Host Ping</h2>
+<p>This <a class="reference external" href="http://blog.scottlowe.org/2013/09/04/introducing-linux-network-namespaces/">article</a> makes me think I can do some simulations using
+network namespaces. The first thing I want to try is to set up
+two network namespaces and have them ping each other. The
+network topology is shown below.</p>
+<pre class="literal-block">
+--------         --------
+|      |         |      |
+|  H1  |&lt;-------&gt;|  H2  |
+|      |         |      |
+--------         --------
+</pre>
+<p>I used the following steps to accomplish that.</p>
+<div class="highlight"><pre><span></span>ip netns add host1
+ip netns add host2
+ip link add h1 <span class="nb">type</span> veth peer name h2
+ip link <span class="nb">set</span> h1 netns host1
+ip link <span class="nb">set</span> h2 netns host2
+ip netns <span class="nb">exec</span> host1 ip address add 10.0.0.1/24 dev h1
+ip netns <span class="nb">exec</span> host2 ip address add 10.0.0.2/24 dev h2
+</pre></div>
+<p>The first two commands above create two network namespaces
+(host1 and host2).  The purpose of those two namespaces to
+simulate two different hosts. The third line creates a Linux
+virtual Ethernet port pair. The two interfaces are called
+h1 and h2. The fourth and fifth lines assign interface h1
+to the host1 namespace and interface h2 to the host2 namespace.
+The last two lines assign IP addresses to those two interfaces.</p>
+<p>Once all of that setup is complete, I can ping each &quot;host&quot; from the
+other.</p>
+<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ping 10.0.0.2
+ip netns <span class="nb">exec</span> host2 ping 10.0.0.1
+</pre></div>
+<p>These two &quot;hosts&quot; are isolated from each other. Their interfaces do
+not appear on my default host when I run <em>ip address`</em>. They
+can only communicate with each other because of the virtual Ethernet
+Port pair that was created. I understand the virtual Ethernet Port pair
+to basically be two ports that are directly connected to each other.
+Data into one comes out the other and vice versa.</p>
+</div>
+<div class="section" id="bridge">
+<h2>Bridge</h2>
+<p>Now that I can set up two &quot;hosts&quot; to talk to each other, I want to
+add a Bridge (switch) to the topology. The topology is shown below.</p>
+<pre class="literal-block">
+--------         ---------         --------
+|      |         |       |         |      |
+|  H1  |&lt;-------&gt;|1 SW1 2|&lt;-------&gt;|  H2  |
+|      |         |       |         |      |
+--------         ---------         --------
+</pre>
+<p>The commands below assume starting from scratch and do not build
+upon the commands above.</p>
+<div class="highlight"><pre><span></span>ip netns add host1
+ip netns add host2
+ip netns add sw1
+</pre></div>
+<p>The commands above create the network namespaces for the two hosts
+and the switch.</p>
+<div class="highlight"><pre><span></span>ip link add h1 <span class="nb">type</span> veth peer name sw1p1
+ip link add h2 <span class="nb">type</span> veth peer name sw1p2
+ip link add bridge1 <span class="nb">type</span> bridge
+</pre></div>
+<p>The commands above create two virtual Ethernet port pairs plus one
+Ethernet bridge. The first virtual Ethernet pair is the
+the link between H1 and SW1. The second is for the link
+between H2 and SW2. The bridge will be used on the switch.</p>
+<div class="highlight"><pre><span></span>ip link <span class="nb">set</span> h1 netns host1
+ip link <span class="nb">set</span> h2 netns host2
+ip link <span class="nb">set</span> sw1p1 netns sw1
+ip link <span class="nb">set</span> sw1p2 netns sw1
+ip link <span class="nb">set</span> bridge1 netns sw1
+</pre></div>
+<p>The commands above assign the interfaces to the appropriate network
+namespaces. h1 goes in host1. h2 goes in host2. sw1p1 and sw1p2 go
+in sw1. Finally, the bridge interface goes in sw1.</p>
+<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> sw1 ip link <span class="nb">set</span> sw1p1 master bridge1
+ip netns <span class="nb">exec</span> sw1 ip link <span class="nb">set</span> sw1p2 master bridge1
+</pre></div>
+<p>The commands above assign the two ports, sw1p1 and sw1p2, to
+the bridge bridge1.</p>
+<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ip link <span class="nb">set</span> h1 up
+ip netns <span class="nb">exec</span> host2 ip link <span class="nb">set</span> h2 up
+ip netns <span class="nb">exec</span> sw1 ip link <span class="nb">set</span> bridge1 up
+ip netns <span class="nb">exec</span> sw1 ip link <span class="nb">set</span> sw1p1 up
+ip netns <span class="nb">exec</span> sw1 ip link <span class="nb">set</span> sw1p2 up
+</pre></div>
+<p>The commands above bring all of the interfaces up.</p>
+<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ip address add 10.0.0.1/24 dev h1
+ip netns <span class="nb">exec</span> host2 ip address add 10.0.0.2/24 dev h2
+</pre></div>
+<p>The commands above assign IP addresses to host1 and host2.</p>
+<p>Once all of that setup is complete, I can ping each &quot;host&quot; from the
+other.</p>
+<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ping 10.0.0.2
+ip netns <span class="nb">exec</span> host2 ping 10.0.0.1
+</pre></div>
+</div>
+</div>
+		<div>
+			<h2>Comments</h2>
+<div id="disqus_thread"></div>		<div>
+	</div>
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Keith Gray</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>
