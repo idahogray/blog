@@ -1,0 +1,30 @@
+2016-08-30 Notes
+================
+
+:date: 2016-08-30
+:modified: 2016-08-30
+:tags: work networking sdn
+:category: work
+:summary: Some notes from today
+
+
+Introduction
+------------
+
+`SEL <http://selinc.com>`_ is introducing a new networking product for the 
+utility market based on |sdn|.
+The fact that this technology is making it into the electric utility 
+industry is pretty amazing considering how new it is.
+
+A recent `article <https://selinc.com/company/news/116217/>`_ sparked some
+conversation inside my group at work. I decided I should do some more
+research. I started reading about |sdn| by purchasing 
+`Software Defined Networking with OpenFlow <https://www.packtpub.com/networking-and-servers/software-defined-networking-openflow>`_.
+This book served as a good introduction to |sdn| and using a
+simulation platform called `Mininet <http://mininet.org/>`_.
+
+One question I still have is how to achieve fast failovers with |sdn|.
+
+I plan to keep researching this and playing with the simulations.
+
+.. |sdn| replace:: :abbr:`SDN (Software Defined Networking)`
