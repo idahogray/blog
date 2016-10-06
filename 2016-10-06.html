@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Keith's Blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Keith Gray">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://idahogray.github.io/blog/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://idahogray.github.io/blog/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/local.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/pygments.css" rel="stylesheet">
+
+	<!-- Feeds -->
+
+
+
+        <link href="feeds/rss.xml" rel="alternate" title="Keith's Blog" type="application/rss+xml">
+
+<script type="text/javascript">
+	var disqus_identifier = "2016-10-06.html";
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://keithgraysblog.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+</head>
+<body>
+<a href="http://github.com/idahogray/"><img style="position: absolute; top: 39px; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" /></a>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://idahogray.github.io/blog/">Keith's Blog</a>
+			<ul class="nav">
+					<li ><a href="http://idahogray.github.io/blog/category/kids.html">kids</a></li>
+					<li ><a href="http://idahogray.github.io/blog/category/personal.html">personal</a></li>
+					<li class="active"><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://idahogray.github.io/blog/archives.html">[archives]</a> <a href="http://idahogray.github.io/blog/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+				<li><a href="http://www.powereng.com">POWER Engineers</a></li>
+				<li><a href="http://python.org">Python.org</a></li>
+				<li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+				<li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="http://twitter.com/idahogray">twitter</a></li>
+				<li><a href="http://github.com/idahogray">github</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>2016-10-06</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/2016-10-06.html">2016-10-06 09:00:00-05:00</a>
+by <a class="url fn" href="http://idahogray.github.io/blog/author/keith-gray.html">Keith Gray </a>
+ in <a href="http://idahogray.github.io/blog/category/work.html">work</a>
+tags: <a href="http://idahogray.github.io/blog/tag/goose.html">GOOSE</a> <a href="http://idahogray.github.io/blog/tag/iec-61850.html">IEC 61850</a> </div>
+		<div><div class="section" id="interpreting-goose-timestamps">
+<h2>Interpreting GOOSE Timestamps</h2>
+<p>One of the outstanding questions from my previous posts was how to interpret
+timestamps inside of GOOSE messages. I was able to parse the raw data
+from the message but I wasn't sure how to actually get the time.</p>
+<p>I started with the GOOSE standard document, IEC 61850-8-1 Edition 1. The
+timestamp is first described on page 35. This section provides two pieces
+of information. First, the details are described in Annex G (see below).
+Second, the quality flags are defined. I will come back to that below as well.</p>
+<div class="section" id="annex-g">
+<h3>Annex G</h3>
+<p>The UTC Time format is defined in Annex G of IEC 61850-8-1 Edition 1. It is made
+up of 8 octets and is formatted according to <a class="reference external" href="https://tools.ietf.org/html/rfc1305">RFC 1305</a>, which is the <a class="reference external" href="https://www.ietf.org/rfc.html">RFC</a>
+describing <abbr title="Network Time Protocol">NTP</abbr>.</p>
+<p><a class="reference external" href="https://tools.ietf.org/html/rfc1305">RFC 1305</a> encodes a timestamp as a 64-bit number. The first 32 bits,
+or 4 octets, define the number of seconds since the epoch. This is one
+place where GOOSE differs from <abbr title="Network Time Protocol">NTP</abbr>. <abbr title="Network Time Protocol">NTP</abbr> defines the epoch as
+January 1, 1900 but GOOSE defines the epoch as January 1, 1970. The
+GOOSE definition is convenient because this is the same epoch definition
+that Unix uses. Therefore, there are many tools available to do the conversion.
+One example is the <a class="reference external" href="http://www.epochconverter.com/">EpochConverter</a> site. I will also give an example of how
+to do the conversion in Python below.</p>
+<p>The more challenging piece (for me) was to figure out the last 32 bits of the
+timestamp. These are called the fractional part of the timestamp. At first,
+I thought it was as simple as converting those 32 bits into an integer
+and using that as the fractional part of the second. However, I wasn't able
+to match the timestamp in a Wireshark capture. After some searching on GOOGLE,
+I found a <a class="reference external" href="https://groups.google.com/forum/#!topic/comp.protocols.time.ntp/WNB6sYxueIw">site</a> that describes the <abbr title="Network Time Protocol">NTP</abbr> format. It states that the
+fractional part of the timestamp can be found by converting the 32 bits into an
+integer and dividing by 2^32. I tried that but still wasn't able to match
+the Wireshark capture.</p>
+<p>Then, I remembered that the IEC 61850-8-1 defines the 8th octet of the
+timestamp is used to transfer quality information. Therefore, I tried to
+convert octets 5, 6, and 7 (1-indexed) to an integer and divide by 2^32...still no
+match. Finally, I converted octets 5, 6, and 7 (1-indexed) to an integer and
+divide by 2^24...GOT IT!</p>
+<p>The last piece was the quality information. Table 15 on Page 36 of
+IEC 61850-8-1 defines the quality information. Wireshark didn't decode that
+portion of the data but my decoding made sense with the standard.</p>
+</div>
+<div class="section" id="worked-example">
+<h3>Worked Example</h3>
+<p>I will be using the following data captured from a GOOSE message. You can see
+this capture at <a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt">goose_txt</a>.  <em>55 15 1b 9b 69 37 40 92</em>.</p>
+<p>The first 4 octets are equivalent to an integer value of 1427446683. This is
+the number of seconds in midnight on January 1, 1970. This can be converted
+to a timestamp using the <a class="reference external" href="http://www.epochconverter.com/">EpochConverter</a> site or via most programming
+languages. The example below uses Python.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="mi">1427446683</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">struct_time</span><span class="p">(</span><span class="n">tm_year</span><span class="o">=</span><span class="mi">2015</span><span class="p">,</span> <span class="n">tm_mon</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">tm_mday</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">tm_hour</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">tm_min</span><span class="o">=</span><span class="mi">58</span><span class="p">,</span> <span class="n">tm_sec</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">tm_wday</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tm_yday</span><span class="o">=</span><span class="mi">86</span><span class="p">,</span> <span class="n">tm_isdst</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+<p>This matches the timestamp in Wireshark, up to the fractions of seconds.</p>
+<p>The next 3 octets are equivalent to an integer value of 6895424. Dividing this
+value by 2^24 gives 0.41099298. This value also matches the Wireshark
+interpretation.</p>
+<p>Finally, we want the quality. This is defined in the last octet which is equal
+to 92. 92 in binary is <em>10010010</em>. This is interpreted as:</p>
+<ul class="simple">
+<li>Bit 7 = 1: Leap Second Known</li>
+<li>Bit 6 = 0: Not ClockFailure</li>
+<li>Bit 5 = 0: Clock Synchronized</li>
+<li>Bits 4-0 = 10010: 18-bits of accuracy</li>
+</ul>
+</div>
+</div>
+</div>
+		<div>
+			<h2>Comments</h2>
+<div id="disqus_thread"></div>		<div>
+	</div>
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Keith Gray</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>

@@ -1,5 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Sat, 24 Sep 2016 00:00:00 -0500</lastBuildDate><item><title>2016-09-24</title><link>http://idahogray.github.io/blog/2016-09-24.html</link><description>&lt;div class="section" id="generating-goose-messages"&gt;
+<rss version="2.0"><channel><title>Keith's Blog</title><link>http://idahogray.github.io/blog/</link><description></description><lastBuildDate>Thu, 06 Oct 2016 00:00:00 -0500</lastBuildDate><item><title>2016-10-06</title><link>http://idahogray.github.io/blog/2016-10-06.html</link><description>&lt;div class="section" id="interpreting-goose-timestamps"&gt;
+&lt;h2&gt;Interpreting GOOSE Timestamps&lt;/h2&gt;
+&lt;p&gt;One of the outstanding questions from my previous posts was how to interpret
+timestamps inside of GOOSE messages. I was able to parse the raw data
+from the message but I wasn't sure how to actually get the time.&lt;/p&gt;
+&lt;p&gt;I started with the GOOSE standard document, IEC 61850-8-1 Edition 1. The
+timestamp is first described on page 35. This section provides two pieces
+of information. First, the details are described in Annex G (see below).
+Second, the quality flags are defined. I will come back to that below as well.&lt;/p&gt;
+&lt;div class="section" id="annex-g"&gt;
+&lt;h3&gt;Annex G&lt;/h3&gt;
+&lt;p&gt;The UTC Time format is defined in Annex G of IEC 61850-8-1 Edition 1. It is made
+up of 8 octets and is formatted according to &lt;a class="reference external" href="https://tools.ietf.org/html/rfc1305"&gt;RFC 1305&lt;/a&gt;, which is the &lt;a class="reference external" href="https://www.ietf.org/rfc.html"&gt;RFC&lt;/a&gt;
+describing &lt;abbr title="Network Time Protocol"&gt;NTP&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://tools.ietf.org/html/rfc1305"&gt;RFC 1305&lt;/a&gt; encodes a timestamp as a 64-bit number. The first 32 bits,
+or 4 octets, define the number of seconds since the epoch. This is one
+place where GOOSE differs from &lt;abbr title="Network Time Protocol"&gt;NTP&lt;/abbr&gt;. &lt;abbr title="Network Time Protocol"&gt;NTP&lt;/abbr&gt; defines the epoch as
+January 1, 1900 but GOOSE defines the epoch as January 1, 1970. The
+GOOSE definition is convenient because this is the same epoch definition
+that Unix uses. Therefore, there are many tools available to do the conversion.
+One example is the &lt;a class="reference external" href="http://www.epochconverter.com/"&gt;EpochConverter&lt;/a&gt; site. I will also give an example of how
+to do the conversion in Python below.&lt;/p&gt;
+&lt;p&gt;The more challenging piece (for me) was to figure out the last 32 bits of the
+timestamp. These are called the fractional part of the timestamp. At first,
+I thought it was as simple as converting those 32 bits into an integer
+and using that as the fractional part of the second. However, I wasn't able
+to match the timestamp in a Wireshark capture. After some searching on GOOGLE,
+I found a &lt;a class="reference external" href="https://groups.google.com/forum/#!topic/comp.protocols.time.ntp/WNB6sYxueIw"&gt;site&lt;/a&gt; that describes the &lt;abbr title="Network Time Protocol"&gt;NTP&lt;/abbr&gt; format. It states that the
+fractional part of the timestamp can be found by converting the 32 bits into an
+integer and dividing by 2^32. I tried that but still wasn't able to match
+the Wireshark capture.&lt;/p&gt;
+&lt;p&gt;Then, I remembered that the IEC 61850-8-1 defines the 8th octet of the
+timestamp is used to transfer quality information. Therefore, I tried to
+convert octets 5, 6, and 7 (1-indexed) to an integer and divide by 2^32...still no
+match. Finally, I converted octets 5, 6, and 7 (1-indexed) to an integer and
+divide by 2^24...GOT IT!&lt;/p&gt;
+&lt;p&gt;The last piece was the quality information. Table 15 on Page 36 of
+IEC 61850-8-1 defines the quality information. Wireshark didn't decode that
+portion of the data but my decoding made sense with the standard.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="worked-example"&gt;
+&lt;h3&gt;Worked Example&lt;/h3&gt;
+&lt;p&gt;I will be using the following data captured from a GOOSE message. You can see
+this capture at &lt;a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt"&gt;goose_txt&lt;/a&gt;.  &lt;em&gt;55 15 1b 9b 69 37 40 92&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The first 4 octets are equivalent to an integer value of 1427446683. This is
+the number of seconds in midnight on January 1, 1970. This can be converted
+to a timestamp using the &lt;a class="reference external" href="http://www.epochconverter.com/"&gt;EpochConverter&lt;/a&gt; site or via most programming
+languages. The example below uses Python.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gmtime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1427446683&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;struct_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tm_year&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2015&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_mon&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_mday&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;27&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_hour&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_min&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;58&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_sec&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_wday&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_yday&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;86&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_isdst&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This matches the timestamp in Wireshark, up to the fractions of seconds.&lt;/p&gt;
+&lt;p&gt;The next 3 octets are equivalent to an integer value of 6895424. Dividing this
+value by 2^24 gives 0.41099298. This value also matches the Wireshark
+interpretation.&lt;/p&gt;
+&lt;p&gt;Finally, we want the quality. This is defined in the last octet which is equal
+to 92. 92 in binary is &lt;em&gt;10010010&lt;/em&gt;. This is interpreted as:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Bit 7 = 1: Leap Second Known&lt;/li&gt;
+&lt;li&gt;Bit 6 = 0: Not ClockFailure&lt;/li&gt;
+&lt;li&gt;Bit 5 = 0: Clock Synchronized&lt;/li&gt;
+&lt;li&gt;Bits 4-0 = 10010: 18-bits of accuracy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Keith Gray</dc:creator><pubDate>Thu, 06 Oct 2016 00:00:00 -0500</pubDate><guid isPermaLink="false">tag:idahogray.github.io,2016-10-06:blog/2016-10-06.html</guid><category>GOOSE</category><category>IEC 61850</category></item><item><title>2016-09-24</title><link>http://idahogray.github.io/blog/2016-09-24.html</link><description>&lt;div class="section" id="generating-goose-messages"&gt;
 &lt;h2&gt;Generating GOOSE Messages&lt;/h2&gt;
 &lt;p&gt;I want to be able to generate GOOSE messages as part of my network simlulation
 testing described in previous posts. My goal is to be able to show how VLANs
