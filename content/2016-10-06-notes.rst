@@ -1,0 +1,102 @@
+2016-10-06
+==========
+
+:date: 2016-10-06 09:00
+:modified: 2016-10-06
+:tags: GOOSE, IEC 61850
+:category: work
+:summary: Interpreting GOOSE timestamps
+
+
+Interpreting GOOSE Timestamps
+-----------------------------
+
+One of the outstanding questions from my previous posts was how to interpret
+timestamps inside of GOOSE messages. I was able to parse the raw data
+from the message but I wasn't sure how to actually get the time.
+
+I started with the GOOSE standard document, IEC 61850-8-1 Edition 1. The 
+timestamp is first described on page 35. This section provides two pieces
+of information. First, the details are described in Annex G (see below).
+Second, the quality flags are defined. I will come back to that below as well.
+
+Annex G
+~~~~~~~
+
+The UTC Time format is defined in Annex G of IEC 61850-8-1 Edition 1. It is made
+up of 8 octets and is formatted according to `RFC 1305`_, which is the `RFC`_
+describing |ntp|.
+
+`RFC 1305`_ encodes a timestamp as a 64-bit number. The first 32 bits, 
+or 4 octets, define the number of seconds since the epoch. This is one
+place where GOOSE differs from |ntp|. |ntp| defines the epoch as
+January 1, 1900 but GOOSE defines the epoch as January 1, 1970. The
+GOOSE definition is convenient because this is the same epoch definition
+that Unix uses. Therefore, there are many tools available to do the conversion.
+One example is the `EpochConverter`_ site. I will also give an example of how
+to do the conversion in Python below.
+
+The more challenging piece (for me) was to figure out the last 32 bits of the
+timestamp. These are called the fractional part of the timestamp. At first,
+I thought it was as simple as converting those 32 bits into an integer
+and using that as the fractional part of the second. However, I wasn't able
+to match the timestamp in a Wireshark capture. After some searching on GOOGLE,
+I found a `site`_ that describes the |ntp| format. It states that the 
+fractional part of the timestamp can be found by converting the 32 bits into an
+integer and dividing by 2^32. I tried that but still wasn't able to match
+the Wireshark capture.
+
+Then, I remembered that the IEC 61850-8-1 defines the 8th octet of the 
+timestamp is used to transfer quality information. Therefore, I tried to 
+convert octets 5, 6, and 7 (1-indexed) to an integer and divide by 2^32...still no
+match. Finally, I converted octets 5, 6, and 7 (1-indexed) to an integer and
+divide by 2^24...GOT IT!
+
+The last piece was the quality information. Table 15 on Page 36 of 
+IEC 61850-8-1 defines the quality information. Wireshark didn't decode that 
+portion of the data but my decoding made sense with the standard.
+
+Worked Example
+~~~~~~~~~~~~~~
+
+I will be using the following data captured from a GOOSE message. You can see 
+this capture at `goose_txt`_.  *55 15 1b 9b 69 37 40 92*.
+
+The first 4 octets are equivalent to an integer value of 1427446683. This is
+the number of seconds in midnight on January 1, 1970. This can be converted
+to a timestamp using the `EpochConverter`_ site or via most programming 
+languages. The example below uses Python.
+
+.. code-block:: Python
+
+   >>> import time
+   >>> time.gmtime(1427446683)
+   time.struct_time(tm_year=2015, tm_mon=3, tm_mday=27, tm_hour=8, tm_min=58, tm_sec=3, tm_wday=4, tm_yday=86, tm_isdst=0)
+
+This matches the timestamp in Wireshark, up to the fractions of seconds.
+
+The next 3 octets are equivalent to an integer value of 6895424. Dividing this 
+value by 2^24 gives 0.41099298. This value also matches the Wireshark 
+interpretation.
+
+Finally, we want the quality. This is defined in the last octet which is equal 
+to 92. 92 in binary is *10010010*. This is interpreted as:
+
+* Bit 7 = 1: Leap Second Known
+
+* Bit 6 = 0: Not ClockFailure
+
+* Bit 5 = 0: Clock Synchronized
+
+* Bits 4-0 = 10010: 18-bits of accuracy
+
+
+.. _site: https://groups.google.com/forum/#!topic/comp.protocols.time.ntp/WNB6sYxueIw
+.. _EpochConverter: http://www.epochconverter.com/
+.. _RFC 1305: https://tools.ietf.org/html/rfc1305
+.. _RFC: https://www.ietf.org/rfc.html
+.. _pyasn1: http://pyasn1.sourceforge.net/
+.. |ntp| replace:: :abbr:`NTP (Network Time Protocol)`
+.. _ber: https://en.wikipedia.org/wiki/X.690#BER_encoding
+.. _goose_txt: https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt
+.. _goose_asn: https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose_asn.py
