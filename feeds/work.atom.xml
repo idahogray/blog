@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog - work</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/work.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2017-02-26T11:30:00-06:00</updated><entry><title>2017-02-26</title><link href="http://idahogray.github.io/blog/2017-02-26.html" rel="alternate"></link><published>2017-02-26T11:30:00-06:00</published><updated>2017-02-26T00:00:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2017-02-26:/blog/2017-02-26.html</id><summary type="html">&lt;p class="first last"&gt;Getting Started with OPC-UA&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="getting-started-with-opc-ua"&gt;
+&lt;h2&gt;Getting Started with OPC-UA&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://idahogray.github.io/blog/writing-a-opc-client.html"&gt;About 2 years ago&lt;/a&gt;,
+I was working on a project that offered an opportunity
+to write a OPC client to collect some information from a DNP server device.
+I was able to successfully implement that OPC client using Classic OPC,
+which was based on Microsoft's
+&lt;a class="reference external" href="https://www.google.com/webhp?#q=microsoft+component+object+model"&gt;COM&lt;/a&gt;
+technology. This technology has since been deprecated, even if it is still
+supported by Microsoft. Most OPC servers we use, such as Kepware Kepserver EX,
+still support OPC Classic.  However, Kepserver EX V6 no longer ships with a
+DLL that my Python code relied on. Therefore, I decided it was time to
+learn about the next generation of OPC, called
+&lt;a class="reference external" href="https://en.wikipedia.org/wiki/OPC_Unified_Architecture"&gt;OPC-UA&lt;/a&gt;
+and standardized as &lt;a class="reference external" href="https://webstore.iec.ch/searchform&amp;amp;q=62541"&gt;IEC 62541&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I was able to use the
+&lt;a class="reference external" href="https://github.com/FreeOpcUa/python-opcua"&gt;python-opcua&lt;/a&gt;
+library to get up and running quickly. However, I decided that I need to
+understand what I was doing at a deeper level. I downloaded the
+OPC-UA specification documents and started reading.  I finally made it to
+Section 4 of the spec and found some information that I can test using
+the python-opcua library. This post is some notes from that testing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="pre-requisites"&gt;
+&lt;h2&gt;Pre-requisites&lt;/h2&gt;
+&lt;p&gt;I am using
+&lt;a class="reference external" href="https://www.kepware.com/en-us/products/kepserverex/"&gt;Kepware Kepserver EX V6&lt;/a&gt;
+as my test OPC-UA server. It is free to download but has a 2-hour demo time
+limit if it isn't licensed.&lt;/p&gt;
+&lt;p&gt;I am also using the python-opcua library. This is an open-source library
+and installable through pypi.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="configuring-security-in-the-opc-ua-server"&gt;
+&lt;h2&gt;Configuring Security in the OPC-UA Server&lt;/h2&gt;
+&lt;p&gt;I had to do a little configuration in the Kepware OPC UA Configuration Manager
+before I could connect to it.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Please note that this bypasses the security mechanisms in OPC-UA when
+connecting to localhost.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;My application does not require any security because it is just for testing.
+Production applications should use the appropriate level of security.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Open OPC UA Configuration Manager by right-clicking the green 'ex' icon
+in the task bar and selecting 'OPC UA Configuration'.&lt;/li&gt;
+&lt;li&gt;Select the URL containing '127.0.0.1' on the Server Endpoints tab and press
+the 'Edit...' button&lt;/li&gt;
+&lt;li&gt;Select the 'None' Security Policy and press the 'OK' button.&lt;/li&gt;
+&lt;li&gt;Close the OPC UA Configuration Manager by pressing the 'Close' button&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class="section" id="using-python-opcua"&gt;
+&lt;h2&gt;Using python-opcua&lt;/h2&gt;
+&lt;p&gt;All of these commands were run in an ipython shell.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="c1"&gt;# Import the OPC-UA Client from python-opcua&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;opcua&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="c1"&gt;# Configure the client to connect to the Kepserver EX V6 OPC-UA Server&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;opc.tcp://127.0.0.1:49320&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="c1"&gt;# Connect the client to the server&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The 'connect' method used above actually does slightly more than just connect
+to the server. It connects to the server, opens the channel, creates a session,
+and then activates the session. I have to admit that I don't understand
+each of those step, yet. However, python-opcua makes it easy enough to actually
+get connected to the OPC-UA server.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="discovery-service"&gt;
+&lt;h2&gt;Discovery Service&lt;/h2&gt;
+&lt;p&gt;OPC-UA has many ways to inspect the server to determine how you want to use it
+and which of the features you want to use.&lt;/p&gt;
+&lt;p&gt;One of those services is the Discovery Service Set described in Part 4 of the
+specification. Many of the functions of this service won't be used in my
+application, but there are a few useful ones.&lt;/p&gt;
+&lt;div class="section" id="getendpoints"&gt;
+&lt;h3&gt;GetEndpoints&lt;/h3&gt;
+&lt;p&gt;The 'GetEndpoints' function, described in Section 5.4.4 of Part 4 of the
+specification, allows a client to ask the server what Endpoints are
+available and what security features are supported by each Endpoint.
+'GetEndpoints' returns a list of Endpoints. The example below shows how
+the function can be called and what it returns in my case.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_endpoints&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;EndpointDescription&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;EndpointUrl&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tcp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="mf"&gt;127.0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;0.1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;49320&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Server&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;ApplicationDescription&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ApplicationUri&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;urn&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;WIN&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;827&lt;/span&gt;&lt;span class="n"&gt;MCDJDJOP&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Kepware&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;KEPServerEX&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;V6&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;UA&lt;/span&gt; &lt;span class="n"&gt;Server&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ProductUri&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;urn&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;WIN&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;827&lt;/span&gt;&lt;span class="n"&gt;MCDJDJOP&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Kepware&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;KEPServerEX&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;V6&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;UA&lt;/span&gt; &lt;span class="n"&gt;Server&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ApplicationName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;LocalizedText&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Encoding&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Locale&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Text&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;KEPServerEX/UA@WIN-827MCDJDJOP&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;ApplicationType&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;ApplicationType&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Server&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GatewayServerUri&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DiscoveryProfileUri&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DiscoveryUrls&lt;/span&gt;&lt;span class="p"&gt;:[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;opc.tcp://127.0.0.1:49320&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt; &lt;span class="n"&gt;ServerCertificate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;0&lt;/span&gt;&lt;span class="se"&gt;\x82\x04\xf7&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x82\x03\xdf\xa0\x03\x02\x01\x02\x02\x04\x9d\xd3\x9b\x16&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\r\x06\t&lt;/span&gt;&lt;span class="s1"&gt;*&lt;/span&gt;&lt;span class="se"&gt;\x86&lt;/span&gt;&lt;span class="s1"&gt;H&lt;/span&gt;&lt;span class="se"&gt;\x86\xf7\r\x01\x01\x05\x05\x00&lt;/span&gt;&lt;span class="s1"&gt;0`1&lt;/span&gt;&lt;span class="se"&gt;\x1f&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x1d\x06\n\t\x92&lt;/span&gt;&lt;span class="s1"&gt;&amp;amp;&lt;/span&gt;&lt;span class="se"&gt;\x89\x93\xf2&lt;/span&gt;&lt;span class="s1"&gt;,d&lt;/span&gt;&lt;span class="se"&gt;\x01\x19\x16\x0f&lt;/span&gt;&lt;span class="s1"&gt;WIN-827MCDJDJOP1&lt;/span&gt;&lt;span class="se"&gt;\x0b&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\t\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\x06\x13\x02&lt;/span&gt;&lt;span class="s1"&gt;US1&lt;/span&gt;&lt;span class="se"&gt;\x10&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x0e\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\n\x0c\x07&lt;/span&gt;&lt;span class="s1"&gt;Unknown1&lt;/span&gt;&lt;span class="se"&gt;\x1e&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x1c\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\x03\x0c\x15&lt;/span&gt;&lt;span class="s1"&gt;KEPServerEX/UA Server0&lt;/span&gt;&lt;span class="se"&gt;\x1e\x17\r&lt;/span&gt;&lt;span class="s1"&gt;170222225016Z&lt;/span&gt;&lt;span class="se"&gt;\x17\r&lt;/span&gt;&lt;span class="s1"&gt;270220225016Z0`1&lt;/span&gt;&lt;span class="se"&gt;\x1f&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x1d\x06\n\t\x92&lt;/span&gt;&lt;span class="s1"&gt;&amp;amp;&lt;/span&gt;&lt;span class="se"&gt;\x89\x93\xf2&lt;/span&gt;&lt;span class="s1"&gt;,d&lt;/span&gt;&lt;span class="se"&gt;\x01\x19\x16\x0f&lt;/span&gt;&lt;span class="s1"&gt;WIN-827MCDJDJOP1&lt;/span&gt;&lt;span class="se"&gt;\x0b&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\t\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\x06\x13\x02&lt;/span&gt;&lt;span class="s1"&gt;US1&lt;/span&gt;&lt;span class="se"&gt;\x10&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x0e\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\n\x0c\x07&lt;/span&gt;&lt;span class="s1"&gt;Unknown1&lt;/span&gt;&lt;span class="se"&gt;\x1e&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x1c\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\x03\x0c\x15&lt;/span&gt;&lt;span class="s1"&gt;KEPServerEX/UA Server0&lt;/span&gt;&lt;span class="se"&gt;\x82\x01&lt;/span&gt;&lt;span class="s1"&gt;&amp;quot;0&lt;/span&gt;&lt;span class="se"&gt;\r\x06\t&lt;/span&gt;&lt;span class="s1"&gt;*&lt;/span&gt;&lt;span class="se"&gt;\x86&lt;/span&gt;&lt;span class="s1"&gt;H&lt;/span&gt;&lt;span class="se"&gt;\x86\xf7\r\x01\x01\x01\x05\x00\x03\x82\x01\x0f\x00&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x82\x01\n\x02\x82\x01\x01\x00\xd4\xb4\xf7\xff\xf4\xfa\x1a&lt;/span&gt;&lt;span class="s1"&gt;-&lt;/span&gt;&lt;span class="se"&gt;\\\xab\x98\xa6\x12\x1f\xf0\x8c&lt;/span&gt;&lt;span class="s1"&gt;A&lt;/span&gt;&lt;span class="se"&gt;\xd0\xec\x01\xcb&lt;/span&gt;&lt;span class="s1"&gt;)Y&lt;/span&gt;&lt;span class="se"&gt;\xb7\x16&lt;/span&gt;&lt;span class="s1"&gt;V&lt;/span&gt;&lt;span class="se"&gt;\xf4\x1d&lt;/span&gt;&lt;span class="s1"&gt;b&lt;/span&gt;&lt;span class="se"&gt;\x94\x0c&lt;/span&gt;&lt;span class="s1"&gt;6&lt;/span&gt;&lt;span class="se"&gt;\xa7\xe6\xc0\x87&lt;/span&gt;&lt;span class="s1"&gt;4&lt;/span&gt;&lt;span class="se"&gt;\x10\n\x8d\xc7\xff&lt;/span&gt;&lt;span class="s1"&gt;^&lt;/span&gt;&lt;span class="se"&gt;\xe7\x16\x9d&lt;/span&gt;&lt;span class="s1"&gt;z &lt;/span&gt;&lt;span class="se"&gt;\xbc\\\x80&lt;/span&gt;&lt;span class="s1"&gt;K)&lt;/span&gt;&lt;span class="se"&gt;\xf8&lt;/span&gt;&lt;span class="s1"&gt;L&lt;/span&gt;&lt;span class="se"&gt;\x0b\x99\xc5&lt;/span&gt;&lt;span class="s1"&gt;r9&lt;/span&gt;&lt;span class="se"&gt;\x83\xa6\x84\xf0&lt;/span&gt;&lt;span class="s1"&gt;b&lt;/span&gt;&lt;span class="se"&gt;\xd1&lt;/span&gt;&lt;span class="s1"&gt;/bE&lt;/span&gt;&lt;span class="se"&gt;\x85\xb9&lt;/span&gt;&lt;span class="s1"&gt;^&lt;/span&gt;&lt;span class="se"&gt;\x17\xec&lt;/span&gt;&lt;span class="s1"&gt;/&lt;/span&gt;&lt;span class="se"&gt;\x94\xac\xa9\xfe\xc6\x19\x14&lt;/span&gt;&lt;span class="s1"&gt;8$T&lt;/span&gt;&lt;span class="se"&gt;\xda\xb0\x8d\xd8\x8c\xeb&lt;/span&gt;&lt;span class="s1"&gt;c|&lt;/span&gt;&lt;span class="se"&gt;\x84&lt;/span&gt;&lt;span class="s1"&gt;9&lt;/span&gt;&lt;span class="se"&gt;\xa0\xa4&lt;/span&gt;&lt;span class="s1"&gt;L&lt;/span&gt;&lt;span class="se"&gt;\xa1&lt;/span&gt;&lt;span class="s1"&gt;veJ&lt;/span&gt;&lt;span class="se"&gt;\xe4\xe8\xbe\x9e\x82\xcd&lt;/span&gt;&lt;span class="s1"&gt;m9&lt;/span&gt;&lt;span class="se"&gt;\xbe&lt;/span&gt;&lt;span class="s1"&gt;q&lt;/span&gt;&lt;span class="se"&gt;\xbc&lt;/span&gt;&lt;span class="s1"&gt;&amp;gt;0Rp&lt;/span&gt;&lt;span class="se"&gt;\xce\x87\x10\xa2\xf9\x18\x17\xc0\xba&lt;/span&gt;&lt;span class="s1"&gt;`&lt;/span&gt;&lt;span class="se"&gt;\xf7\xe1\xf0&lt;/span&gt;&lt;span class="s1"&gt;d&lt;/span&gt;&lt;span class="se"&gt;\xbb\xc7\\\xdf\x83\xa6\x1a&lt;/span&gt;&lt;span class="s1"&gt;P&lt;/span&gt;&lt;span class="se"&gt;\x0b\xf0\x0f&lt;/span&gt;&lt;span class="s1"&gt;l&lt;/span&gt;&lt;span class="se"&gt;\xce\x01\x1f\xa1&lt;/span&gt;&lt;span class="s1"&gt;M&lt;/span&gt;&lt;span class="se"&gt;\x0b&lt;/span&gt;&lt;span class="s1"&gt;p0&lt;/span&gt;&lt;span class="se"&gt;\x88&lt;/span&gt;&lt;span class="s1"&gt;.&lt;/span&gt;&lt;span class="se"&gt;\x0b&lt;/span&gt;&lt;span class="s1"&gt;i&lt;/span&gt;&lt;span class="se"&gt;\xff\x9b\xde\x0f\r\xf2&lt;/span&gt;&lt;span class="s1"&gt;M&lt;/span&gt;&lt;span class="se"&gt;\x8f&lt;/span&gt;&lt;span class="s1"&gt;j&lt;/span&gt;&lt;span class="se"&gt;\xa4\xe9\x04\xd9\x94\xdb&lt;/span&gt;&lt;span class="s1"&gt;ro}&lt;/span&gt;&lt;span class="se"&gt;\xb5&lt;/span&gt;&lt;span class="s1"&gt;n&lt;/span&gt;&lt;span class="se"&gt;\xdb\x0e&lt;/span&gt;&lt;span class="s1"&gt;OR&lt;/span&gt;&lt;span class="se"&gt;\xe3\x1c\xe0\xed&lt;/span&gt;&lt;span class="s1"&gt;&amp;gt;f&lt;/span&gt;&lt;span class="se"&gt;\xf0\x05&lt;/span&gt;&lt;span class="s1"&gt;iO&lt;/span&gt;&lt;span class="se"&gt;\xa4\xdb&lt;/span&gt;&lt;span class="s1"&gt;$&lt;/span&gt;&lt;span class="se"&gt;\xaa\xa2\x82\x9b&lt;/span&gt;&lt;span class="s1"&gt;.p&lt;/span&gt;&lt;span class="se"&gt;\\\xad\xa3&lt;/span&gt;&lt;span class="s1"&gt;#&lt;/span&gt;&lt;span class="se"&gt;\x11&lt;/span&gt;&lt;span class="s1"&gt;S&lt;/span&gt;&lt;span class="se"&gt;\x8d\xe6\x91&lt;/span&gt;&lt;span class="s1"&gt;e&lt;/span&gt;&lt;span class="se"&gt;\xf6\xea\x81\x1f\x90\xdf\xe9&lt;/span&gt;&lt;span class="s1"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\xd8&lt;/span&gt;&lt;span class="s1"&gt;B&lt;/span&gt;&lt;span class="se"&gt;\xf0\xf0\xe3\n\xbf\xda\xb9\xc6\xcd\x9c&lt;/span&gt;&lt;span class="s1"&gt;8W&lt;/span&gt;&lt;span class="se"&gt;\xad\xe8\xdb\xc8&lt;/span&gt;&lt;span class="s1"&gt;;&lt;/span&gt;&lt;span class="se"&gt;\xc4\x8d\xdd\xe2&lt;/span&gt;&lt;span class="s1"&gt;$&lt;/span&gt;&lt;span class="se"&gt;\xa5\x16\x1f\xd8&lt;/span&gt;&lt;span class="s1"&gt;j&lt;/span&gt;&lt;span class="se"&gt;\xa1&lt;/span&gt;&lt;span class="s1"&gt;d&lt;/span&gt;&lt;span class="se"&gt;\xd2&lt;/span&gt;&lt;span class="s1"&gt;)&lt;/span&gt;&lt;span class="se"&gt;\x94\xfe&lt;/span&gt;&lt;span class="s1"&gt;DA&lt;/span&gt;&lt;span class="se"&gt;\xf6\xca&lt;/span&gt;&lt;span class="s1"&gt;y&lt;/span&gt;&lt;span class="se"&gt;\x02\x03\x01\x00\x01\xa3\x82\x01\xb7&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x82\x01\xb3&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x1d\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x1d\x0e\x04\x16\x04\x14\xda\xb8\xeb&lt;/span&gt;&lt;span class="s1"&gt;H&lt;/span&gt;&lt;span class="se"&gt;\x8d&lt;/span&gt;&lt;span class="s1"&gt;:L&lt;/span&gt;&lt;span class="se"&gt;\x0e\xde&lt;/span&gt;&lt;span class="s1"&gt;q&lt;/span&gt;&lt;span class="se"&gt;\\\xd5&lt;/span&gt;&lt;span class="s1"&gt;n7&lt;/span&gt;&lt;span class="se"&gt;\xca\xd9\xf1\x1c\xff&lt;/span&gt;&lt;span class="s1"&gt;20&lt;/span&gt;&lt;span class="se"&gt;\x0e\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x1d\x0f\x01\x01\xff\x04\x04\x03\x02\x02\xf4&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x0c\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x1d\x13\x01\x01\xff\x04\x02&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x00&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x81\x8d\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x1d&lt;/span&gt;&lt;span class="s1"&gt;#&lt;/span&gt;&lt;span class="se"&gt;\x04\x81\x85&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x81\x82\x80\x14\xda\xb8\xeb&lt;/span&gt;&lt;span class="s1"&gt;H&lt;/span&gt;&lt;span class="se"&gt;\x8d&lt;/span&gt;&lt;span class="s1"&gt;:L&lt;/span&gt;&lt;span class="se"&gt;\x0e\xde&lt;/span&gt;&lt;span class="s1"&gt;q&lt;/span&gt;&lt;span class="se"&gt;\\\xd5&lt;/span&gt;&lt;span class="s1"&gt;n7&lt;/span&gt;&lt;span class="se"&gt;\xca\xd9\xf1\x1c\xff&lt;/span&gt;&lt;span class="s1"&gt;2&lt;/span&gt;&lt;span class="se"&gt;\xa1&lt;/span&gt;&lt;span class="s1"&gt;d&lt;/span&gt;&lt;span class="se"&gt;\xa4&lt;/span&gt;&lt;span class="s1"&gt;b0`1&lt;/span&gt;&lt;span class="se"&gt;\x1f&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x1d\x06\n\t\x92&lt;/span&gt;&lt;span class="s1"&gt;&amp;amp;&lt;/span&gt;&lt;span class="se"&gt;\x89\x93\xf2&lt;/span&gt;&lt;span class="s1"&gt;,d&lt;/span&gt;&lt;span class="se"&gt;\x01\x19\x16\x0f&lt;/span&gt;&lt;span class="s1"&gt;WIN-827MCDJDJOP1&lt;/span&gt;&lt;span class="se"&gt;\x0b&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\t\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\x06\x13\x02&lt;/span&gt;&lt;span class="s1"&gt;US1&lt;/span&gt;&lt;span class="se"&gt;\x10&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x0e\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\n\x0c\x07&lt;/span&gt;&lt;span class="s1"&gt;Unknown1&lt;/span&gt;&lt;span class="se"&gt;\x1e&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x1c\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x04\x03\x0c\x15&lt;/span&gt;&lt;span class="s1"&gt;KEPServerEX/UA Server&lt;/span&gt;&lt;span class="se"&gt;\x82\x04\x9d\xd3\x9b\x16&lt;/span&gt;&lt;span class="s1"&gt;0 &lt;/span&gt;&lt;span class="se"&gt;\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x1d&lt;/span&gt;&lt;span class="s1"&gt;%&lt;/span&gt;&lt;span class="se"&gt;\x01\x01\xff\x04\x16&lt;/span&gt;&lt;span class="s1"&gt;0&lt;/span&gt;&lt;span class="se"&gt;\x14\x06\x08&lt;/span&gt;&lt;span class="s1"&gt;+&lt;/span&gt;&lt;span class="se"&gt;\x06\x01\x05\x05\x07\x03\x01\x06\x08&lt;/span&gt;&lt;span class="s1"&gt;+&lt;/span&gt;&lt;span class="se"&gt;\x06\x01\x05\x05\x07\x03\x02&lt;/span&gt;&lt;span class="s1"&gt;0p&lt;/span&gt;&lt;span class="se"&gt;\x06\t&lt;/span&gt;&lt;span class="s1"&gt;`&lt;/span&gt;&lt;span class="se"&gt;\x86&lt;/span&gt;&lt;span class="s1"&gt;H&lt;/span&gt;&lt;span class="se"&gt;\x01\x86\xf8&lt;/span&gt;&lt;span class="s1"&gt;B&lt;/span&gt;&lt;span class="se"&gt;\x01\r\x04&lt;/span&gt;&lt;span class="s1"&gt;c&lt;/span&gt;&lt;span class="se"&gt;\x16&lt;/span&gt;&lt;span class="s1"&gt;aGenerated by SYSTEM@WIN-827MCDJDJOP on 2017-02-22T22:50:16.044 using OpenSSL 1.0.2h-1  3 May 20160P&lt;/span&gt;&lt;span class="se"&gt;\x06\x03&lt;/span&gt;&lt;span class="s1"&gt;U&lt;/span&gt;&lt;span class="se"&gt;\x1d\x11\x04&lt;/span&gt;&lt;span class="s1"&gt;I0G&lt;/span&gt;&lt;span class="se"&gt;\x86&lt;/span&gt;&lt;span class="s1"&gt;4urn:WIN-827MCDJDJOP:Kepware.KEPServerEX.V6:UA Server&lt;/span&gt;&lt;span class="se"&gt;\x82\x0f&lt;/span&gt;&lt;span class="s1"&gt;WIN-827MCDJDJOP0&lt;/span&gt;&lt;span class="se"&gt;\r\x06\t&lt;/span&gt;&lt;span class="s1"&gt;*&lt;/span&gt;&lt;span class="se"&gt;\x86&lt;/span&gt;&lt;span class="s1"&gt;H&lt;/span&gt;&lt;span class="se"&gt;\x86\xf7\r\x01\x01\x05\x05\x00\x03\x82\x01\x01\x00\xc6&lt;/span&gt;&lt;span class="s1"&gt;s&lt;/span&gt;&lt;span class="se"&gt;\x89\x03\xfb\xc6\x84&lt;/span&gt;&lt;span class="s1"&gt;M&lt;/span&gt;&lt;span class="se"&gt;\xa6\xca&lt;/span&gt;&lt;span class="s1"&gt;v&lt;/span&gt;&lt;span class="se"&gt;\x0b\x10&lt;/span&gt;&lt;span class="s1"&gt;N&lt;/span&gt;&lt;span class="se"&gt;\xe6\x82\x16&lt;/span&gt;&lt;span class="s1"&gt;b&lt;/span&gt;&lt;span class="se"&gt;\x15\x15\x9a\x1d\xa8\xd2&lt;/span&gt;&lt;span class="s1"&gt;MS&lt;/span&gt;&lt;span class="se"&gt;\x1f&lt;/span&gt;&lt;span class="s1"&gt;3;&lt;/span&gt;&lt;span class="se"&gt;\xb2\xf5\xe1\x9d&lt;/span&gt;&lt;span class="s1"&gt;G&lt;/span&gt;&lt;span class="se"&gt;\x0f\xf5&lt;/span&gt;&lt;span class="s1"&gt;uc4K9. d_&lt;/span&gt;&lt;span class="se"&gt;\x1d&lt;/span&gt;&lt;span class="s1"&gt;;&lt;/span&gt;&lt;span class="se"&gt;\x89\xec&lt;/span&gt;&lt;span class="s1"&gt;8&lt;/span&gt;&lt;span class="se"&gt;\xdd&lt;/span&gt;&lt;span class="s1"&gt;NU&lt;/span&gt;&lt;span class="se"&gt;\xde\xe9&lt;/span&gt;&lt;span class="s1"&gt;*&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\x9a\xe1\xc9\xe9\xa1\xeb\x1a\x94\xa4\xe4\x99\xa2\x84\xa4&lt;/span&gt;&lt;span class="s1"&gt;&amp;gt;e&lt;/span&gt;&lt;span class="se"&gt;\x15&lt;/span&gt;&lt;span class="s1"&gt;}&lt;/span&gt;&lt;span class="se"&gt;\xed&lt;/span&gt;&lt;span class="s1"&gt;H.&lt;/span&gt;&lt;span class="se"&gt;\x82\xbf\x12\x8e\xdf&lt;/span&gt;&lt;span class="s1"&gt;d9&lt;/span&gt;&lt;span class="se"&gt;\xc4\x8e\\&lt;/span&gt;&lt;span class="s1"&gt;gI&lt;/span&gt;&lt;span class="se"&gt;\xa5&lt;/span&gt;&lt;span class="s1"&gt;t|6&lt;/span&gt;&lt;span class="se"&gt;\xc1\x9b&lt;/span&gt;&lt;span class="s1"&gt;7&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\xac&lt;/span&gt;&lt;span class="s1"&gt;&amp;amp;O&lt;/span&gt;&lt;span class="se"&gt;\x0c&lt;/span&gt;&lt;span class="s1"&gt;*&lt;/span&gt;&lt;span class="se"&gt;\x92\x11\xbf\xa9\xea\x9f&lt;/span&gt;&lt;span class="s1"&gt;5Y$&lt;/span&gt;&lt;span class="se"&gt;\xff&lt;/span&gt;&lt;span class="s1"&gt;gO&lt;/span&gt;&lt;span class="se"&gt;\x82\x03\x17\xb8\xb6\x04\x8b\r\x99\xcc\xa4\x90\xd2\x90\xe3&lt;/span&gt;&lt;span class="s1"&gt;$&lt;/span&gt;&lt;span class="se"&gt;\&amp;#39;&lt;/span&gt;&lt;span class="s1"&gt;&amp;quot;&amp;lt;&lt;/span&gt;&lt;span class="se"&gt;\xcf&lt;/span&gt;&lt;span class="s1"&gt;7&lt;/span&gt;&lt;span class="se"&gt;\x1d\xf0&lt;/span&gt;&lt;span class="s1"&gt;)&lt;/span&gt;&lt;span class="se"&gt;\x86\xda\xf1\x1d&lt;/span&gt;&lt;span class="s1"&gt;5&lt;/span&gt;&lt;span class="se"&gt;\xb4&lt;/span&gt;&lt;span class="s1"&gt;`&lt;/span&gt;&lt;span class="se"&gt;\x99&lt;/span&gt;&lt;span class="s1"&gt;W&lt;/span&gt;&lt;span class="se"&gt;\x06\xbd&lt;/span&gt;&lt;span class="s1"&gt;59&lt;/span&gt;&lt;span class="se"&gt;\x95&lt;/span&gt;&lt;span class="s1"&gt;T&lt;/span&gt;&lt;span class="se"&gt;\xef&lt;/span&gt;&lt;span class="s1"&gt;h&lt;/span&gt;&lt;span class="se"&gt;\xdf\xbc\xac&lt;/span&gt;&lt;span class="s1"&gt;v&lt;/span&gt;&lt;span class="se"&gt;\x1c\xf3\xd6&lt;/span&gt;&lt;span class="s1"&gt;:&lt;/span&gt;&lt;span class="se"&gt;\\\xd0\x1e&lt;/span&gt;&lt;span class="s1"&gt;.&lt;/span&gt;&lt;span class="se"&gt;\xbf&lt;/span&gt;&lt;span class="s1"&gt;9&lt;/span&gt;&lt;span class="se"&gt;\x0b\xd0\x92\xa8&lt;/span&gt;&lt;span class="s1"&gt;:&lt;/span&gt;&lt;span class="se"&gt;\xd1\n&lt;/span&gt;&lt;span class="s1"&gt;k&amp;gt;N&lt;/span&gt;&lt;span class="se"&gt;\xc9\xdf\xcc\xd2\x85\x10\x88\xab\xb4&lt;/span&gt;&lt;span class="s1"&gt;G&lt;/span&gt;&lt;span class="se"&gt;\x0c\xc4\xd0&lt;/span&gt;&lt;span class="s1"&gt;/G:n,}&lt;/span&gt;&lt;span class="se"&gt;\x95\xb8\x9e\xda&lt;/span&gt;&lt;span class="s1"&gt;S[&lt;/span&gt;&lt;span class="se"&gt;\x92\x9d\xb2\xaf&lt;/span&gt;&lt;span class="s1"&gt;`N&lt;/span&gt;&lt;span class="se"&gt;\x1c\x04\x11\xc3\x05\xc8\xfc&lt;/span&gt;&lt;span class="s1"&gt;XAD&lt;/span&gt;&lt;span class="se"&gt;\xa3\x04\xda\x1d\xd9&lt;/span&gt;&lt;span class="s1"&gt;W&lt;/span&gt;&lt;span class="se"&gt;\x0b&lt;/span&gt;&lt;span class="s1"&gt;]2&lt;/span&gt;&lt;span class="se"&gt;\xdb&lt;/span&gt;&lt;span class="s1"&gt;#=cq&amp;amp;D]&lt;/span&gt;&lt;span class="se"&gt;\xc6&lt;/span&gt;&lt;span class="s1"&gt;vd&lt;/span&gt;&lt;span class="se"&gt;\xc7&lt;/span&gt;&lt;span class="s1"&gt;7&lt;/span&gt;&lt;span class="se"&gt;\xa4\xf6&lt;/span&gt;&lt;span class="s1"&gt;k]&lt;/span&gt;&lt;span class="se"&gt;\xfe\x17&lt;/span&gt;&lt;span class="s1"&gt;&amp;gt;5&lt;/span&gt;&lt;span class="se"&gt;\x8d\xaa\x05&lt;/span&gt;&lt;span class="s1"&gt;r&lt;/span&gt;&lt;span class="se"&gt;\x8d&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SecurityMode&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;MessageSecurityMode&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;None_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SecurityPolicyUri&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;opcfoundation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;UA&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;SecurityPolicy&lt;/span&gt;&lt;span class="c1"&gt;#None, UserIdentityTokens:[UserTokenPolicy(PolicyId:UserName, TokenType:UserTokenType.UserName, IssuedTokenType:None, IssuerEndpointUrl:None, SecurityPolicyUri:http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15), UserTokenPolicy(PolicyId:Anonymous, TokenType:UserTokenType.Anonymous, IssuedTokenType:None, IssuerEndpointUrl:None, SecurityPolicyUri:http://opcfoundation.org/UA/SecurityPolicy#None)], TransportProfileUri:http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary, SecurityLevel:16)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;There is a lot of information there so let's break it down a little bit. First,
+somewhere in that mess is the SecurityPolicyUri field. Let's look at the
+SecurityPolicyUri field for all of the Endpoints.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;endpoint&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SecurityPolicyUri&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;endpoint&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_endpoints&lt;/span&gt;&lt;span class="p"&gt;()]&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#None&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#Basic256&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#Basic256&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is telling us the type of security that each Endpoint is capable of using.
+Since we enabled the security policy 'None' in Kepware, you can see that one of
+Endpoints has that available.&lt;/p&gt;
+&lt;p&gt;Now, let's see which Endpoint has the 'None' security policy in place so we can
+make sure we connect to it.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;endpoint&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;EndpointUrl&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;endpoint&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SecurityPolicyUri&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;endpoint&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_endpoints&lt;/span&gt;&lt;span class="p"&gt;()]&lt;/span&gt;
+&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;opc.tcp://127.0.0.1:49320&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#None&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;opc.tcp://127.0.0.1:49320&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;opc.tcp://127.0.0.1:49320&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;opc.tcp://127.0.0.1:49320&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#Basic256&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;opc.tcp://127.0.0.1:49320&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://opcfoundation.org/UA/SecurityPolicy#Basic256&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This shows us the URL 'opc.tcp://127.0.0.1:49320' is the one with the 'None'
+security policy enabled. Luckily, that is the one we connected to, so we don't
+need to change anything.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="to-be-continued"&gt;
+&lt;h2&gt;To Be Continued...&lt;/h2&gt;
+&lt;p&gt;I will continue reading the specification and try to figure out why the
+opcua-python examples work the way thay do.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="OPC-UA"></category></entry><entry><title>2016-10-06</title><link href="http://idahogray.github.io/blog/2016-10-06.html" rel="alternate"></link><published>2016-10-06T09:00:00-05:00</published><updated>2016-10-06T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-10-06:/blog/2016-10-06.html</id><summary type="html">&lt;p class="first last"&gt;Interpreting GOOSE timestamps&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="interpreting-goose-timestamps"&gt;
+&lt;h2&gt;Interpreting GOOSE Timestamps&lt;/h2&gt;
+&lt;p&gt;One of the outstanding questions from my previous posts was how to interpret
+timestamps inside of GOOSE messages. I was able to parse the raw data
+from the message but I wasn't sure how to actually get the time.&lt;/p&gt;
+&lt;p&gt;I started with the GOOSE standard document, IEC 61850-8-1 Edition 1. The
+timestamp is first described on page 35. This section provides two pieces
+of information. First, the details are described in Annex G (see below).
+Second, the quality flags are defined. I will come back to that below as well.&lt;/p&gt;
+&lt;div class="section" id="annex-g"&gt;
+&lt;h3&gt;Annex G&lt;/h3&gt;
+&lt;p&gt;The UTC Time format is defined in Annex G of IEC 61850-8-1 Edition 1. It is made
+up of 8 octets and is formatted according to &lt;a class="reference external" href="https://tools.ietf.org/html/rfc1305"&gt;RFC 1305&lt;/a&gt;, which is the &lt;a class="reference external" href="https://www.ietf.org/rfc.html"&gt;RFC&lt;/a&gt;
+describing &lt;abbr title="Network Time Protocol"&gt;NTP&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://tools.ietf.org/html/rfc1305"&gt;RFC 1305&lt;/a&gt; encodes a timestamp as a 64-bit number. The first 32 bits,
+or 4 octets, define the number of seconds since the epoch. This is one
+place where GOOSE differs from &lt;abbr title="Network Time Protocol"&gt;NTP&lt;/abbr&gt;. &lt;abbr title="Network Time Protocol"&gt;NTP&lt;/abbr&gt; defines the epoch as
+January 1, 1900 but GOOSE defines the epoch as January 1, 1970. The
+GOOSE definition is convenient because this is the same epoch definition
+that Unix uses. Therefore, there are many tools available to do the conversion.
+One example is the &lt;a class="reference external" href="http://www.epochconverter.com/"&gt;EpochConverter&lt;/a&gt; site. I will also give an example of how
+to do the conversion in Python below.&lt;/p&gt;
+&lt;p&gt;The more challenging piece (for me) was to figure out the last 32 bits of the
+timestamp. These are called the fractional part of the timestamp. At first,
+I thought it was as simple as converting those 32 bits into an integer
+and using that as the fractional part of the second. However, I wasn't able
+to match the timestamp in a Wireshark capture. After some searching on GOOGLE,
+I found a &lt;a class="reference external" href="https://groups.google.com/forum/#!topic/comp.protocols.time.ntp/WNB6sYxueIw"&gt;site&lt;/a&gt; that describes the &lt;abbr title="Network Time Protocol"&gt;NTP&lt;/abbr&gt; format. It states that the
+fractional part of the timestamp can be found by converting the 32 bits into an
+integer and dividing by 2^32. I tried that but still wasn't able to match
+the Wireshark capture.&lt;/p&gt;
+&lt;p&gt;Then, I remembered that the IEC 61850-8-1 defines the 8th octet of the
+timestamp is used to transfer quality information. Therefore, I tried to
+convert octets 5, 6, and 7 (1-indexed) to an integer and divide by 2^32...still no
+match. Finally, I converted octets 5, 6, and 7 (1-indexed) to an integer and
+divide by 2^24...GOT IT!&lt;/p&gt;
+&lt;p&gt;The last piece was the quality information. Table 15 on Page 36 of
+IEC 61850-8-1 defines the quality information. Wireshark didn't decode that
+portion of the data but my decoding made sense with the standard.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="worked-example"&gt;
+&lt;h3&gt;Worked Example&lt;/h3&gt;
+&lt;p&gt;I will be using the following data captured from a GOOSE message. You can see
+this capture at &lt;a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt"&gt;goose_txt&lt;/a&gt;.  &lt;em&gt;55 15 1b 9b 69 37 40 92&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The first 4 octets are equivalent to an integer value of 1427446683. This is
+the number of seconds in midnight on January 1, 1970. This can be converted
+to a timestamp using the &lt;a class="reference external" href="http://www.epochconverter.com/"&gt;EpochConverter&lt;/a&gt; site or via most programming
+languages. The example below uses Python.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gmtime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1427446683&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;struct_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tm_year&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2015&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_mon&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_mday&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;27&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_hour&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_min&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;58&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_sec&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_wday&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_yday&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;86&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tm_isdst&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This matches the timestamp in Wireshark, up to the fractions of seconds.&lt;/p&gt;
+&lt;p&gt;The next 3 octets are equivalent to an integer value of 6895424. Dividing this
+value by 2^24 gives 0.41099298. This value also matches the Wireshark
+interpretation.&lt;/p&gt;
+&lt;p&gt;Finally, we want the quality. This is defined in the last octet which is equal
+to 92. 92 in binary is &lt;em&gt;10010010&lt;/em&gt;. This is interpreted as:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Bit 7 = 1: Leap Second Known&lt;/li&gt;
+&lt;li&gt;Bit 6 = 0: Not ClockFailure&lt;/li&gt;
+&lt;li&gt;Bit 5 = 0: Clock Synchronized&lt;/li&gt;
+&lt;li&gt;Bits 4-0 = 10010: 18-bits of accuracy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</content><category term="GOOSE"></category><category term="IEC 61850"></category></entry><entry><title>2016-09-24</title><link href="http://idahogray.github.io/blog/2016-09-24.html" rel="alternate"></link><published>2016-09-24T19:00:00-05:00</published><updated>2016-09-24T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-24:/blog/2016-09-24.html</id><summary type="html">&lt;p class="first last"&gt;Generating GOOSE messages using Python&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="generating-goose-messages"&gt;
+&lt;h2&gt;Generating GOOSE Messages&lt;/h2&gt;
+&lt;p&gt;I want to be able to generate GOOSE messages as part of my network simlulation
+testing described in previous posts. My goal is to be able to show how VLANs
+and multicast filtering can affect the reception of GOOSE messages.&lt;/p&gt;
+&lt;p&gt;I had heard of the &lt;a class="reference external" href="http://www.secdev.org/projects/scapy/"&gt;scapy&lt;/a&gt; Python library
+previously but never found a need to deploy it. I knew that it made it possible
+to construct network packets from scratch, bypassing the network stack of the
+operating system. I thought that generating GOOSE messages would be a great
+application for &lt;a class="reference external" href="http://www.secdev.org/projects/scapy/"&gt;scapy&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I started playing with &lt;a class="reference external" href="http://www.secdev.org/projects/scapy/"&gt;scapy&lt;/a&gt; and reached a point where I needed to learn
+how the data was encoded in the message. A future post will describe more about
+&lt;a class="reference external" href="http://www.secdev.org/projects/scapy/"&gt;scapy&lt;/a&gt;. This post continues with details about encoding the data in the GOOSE
+message.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="goose-data-encoding"&gt;
+&lt;h2&gt;GOOSE Data Encoding&lt;/h2&gt;
+&lt;p&gt;I read IEC 61850-8-1 and saw that data was encoded using &lt;abbr title="Abstract Syntax Notation One"&gt;ASN.1&lt;/abbr&gt;. According to
+&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One"&gt;Wikipedia&lt;/a&gt;, &lt;abbr title="Abstract Syntax Notation One"&gt;ASN.1&lt;/abbr&gt; &amp;quot;...describes rules and structures for representing,
+encoding, transmitting, and decoding data...&amp;quot;. Various ways to encode/decode
+the data are provided by &lt;abbr title="Abstract Syntax Notation One"&gt;ASN.1&lt;/abbr&gt;. GOOSE messaging has chosen to use &lt;abbr title="Basic Encoding Rules"&gt;BER&lt;/abbr&gt;.
+&lt;abbr title="Basic Encoding Rules"&gt;BER&lt;/abbr&gt; is specified in ITU-T standard X.690. Data encoded in &lt;abbr title="Basic Encoding Rules"&gt;BER&lt;/abbr&gt; consists of
+three pieces of information.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Type&lt;/li&gt;
+&lt;li&gt;Length&lt;/li&gt;
+&lt;li&gt;Contents (or Values)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This is sometimes referred to as the (T, L, V) triple. You can see Wikipedia
+for more information about &lt;a class="reference external" href="https://en.wikipedia.org/wiki/X.690#BER_encoding"&gt;ber&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I looked for a Python library that could do the &lt;abbr title="Basic Encoding Rules"&gt;BER&lt;/abbr&gt; encoding/decoding and
+found &lt;a class="reference external" href="http://pyasn1.sourceforge.net/"&gt;pyasn1&lt;/a&gt;. The next step was to find the &lt;abbr title="Abstract Syntax Notation One"&gt;ASN.1&lt;/abbr&gt; model used by GOOSE.&lt;/p&gt;
+&lt;p&gt;Searching around led me to this &lt;a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm"&gt;IEC 61850 ASN.1 encodings page&lt;/a&gt;.
+I was able to use those definitions, along with the &lt;a class="reference external" href="http://pyasn1.sourceforge.net/"&gt;pyasn1&lt;/a&gt; documentation
+to build the GOOSE definitions. The GOOSE definitions are made up of two
+main components.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#IEC61850.IECGoosePdu"&gt;IECGoosePdu&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.Data"&gt;Data&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The GOOSE definitions also rely on some subtypes.&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.FloatingPoint"&gt;FloatingPoint&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.TimeOfDay"&gt;TimeOfDay&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.MMSString"&gt;MMSstring&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://lamspeople.epfl.ch/kirrmann/mms/Documentation/mms_abstract_syntax.htm#ISO-9506-MMS-1.UtcTime"&gt;UtcTime&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="implementation"&gt;
+&lt;h2&gt;Implementation&lt;/h2&gt;
+&lt;p&gt;The implementation of these &lt;abbr title="Abstract Syntax Notation One"&gt;ASN.1&lt;/abbr&gt; rules can be found on &lt;a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1"&gt;github&lt;/a&gt;.
+The &lt;a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose_asn.py"&gt;goose_asn&lt;/a&gt; file contains the GOOSE &lt;abbr title="Abstract Syntax Notation One"&gt;ASN.1&lt;/abbr&gt; definitions along with some
+test code located in the &lt;em&gt;if __name__ == '__main__'&lt;/em&gt; block at the end
+of the file. The test code builds the same GOOSE messages that is located
+in the packet capture shown in the &lt;a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt"&gt;goose_txt&lt;/a&gt; file. The &lt;a class="reference external" href="https://github.com/keith-gray-powereng/goose-asn1/blob/master/goose.txt"&gt;goose_txt&lt;/a&gt; capture
+was taken from a lab test from an actual IED being used in a project.
+The test code can recreate the GOOSE message exactly.&lt;/p&gt;
+&lt;div class="admonition note"&gt;
+&lt;p class="first admonition-title"&gt;Note&lt;/p&gt;
+&lt;p class="last"&gt;This implementation is known to be incomplete. There are unimplemented
+features of the GOOSE description. Also, it has only ever been tested
+against a single captured GOOSE message.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="next-steps"&gt;
+&lt;h2&gt;Next Steps&lt;/h2&gt;
+&lt;p&gt;The next step in this experiment will be to use this GOOSE message in a network
+packet created with &lt;a class="reference external" href="http://www.secdev.org/projects/scapy/"&gt;scapy&lt;/a&gt; and transmit it on a network simulated using Linux
+Network Namespaces, as described in earlier posts.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="GOOSE"></category><category term="python"></category><category term="IEC 61850"></category></entry><entry><title>2016-09-03</title><link href="http://idahogray.github.io/blog/2016-09-03.html" rel="alternate"></link><published>2016-09-03T19:00:00-05:00</published><updated>2016-09-03T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-03:/blog/2016-09-03.html</id><summary type="html">&lt;p class="first last"&gt;Simulating Networks using Linux&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="simulations"&gt;
+&lt;h2&gt;Simulations&lt;/h2&gt;
+&lt;p&gt;I am attempting to figure out how to do some network simulations
+using Linux. I learned about network namespaces when I was reading
+about Mininet and how it simulates &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;. Some googling pointed me
+to this &lt;a class="reference external" href="http://blog.scottlowe.org/2013/09/04/introducing-linux-network-namespaces/"&gt;article&lt;/a&gt;. It states that network namespaces give you the
+ability to have different and separate instances of network interfaces
+and routing tables. These instances are completely independent of each
+other.&lt;/p&gt;
+&lt;div class="admonition note"&gt;
+&lt;p class="first admonition-title"&gt;Note&lt;/p&gt;
+&lt;p class="last"&gt;Please note that all of the commands shown in this post are run at
+the Linux terminal as root. If you are not root, you must add &lt;em&gt;sudo&lt;/em&gt;
+in front of each command.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="host-host-ping"&gt;
+&lt;h2&gt;Host-Host Ping&lt;/h2&gt;
+&lt;p&gt;This &lt;a class="reference external" href="http://blog.scottlowe.org/2013/09/04/introducing-linux-network-namespaces/"&gt;article&lt;/a&gt; makes me think I can do some simulations using
+network namespaces. The first thing I want to try is to set up
+two network namespaces and have them ping each other. The
+network topology is shown below.&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+--------         --------
+|      |         |      |
+|  H1  |&amp;lt;-------&amp;gt;|  H2  |
+|      |         |      |
+--------         --------
+&lt;/pre&gt;
+&lt;p&gt;I used the following steps to accomplish that.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns add host1
+ip netns add host2
+ip link add h1 &lt;span class="nb"&gt;type&lt;/span&gt; veth peer name h2
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; h1 netns host1
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; h2 netns host2
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ip address add &lt;span class="m"&gt;10&lt;/span&gt;.0.0.1/24 dev h1
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ip address add &lt;span class="m"&gt;10&lt;/span&gt;.0.0.2/24 dev h2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The first two commands above create two network namespaces
+(host1 and host2).  The purpose of those two namespaces to
+simulate two different hosts. The third line creates a Linux
+virtual Ethernet port pair. The two interfaces are called
+h1 and h2. The fourth and fifth lines assign interface h1
+to the host1 namespace and interface h2 to the host2 namespace.
+The last two lines assign IP addresses to those two interfaces.&lt;/p&gt;
+&lt;p&gt;Once all of that setup is complete, I can ping each &amp;quot;host&amp;quot; from the
+other.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ping &lt;span class="m"&gt;10&lt;/span&gt;.0.0.2
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ping &lt;span class="m"&gt;10&lt;/span&gt;.0.0.1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;These two &amp;quot;hosts&amp;quot; are isolated from each other. Their interfaces do
+not appear on my default host when I run &lt;em&gt;ip address`&lt;/em&gt;. They
+can only communicate with each other because of the virtual Ethernet
+Port pair that was created. I understand the virtual Ethernet Port pair
+to basically be two ports that are directly connected to each other.
+Data into one comes out the other and vice versa.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="bridge"&gt;
+&lt;h2&gt;Bridge&lt;/h2&gt;
+&lt;p&gt;Now that I can set up two &amp;quot;hosts&amp;quot; to talk to each other, I want to
+add a Bridge (switch) to the topology. The topology is shown below.&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+--------         ---------         --------
+|      |         |       |         |      |
+|  H1  |&amp;lt;-------&amp;gt;|1 SW1 2|&amp;lt;-------&amp;gt;|  H2  |
+|      |         |       |         |      |
+--------         ---------         --------
+&lt;/pre&gt;
+&lt;p&gt;The commands below assume starting from scratch and do not build
+upon the commands above.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns add host1
+ip netns add host2
+ip netns add sw1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above create the network namespaces for the two hosts
+and the switch.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip link add h1 &lt;span class="nb"&gt;type&lt;/span&gt; veth peer name sw1p1
+ip link add h2 &lt;span class="nb"&gt;type&lt;/span&gt; veth peer name sw1p2
+ip link add bridge1 &lt;span class="nb"&gt;type&lt;/span&gt; bridge
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above create two virtual Ethernet port pairs plus one
+Ethernet bridge. The first virtual Ethernet pair is the
+the link between H1 and SW1. The second is for the link
+between H2 and SW2. The bridge will be used on the switch.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip link &lt;span class="nb"&gt;set&lt;/span&gt; h1 netns host1
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; h2 netns host2
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p1 netns sw1
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p2 netns sw1
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; bridge1 netns sw1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above assign the interfaces to the appropriate network
+namespaces. h1 goes in host1. h2 goes in host2. sw1p1 and sw1p2 go
+in sw1. Finally, the bridge interface goes in sw1.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p1 master bridge1
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p2 master bridge1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above assign the two ports, sw1p1 and sw1p2, to
+the bridge bridge1.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; h1 up
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ip link &lt;span class="nb"&gt;set&lt;/span&gt; h2 up
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; bridge1 up
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p1 up
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; sw1 ip link &lt;span class="nb"&gt;set&lt;/span&gt; sw1p2 up
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above bring all of the interfaces up.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ip address add &lt;span class="m"&gt;10&lt;/span&gt;.0.0.1/24 dev h1
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ip address add &lt;span class="m"&gt;10&lt;/span&gt;.0.0.2/24 dev h2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The commands above assign IP addresses to host1 and host2.&lt;/p&gt;
+&lt;p&gt;Once all of that setup is complete, I can ping each &amp;quot;host&amp;quot; from the
+other.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host1 ping &lt;span class="m"&gt;10&lt;/span&gt;.0.0.2
+ip netns &lt;span class="nb"&gt;exec&lt;/span&gt; host2 ping &lt;span class="m"&gt;10&lt;/span&gt;.0.0.1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+</content><category term="rstp"></category><category term="linux"></category><category term="network namespaces"></category></entry><entry><title>2016-09-02</title><link href="http://idahogray.github.io/blog/2016-09-02.html" rel="alternate"></link><published>2016-09-02T18:00:00-05:00</published><updated>2016-09-02T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-02:/blog/2016-09-02.html</id><summary type="html">&lt;p class="first last"&gt;Some notes from today&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="today"&gt;
+&lt;h2&gt;Today&lt;/h2&gt;
+&lt;p&gt;I am continuing to research &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;
+in an effort to produce a design guide at work.
+I started the guide and realized I don't know as much as I
+thought about &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;abbr title="Spanning Tree Protocol"&gt;STP&lt;/abbr&gt;, &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;'s predicessor was originally defined in IEEE 802.1D.
+&lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt; was initially defined in IEEE 802.1w. However, IEEE 802.1w was
+incorporated into the 2004 version of IEEE 802.1D. &lt;abbr title="Spanning Tree Protocol"&gt;STP&lt;/abbr&gt; was removed from
+IEEE 802.1D-2004.&lt;/p&gt;
+&lt;p&gt;I printed out the IEEE 802.1D-2004 standard and have begun reviewing it.
+This is one that is going to take a few readings to fully understand.
+I am trying to keep notes as I go through it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ieee-802-1d-2004"&gt;
+&lt;h2&gt;IEEE 802.1D-2004&lt;/h2&gt;
+&lt;p&gt;&lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt; is defined in Clause 17 of IEEE 802.1D-2004. Item i) in 17.1 is
+interesting. It states &amp;quot;In normal operation, the time taken to configure the
+active topology of a network comprising point-to-point LANs is independent of
+the timer values of the protocol.&amp;quot;. I am curious what &amp;quot;normal operation&amp;quot;
+referrs to.&lt;/p&gt;
+&lt;p&gt;Clause 17.2 referrs to Clause 7.12.3 which defines the Group MAC Address
+that identifies the Spanning Tree Protocol. This MAC address is called as
+the &lt;strong&gt;Bridge Group Address&lt;/strong&gt; and is defined as 01-80-C2-00-00-00. This adress
+is a Multicast Ethernet Address because the least-significant bit of the first
+octet is a 1.&lt;/p&gt;
+&lt;div class="section" id="port-states"&gt;
+&lt;h3&gt;Port States&lt;/h3&gt;
+&lt;p&gt;Clause 17.3 references Clause 7.4 to define the port states controlled by
+&lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;. The port states defined by IEEE 802.1D-2004 are:&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;Discarding&lt;/dt&gt;
+&lt;dd&gt;Any port that is not enabled or has been dynamically excluded from
+forwarding and learning from MAC frames.&lt;/dd&gt;
+&lt;dt&gt;Learning&lt;/dt&gt;
+&lt;dd&gt;Any port where Learning is enabled for Forwarding is disabled.&lt;/dd&gt;
+&lt;dt&gt;Forwarding&lt;/dt&gt;
+&lt;dd&gt;Any port that both learns and forwards frames.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;div class="section" id="priority-vectors"&gt;
+&lt;h3&gt;Priority Vectors&lt;/h3&gt;
+&lt;p&gt;Clause 17.3 references Clause 17.5 to define &lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt; Priority Vectors.
+The Priority Vector is the information sent by each switch when selecting
+the Root Bridge and the shortest path to it. Priority Vectors contain the
+following information:&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;Root Bridge Identifier&lt;/dt&gt;
+&lt;dd&gt;The Bridge Identifier of the Bridge believed to be the Root by the
+transmitter.&lt;/dd&gt;
+&lt;dt&gt;Root Path Cost&lt;/dt&gt;
+&lt;dd&gt;Path cost from the transmitting Bridge what is believed to be the Root
+Bridge.&lt;/dd&gt;
+&lt;dt&gt;Bridge Identifier&lt;/dt&gt;
+&lt;dd&gt;Bridge Identifier of the transmitting Bridge&lt;/dd&gt;
+&lt;dt&gt;Port Identifier&lt;/dt&gt;
+&lt;dd&gt;Port through which the message was transmitted&lt;/dd&gt;
+&lt;dt&gt;Port Identifier&lt;/dt&gt;
+&lt;dd&gt;Port through which the message was received (where relevant)&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;div class="section" id="port-roles"&gt;
+&lt;h3&gt;Port Roles&lt;/h3&gt;
+&lt;div class="admonition warning"&gt;
+&lt;p class="first admonition-title"&gt;Warning&lt;/p&gt;
+&lt;p class="last"&gt;This section will need more development as I get further into this.
+See the &lt;strong&gt;WTF?&lt;/strong&gt; items.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Clause 17.3 references Clause 17.7 to define the port roles. The Port Roles
+defined by IEEE 802.1D-2004 are:&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;Disabled Port&lt;/dt&gt;
+&lt;dd&gt;Port is disabled if it is not operational or if it is excluded from the
+active topology by management. This can occur if the MAC_Operational status
+is False, if it is disabled by 802.1X, or if it is disabled by the
+administrator.&lt;/dd&gt;
+&lt;dt&gt;Root Port&lt;/dt&gt;
+&lt;dd&gt;The source of the root priority vector is the Root Port on every bridge
+except the Root Bridge. The Root Bridge does not have a Root Port. This is
+the one port on the Bridge that provides the lowest cost path to the
+Root Bridge.&lt;/dd&gt;
+&lt;dt&gt;Designated Port&lt;/dt&gt;
+&lt;dd&gt;Port whose port priority vector is its designated priority vector
+(&lt;strong&gt;WTF?&lt;/strong&gt;). This is the one port attached to each LAN that provides the
+lowest cost path from that LAN to the Root Bridge.&lt;/dd&gt;
+&lt;dt&gt;Alternate Port&lt;/dt&gt;
+&lt;dd&gt;Port (not including the Root Port) whose priority vector has been received
+from another Bridge is an Alternate Port (&lt;strong&gt;WTF?&lt;/strong&gt;). Ports that can provide
+connectivity if other network components fail.&lt;/dd&gt;
+&lt;dt&gt;Backup Port&lt;/dt&gt;
+&lt;dd&gt;Port that has a priority vector that has been received from another port
+on this Bridge (&lt;strong&gt;WTF?&lt;/strong&gt;). Ports that can provide connectivity if other
+network components fail.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;div class="section" id="edge-ports"&gt;
+&lt;h3&gt;Edge Ports&lt;/h3&gt;
+&lt;p&gt;Bridge ports attached to a LAN that has no other Bridges attached to it
+may be administratively configured as an Edge Port. Edge Ports transition
+directly to the Forwarding Port State since there is no possibility of it
+participating in a loop.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I made it Clause 17.3.2 which contains example topologies. I will be studying
+this over the weekend.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="rstp"></category></entry><entry><title>2016-08-31</title><link href="http://idahogray.github.io/blog/2016-08-31.html" rel="alternate"></link><published>2016-08-31T00:00:00-05:00</published><updated>2016-08-31T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-08-31:/blog/2016-08-31.html</id><summary type="html">&lt;p class="first last"&gt;Some notes from today&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="today"&gt;
+&lt;h2&gt;Today&lt;/h2&gt;
+&lt;p&gt;I did some more research on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; today. I learned that my suspicion was correct
+in that if a port fails the switch would have to request a new flow from the controller.
+This would significantly increase the failover time, I read some examples of 300ms.
+Obviously this is too slow for protection applications and is even slower than
+&lt;abbr title="Rapid Spanning Tree Protocol"&gt;RSTP&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;However, version 1.1 of the OpenFlow standard introduced the idea of &lt;em&gt;Groups&lt;/em&gt;.
+According to this &lt;a class="reference external" href="https://floodlight.atlassian.net/wiki/display/floodlightcontroller/How+to+Work+with+Fast-Failover+OpenFlow+Groups"&gt;article&lt;/a&gt;,
+OpenFlow Fast Failover groups are specifically meant to address this issue.
+The article says the failover times are not defined by the standard but
+are meant to be faster than having to request a new flow from the controller.&lt;/p&gt;
+&lt;p&gt;I believe this is how &lt;a class="reference external" href="http://selinc.com"&gt;SEL&lt;/a&gt; is achieving &lt;span class="formula"&gt;100&lt;i&gt;μ&lt;/i&gt;&lt;i&gt;S&lt;/i&gt;&lt;/span&gt;
+failover times with their &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; switch product.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="work networking sdn"></category></entry><entry><title>2016-08-30 Notes</title><link href="http://idahogray.github.io/blog/2016-08-30-notes.html" rel="alternate"></link><published>2016-08-30T00:00:00-05:00</published><updated>2016-08-30T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-08-30:/blog/2016-08-30-notes.html</id><summary type="html">&lt;p class="first last"&gt;Some notes from today&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://selinc.com"&gt;SEL&lt;/a&gt; is introducing a new networking product for the
+utility market based on &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.
+The fact that this technology is making it into the electric utility
+industry is pretty amazing considering how new it is.&lt;/p&gt;
+&lt;p&gt;A recent &lt;a class="reference external" href="https://selinc.com/company/news/116217/"&gt;article&lt;/a&gt; sparked some
+conversation inside my group at work. I decided I should do some more
+research. I started reading about &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; by purchasing
+&lt;a class="reference external" href="https://www.packtpub.com/networking-and-servers/software-defined-networking-openflow"&gt;Software Defined Networking with OpenFlow&lt;/a&gt;.
+This book served as a good introduction to &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt; and using a
+simulation platform called &lt;a class="reference external" href="http://mininet.org/"&gt;Mininet&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;One question I still have is how to achieve fast failovers with &lt;abbr title="Software Defined Networking"&gt;SDN&lt;/abbr&gt;.&lt;/p&gt;
+&lt;p&gt;I plan to keep researching this and playing with the simulations.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="work networking sdn"></category></entry><entry><title>Writing a OPC Client</title><link href="http://idahogray.github.io/blog/writing-a-opc-client.html" rel="alternate"></link><published>2014-03-07T00:00:00-06:00</published><updated>2014-03-09T00:00:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2014-03-07:/blog/writing-a-opc-client.html</id><summary type="html">&lt;p class="first last"&gt;Short introduction to writing an OPC client&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;OPC is something I see quite often in my job as a SCADA engineer.
+Up until recently, all I knew about OPC was that it relied on
+Microsoft Windows' Object Linking and Embedding (OLE).
+In fact OPC is short for &lt;strong&gt;O&lt;/strong&gt;LE for &lt;strong&gt;P&lt;/strong&gt;rocess Control.
+Even though OPC was always a problem on projects,
+I thought of it as a black box because of its relationship to
+Windows.&lt;/p&gt;
+&lt;p&gt;However, on a recent project, I had the need to automate some tests.
+I had two choices:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Develop or purchase a DNP3 communication library to communicate with
+the device being tested.&lt;/li&gt;
+&lt;li&gt;Use an OPC Server to speak DNP3 and then get the data out of the OPC
+server.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I had previously looked into what it would take to develop a DNP3
+driver and it wasn't going to be cheap or easy. I needed this
+application and I needed it yesterday. Therefore, I decided to
+investigate what it would take to communicate with the OPC server.&lt;/p&gt;
+&lt;div class="section" id="background"&gt;
+&lt;h3&gt;Background&lt;/h3&gt;
+&lt;p&gt;I have quite a bit of Python programming experience and I knew
+that the pywin32 library supported Windows COM. COM is what
+OPC uses for communication on a Windows system.&lt;/p&gt;
+&lt;p&gt;I spent one weekend poking around on Google, playing with pywin32,
+and using the demo mode of the Kepware OPC platform. I was able to
+connect to the kepware server and get data out of it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="opc-client"&gt;
+&lt;h2&gt;OPC Client&lt;/h2&gt;
+&lt;p&gt;The OPC client I am going to show here is by no means a complete
+implementation. However, this simple application met the needs
+of my project and is relatively simple to get set up.&lt;/p&gt;
+&lt;div class="section" id="prerequisites"&gt;
+&lt;h3&gt;Prerequisites&lt;/h3&gt;
+&lt;p&gt;This application was written on a Windows 7 machine. I have started
+using the Anaconda python distribution on Windows because it is
+so easy to get the packages I need installed without having a full
+C/C++ development environment. The pywin32 library is required and
+can be installed via anaconda.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ conda install pywin32
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It is also required to have the OPC Server configured. In this case,
+I simply created a channel and device in the Kepware server. The channel
+used the Simulator driver and I named it 'Simulator'. I also named the
+device 'Simulator'.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-code"&gt;
+&lt;h3&gt;The Code&lt;/h3&gt;
+&lt;p&gt;The code below is really simple. It connects to the Kepware OPC client,
+creates a group, adds one binary tag to the group, retrieves the value,
+quality, and timestamp of the tag (which should be False), writes a value
+of True to the tag, then rereads the value, quality, and timestamp. Finally
+it disconnects from the OPC Server.&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;win32com&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Dispatch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;OPC.Automation.1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;KEPware.KEPServerEX.V5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCGroups&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Test Group&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IsActive&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
+&lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCItems&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddItem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Simulator.Simulator.K0000.00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;constants&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCDevice&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Value: {}; Quality: {}; Time: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;constants&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OPCDevice&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Value: {}; Quality: {}; Time: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;opc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Disconnect&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="what-s-next"&gt;
+&lt;h2&gt;What's Next&lt;/h2&gt;
+&lt;p&gt;OPC has a lot more options than just reading or writing to a single point
+at a time. Your client can subscribe to events and get notified when a
+point value changes. I didn't make use of that functionality in my
+project but I probably will in the future.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="python programming work"></category></entry><entry><title>Thoughts On Email</title><link href="http://idahogray.github.io/blog/thoughts-on-email.html" rel="alternate"></link><published>2013-04-20T00:00:00-05:00</published><updated>2013-04-20T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2013-04-20:/blog/thoughts-on-email.html</id><summary type="html">&lt;p class="first last"&gt;Some thoughts on email&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;I was listing to this &lt;a class="reference external" href="http://5by5.tv/inbeta/36"&gt;In Beta&lt;/a&gt; episode today while mowing the lawn. Gina and
+Kevin were talking about email and getting to Inbox Zero and so on. One of their
+comments was that email fails because it is a TODO list that other people can
+add items to. This is not the first time I have heard this and I don't know
+who originally said it, I couldn't find it in quick Google search. They
+also made a comment about training other people that emailing you does not
+mean an immediate response is coming.&lt;/p&gt;
+&lt;p&gt;This comment got me thinking, again, about how I use email at work. I currently
+have about 71 emails that I feel like I need to respond to. This weighs on
+me and I can never feel like I am caught up.&lt;/p&gt;
+&lt;p&gt;This episode got me thinking about sending an automatic response to incoming
+emails. Something like:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+Thank you for your email. If this email contains a task you would like
+me to complete, I would appreciate it if you would call me. This would allow
+us to properly discuss the task, its schedule, my availability, and
+possible alternatives if those items don't line up.
+&lt;/pre&gt;
+&lt;p&gt;The problem with something like this is that I am an Engineering consultant.
+We make money by being responsive to clients. The more responsive we can be,
+the more likely we are to get repeat business and repeat business is the best
+kind.&lt;/p&gt;
+&lt;p&gt;I think a good compromise would be to have this response be sent to anyone
+inside my company but not to our clients.&lt;/p&gt;
+&lt;p&gt;I am just not sure how my peers and managers would respond to something like
+this. So much of our business is done over email that this response may appear
+to be in bad form. I think an argument could be made that a response like this
+is more honest and will possibly generate more realistic discussions about
+tasks and schedules than the current alternatives.&lt;/p&gt;
+&lt;p&gt;I would like to hear any reader's thoughts, especially from those in similar
+businesses.&lt;/p&gt;
+</content><category term="work email"></category></entry></feed>

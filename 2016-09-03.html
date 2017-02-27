@@ -17,6 +17,7 @@
 	<link href="http://idahogray.github.io/blog/theme/pygments.css" rel="stylesheet">
 
 	<!-- Feeds -->
+	<link href="http://idahogray.github.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Keith's Blog Atom Feed" />
 
 
 
@@ -26,7 +27,7 @@
 	var disqus_identifier = "2016-09-03.html";
 	(function() {
 		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-		dsq.src = 'http://keithgraysblog.disqus.com/embed.js';
+		dsq.src = 'https://keithgraysblog.disqus.com/embed.js';
 		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 	})();
 </script>
@@ -82,7 +83,7 @@ to this <a class="reference external" href="http://blog.scottlowe.org/2013/09/04
 ability to have different and separate instances of network interfaces
 and routing tables. These instances are completely independent of each
 other.</p>
-<div class="note">
+<div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Please note that all of the commands shown in this post are run at
 the Linux terminal as root. If you are not root, you must add <em>sudo</em>
@@ -108,8 +109,8 @@ ip netns add host2
 ip link add h1 <span class="nb">type</span> veth peer name h2
 ip link <span class="nb">set</span> h1 netns host1
 ip link <span class="nb">set</span> h2 netns host2
-ip netns <span class="nb">exec</span> host1 ip address add 10.0.0.1/24 dev h1
-ip netns <span class="nb">exec</span> host2 ip address add 10.0.0.2/24 dev h2
+ip netns <span class="nb">exec</span> host1 ip address add <span class="m">10</span>.0.0.1/24 dev h1
+ip netns <span class="nb">exec</span> host2 ip address add <span class="m">10</span>.0.0.2/24 dev h2
 </pre></div>
 <p>The first two commands above create two network namespaces
 (host1 and host2).  The purpose of those two namespaces to
@@ -120,8 +121,8 @@ to the host1 namespace and interface h2 to the host2 namespace.
 The last two lines assign IP addresses to those two interfaces.</p>
 <p>Once all of that setup is complete, I can ping each &quot;host&quot; from the
 other.</p>
-<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ping 10.0.0.2
-ip netns <span class="nb">exec</span> host2 ping 10.0.0.1
+<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ping <span class="m">10</span>.0.0.2
+ip netns <span class="nb">exec</span> host2 ping <span class="m">10</span>.0.0.1
 </pre></div>
 <p>These two &quot;hosts&quot; are isolated from each other. Their interfaces do
 not appear on my default host when I run <em>ip address`</em>. They
@@ -178,14 +179,14 @@ ip netns <span class="nb">exec</span> sw1 ip link <span class="nb">set</span> sw
 ip netns <span class="nb">exec</span> sw1 ip link <span class="nb">set</span> sw1p2 up
 </pre></div>
 <p>The commands above bring all of the interfaces up.</p>
-<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ip address add 10.0.0.1/24 dev h1
-ip netns <span class="nb">exec</span> host2 ip address add 10.0.0.2/24 dev h2
+<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ip address add <span class="m">10</span>.0.0.1/24 dev h1
+ip netns <span class="nb">exec</span> host2 ip address add <span class="m">10</span>.0.0.2/24 dev h2
 </pre></div>
 <p>The commands above assign IP addresses to host1 and host2.</p>
 <p>Once all of that setup is complete, I can ping each &quot;host&quot; from the
 other.</p>
-<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ping 10.0.0.2
-ip netns <span class="nb">exec</span> host2 ping 10.0.0.1
+<div class="highlight"><pre><span></span>ip netns <span class="nb">exec</span> host1 ping <span class="m">10</span>.0.0.2
+ip netns <span class="nb">exec</span> host2 ping <span class="m">10</span>.0.0.1
 </pre></div>
 </div>
 </div>

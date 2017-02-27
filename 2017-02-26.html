@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Keith's Blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Keith Gray">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://idahogray.github.io/blog/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://idahogray.github.io/blog/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/local.css" rel="stylesheet">
+	<link href="http://idahogray.github.io/blog/theme/pygments.css" rel="stylesheet">
+
+	<!-- Feeds -->
+	<link href="http://idahogray.github.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Keith's Blog Atom Feed" />
+
+
+
+        <link href="feeds/rss.xml" rel="alternate" title="Keith's Blog" type="application/rss+xml">
+
+<script type="text/javascript">
+	var disqus_identifier = "2017-02-26.html";
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'https://keithgraysblog.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+</head>
+<body>
+<a href="http://github.com/idahogray/"><img style="position: absolute; top: 39px; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" /></a>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://idahogray.github.io/blog/">Keith's Blog</a>
+			<ul class="nav">
+					<li ><a href="http://idahogray.github.io/blog/category/kids.html">kids</a></li>
+					<li ><a href="http://idahogray.github.io/blog/category/personal.html">personal</a></li>
+					<li class="active"><a href="http://idahogray.github.io/blog/category/work.html">work</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://idahogray.github.io/blog/archives.html">[archives]</a> <a href="http://idahogray.github.io/blog/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+				<li><a href="http://www.powereng.com">POWER Engineers</a></li>
+				<li><a href="http://python.org">Python.org</a></li>
+				<li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+				<li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="http://twitter.com/idahogray">twitter</a></li>
+				<li><a href="http://github.com/idahogray">github</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>2017-02-26</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://idahogray.github.io/blog/2017-02-26.html">2017-02-26 11:30:00-06:00</a>
+by <a class="url fn" href="http://idahogray.github.io/blog/author/keith-gray.html">Keith Gray </a>
+ in <a href="http://idahogray.github.io/blog/category/work.html">work</a>
+tags: <a href="http://idahogray.github.io/blog/tag/opc-ua.html">OPC-UA</a> </div>
+		<div><div class="section" id="getting-started-with-opc-ua">
+<h2>Getting Started with OPC-UA</h2>
+<p><a class="reference external" href="http://idahogray.github.io/blog/writing-a-opc-client.html">About 2 years ago</a>,
+I was working on a project that offered an opportunity
+to write a OPC client to collect some information from a DNP server device.
+I was able to successfully implement that OPC client using Classic OPC,
+which was based on Microsoft's
+<a class="reference external" href="https://www.google.com/webhp?#q=microsoft+component+object+model">COM</a>
+technology. This technology has since been deprecated, even if it is still
+supported by Microsoft. Most OPC servers we use, such as Kepware Kepserver EX,
+still support OPC Classic.  However, Kepserver EX V6 no longer ships with a
+DLL that my Python code relied on. Therefore, I decided it was time to
+learn about the next generation of OPC, called
+<a class="reference external" href="https://en.wikipedia.org/wiki/OPC_Unified_Architecture">OPC-UA</a>
+and standardized as <a class="reference external" href="https://webstore.iec.ch/searchform&amp;q=62541">IEC 62541</a>.</p>
+<p>I was able to use the
+<a class="reference external" href="https://github.com/FreeOpcUa/python-opcua">python-opcua</a>
+library to get up and running quickly. However, I decided that I need to
+understand what I was doing at a deeper level. I downloaded the
+OPC-UA specification documents and started reading.  I finally made it to
+Section 4 of the spec and found some information that I can test using
+the python-opcua library. This post is some notes from that testing.</p>
+</div>
+<div class="section" id="pre-requisites">
+<h2>Pre-requisites</h2>
+<p>I am using
+<a class="reference external" href="https://www.kepware.com/en-us/products/kepserverex/">Kepware Kepserver EX V6</a>
+as my test OPC-UA server. It is free to download but has a 2-hour demo time
+limit if it isn't licensed.</p>
+<p>I am also using the python-opcua library. This is an open-source library
+and installable through pypi.</p>
+</div>
+<div class="section" id="configuring-security-in-the-opc-ua-server">
+<h2>Configuring Security in the OPC-UA Server</h2>
+<p>I had to do a little configuration in the Kepware OPC UA Configuration Manager
+before I could connect to it.</p>
+<p><strong>Please note that this bypasses the security mechanisms in OPC-UA when
+connecting to localhost.</strong></p>
+<p>My application does not require any security because it is just for testing.
+Production applications should use the appropriate level of security.</p>
+<ol class="arabic simple">
+<li>Open OPC UA Configuration Manager by right-clicking the green 'ex' icon
+in the task bar and selecting 'OPC UA Configuration'.</li>
+<li>Select the URL containing '127.0.0.1' on the Server Endpoints tab and press
+the 'Edit...' button</li>
+<li>Select the 'None' Security Policy and press the 'OK' button.</li>
+<li>Close the OPC UA Configuration Manager by pressing the 'Close' button</li>
+</ol>
+</div>
+<div class="section" id="using-python-opcua">
+<h2>Using python-opcua</h2>
+<p>All of these commands were run in an ipython shell.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Import the OPC-UA Client from python-opcua</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">opcua</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Configure the client to connect to the Kepserver EX V6 OPC-UA Server</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s2">&quot;opc.tcp://127.0.0.1:49320&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Connect the client to the server</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+</pre></div>
+<p>The 'connect' method used above actually does slightly more than just connect
+to the server. It connects to the server, opens the channel, creates a session,
+and then activates the session. I have to admit that I don't understand
+each of those step, yet. However, python-opcua makes it easy enough to actually
+get connected to the OPC-UA server.</p>
+</div>
+<div class="section" id="discovery-service">
+<h2>Discovery Service</h2>
+<p>OPC-UA has many ways to inspect the server to determine how you want to use it
+and which of the features you want to use.</p>
+<p>One of those services is the Discovery Service Set described in Part 4 of the
+specification. Many of the functions of this service won't be used in my
+application, but there are a few useful ones.</p>
+<div class="section" id="getendpoints">
+<h3>GetEndpoints</h3>
+<p>The 'GetEndpoints' function, described in Section 5.4.4 of Part 4 of the
+specification, allows a client to ask the server what Endpoints are
+available and what security features are supported by each Endpoint.
+'GetEndpoints' returns a list of Endpoints. The example below shows how
+the function can be called and what it returns in my case.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">client</span><span class="o">.</span><span class="n">get_endpoints</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">EndpointDescription</span><span class="p">(</span><span class="n">EndpointUrl</span><span class="p">:</span><span class="n">opc</span><span class="o">.</span><span class="n">tcp</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">49320</span><span class="p">,</span> <span class="n">Server</span><span class="p">:</span><span class="n">ApplicationDescription</span><span class="p">(</span><span class="n">ApplicationUri</span><span class="p">:</span><span class="n">urn</span><span class="p">:</span><span class="n">WIN</span><span class="o">-</span><span class="mi">827</span><span class="n">MCDJDJOP</span><span class="p">:</span><span class="n">Kepware</span><span class="o">.</span><span class="n">KEPServerEX</span><span class="o">.</span><span class="n">V6</span><span class="p">:</span><span class="n">UA</span> <span class="n">Server</span><span class="p">,</span> <span class="n">ProductUri</span><span class="p">:</span><span class="n">urn</span><span class="p">:</span><span class="n">WIN</span><span class="o">-</span><span class="mi">827</span><span class="n">MCDJDJOP</span><span class="p">:</span><span class="n">Kepware</span><span class="o">.</span><span class="n">KEPServerEX</span><span class="o">.</span><span class="n">V6</span><span class="p">:</span><span class="n">UA</span> <span class="n">Server</span><span class="p">,</span> <span class="n">ApplicationName</span><span class="p">:</span><span class="n">LocalizedText</span><span class="p">(</span><span class="n">Encoding</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">Locale</span><span class="p">:</span><span class="sa">b</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="n">Text</span><span class="p">:</span><span class="sa">b</span><span class="s1">&#39;KEPServerEX/UA@WIN-827MCDJDJOP&#39;</span><span class="p">),</span> <span class="n">ApplicationType</span><span class="p">:</span><span class="n">ApplicationType</span><span class="o">.</span><span class="n">Server</span><span class="p">,</span> <span class="n">GatewayServerUri</span><span class="p">:</span><span class="bp">None</span><span class="p">,</span> <span class="n">DiscoveryProfileUri</span><span class="p">:</span><span class="bp">None</span><span class="p">,</span> <span class="n">DiscoveryUrls</span><span class="p">:[</span><span class="s1">&#39;opc.tcp://127.0.0.1:49320&#39;</span><span class="p">]),</span> <span class="n">ServerCertificate</span><span class="p">:</span><span class="sa">b</span><span class="s1">&#39;0</span><span class="se">\x82\x04\xf7</span><span class="s1">0</span><span class="se">\x82\x03\xdf\xa0\x03\x02\x01\x02\x02\x04\x9d\xd3\x9b\x16</span><span class="s1">0</span><span class="se">\r\x06\t</span><span class="s1">*</span><span class="se">\x86</span><span class="s1">H</span><span class="se">\x86\xf7\r\x01\x01\x05\x05\x00</span><span class="s1">0`1</span><span class="se">\x1f</span><span class="s1">0</span><span class="se">\x1d\x06\n\t\x92</span><span class="s1">&amp;</span><span class="se">\x89\x93\xf2</span><span class="s1">,d</span><span class="se">\x01\x19\x16\x0f</span><span class="s1">WIN-827MCDJDJOP1</span><span class="se">\x0b</span><span class="s1">0</span><span class="se">\t\x06\x03</span><span class="s1">U</span><span class="se">\x04\x06\x13\x02</span><span class="s1">US1</span><span class="se">\x10</span><span class="s1">0</span><span class="se">\x0e\x06\x03</span><span class="s1">U</span><span class="se">\x04\n\x0c\x07</span><span class="s1">Unknown1</span><span class="se">\x1e</span><span class="s1">0</span><span class="se">\x1c\x06\x03</span><span class="s1">U</span><span class="se">\x04\x03\x0c\x15</span><span class="s1">KEPServerEX/UA Server0</span><span class="se">\x1e\x17\r</span><span class="s1">170222225016Z</span><span class="se">\x17\r</span><span class="s1">270220225016Z0`1</span><span class="se">\x1f</span><span class="s1">0</span><span class="se">\x1d\x06\n\t\x92</span><span class="s1">&amp;</span><span class="se">\x89\x93\xf2</span><span class="s1">,d</span><span class="se">\x01\x19\x16\x0f</span><span class="s1">WIN-827MCDJDJOP1</span><span class="se">\x0b</span><span class="s1">0</span><span class="se">\t\x06\x03</span><span class="s1">U</span><span class="se">\x04\x06\x13\x02</span><span class="s1">US1</span><span class="se">\x10</span><span class="s1">0</span><span class="se">\x0e\x06\x03</span><span class="s1">U</span><span class="se">\x04\n\x0c\x07</span><span class="s1">Unknown1</span><span class="se">\x1e</span><span class="s1">0</span><span class="se">\x1c\x06\x03</span><span class="s1">U</span><span class="se">\x04\x03\x0c\x15</span><span class="s1">KEPServerEX/UA Server0</span><span class="se">\x82\x01</span><span class="s1">&quot;0</span><span class="se">\r\x06\t</span><span class="s1">*</span><span class="se">\x86</span><span class="s1">H</span><span class="se">\x86\xf7\r\x01\x01\x01\x05\x00\x03\x82\x01\x0f\x00</span><span class="s1">0</span><span class="se">\x82\x01\n\x02\x82\x01\x01\x00\xd4\xb4\xf7\xff\xf4\xfa\x1a</span><span class="s1">-</span><span class="se">\\\xab\x98\xa6\x12\x1f\xf0\x8c</span><span class="s1">A</span><span class="se">\xd0\xec\x01\xcb</span><span class="s1">)Y</span><span class="se">\xb7\x16</span><span class="s1">V</span><span class="se">\xf4\x1d</span><span class="s1">b</span><span class="se">\x94\x0c</span><span class="s1">6</span><span class="se">\xa7\xe6\xc0\x87</span><span class="s1">4</span><span class="se">\x10\n\x8d\xc7\xff</span><span class="s1">^</span><span class="se">\xe7\x16\x9d</span><span class="s1">z </span><span class="se">\xbc\\\x80</span><span class="s1">K)</span><span class="se">\xf8</span><span class="s1">L</span><span class="se">\x0b\x99\xc5</span><span class="s1">r9</span><span class="se">\x83\xa6\x84\xf0</span><span class="s1">b</span><span class="se">\xd1</span><span class="s1">/bE</span><span class="se">\x85\xb9</span><span class="s1">^</span><span class="se">\x17\xec</span><span class="s1">/</span><span class="se">\x94\xac\xa9\xfe\xc6\x19\x14</span><span class="s1">8$T</span><span class="se">\xda\xb0\x8d\xd8\x8c\xeb</span><span class="s1">c|</span><span class="se">\x84</span><span class="s1">9</span><span class="se">\xa0\xa4</span><span class="s1">L</span><span class="se">\xa1</span><span class="s1">veJ</span><span class="se">\xe4\xe8\xbe\x9e\x82\xcd</span><span class="s1">m9</span><span class="se">\xbe</span><span class="s1">q</span><span class="se">\xbc</span><span class="s1">&gt;0Rp</span><span class="se">\xce\x87\x10\xa2\xf9\x18\x17\xc0\xba</span><span class="s1">`</span><span class="se">\xf7\xe1\xf0</span><span class="s1">d</span><span class="se">\xbb\xc7\\\xdf\x83\xa6\x1a</span><span class="s1">P</span><span class="se">\x0b\xf0\x0f</span><span class="s1">l</span><span class="se">\xce\x01\x1f\xa1</span><span class="s1">M</span><span class="se">\x0b</span><span class="s1">p0</span><span class="se">\x88</span><span class="s1">.</span><span class="se">\x0b</span><span class="s1">i</span><span class="se">\xff\x9b\xde\x0f\r\xf2</span><span class="s1">M</span><span class="se">\x8f</span><span class="s1">j</span><span class="se">\xa4\xe9\x04\xd9\x94\xdb</span><span class="s1">ro}</span><span class="se">\xb5</span><span class="s1">n</span><span class="se">\xdb\x0e</span><span class="s1">OR</span><span class="se">\xe3\x1c\xe0\xed</span><span class="s1">&gt;f</span><span class="se">\xf0\x05</span><span class="s1">iO</span><span class="se">\xa4\xdb</span><span class="s1">$</span><span class="se">\xaa\xa2\x82\x9b</span><span class="s1">.p</span><span class="se">\\\xad\xa3</span><span class="s1">#</span><span class="se">\x11</span><span class="s1">S</span><span class="se">\x8d\xe6\x91</span><span class="s1">e</span><span class="se">\xf6\xea\x81\x1f\x90\xdf\xe9</span><span class="s1">&quot;</span><span class="se">\xd8</span><span class="s1">B</span><span class="se">\xf0\xf0\xe3\n\xbf\xda\xb9\xc6\xcd\x9c</span><span class="s1">8W</span><span class="se">\xad\xe8\xdb\xc8</span><span class="s1">;</span><span class="se">\xc4\x8d\xdd\xe2</span><span class="s1">$</span><span class="se">\xa5\x16\x1f\xd8</span><span class="s1">j</span><span class="se">\xa1</span><span class="s1">d</span><span class="se">\xd2</span><span class="s1">)</span><span class="se">\x94\xfe</span><span class="s1">DA</span><span class="se">\xf6\xca</span><span class="s1">y</span><span class="se">\x02\x03\x01\x00\x01\xa3\x82\x01\xb7</span><span class="s1">0</span><span class="se">\x82\x01\xb3</span><span class="s1">0</span><span class="se">\x1d\x06\x03</span><span class="s1">U</span><span class="se">\x1d\x0e\x04\x16\x04\x14\xda\xb8\xeb</span><span class="s1">H</span><span class="se">\x8d</span><span class="s1">:L</span><span class="se">\x0e\xde</span><span class="s1">q</span><span class="se">\\\xd5</span><span class="s1">n7</span><span class="se">\xca\xd9\xf1\x1c\xff</span><span class="s1">20</span><span class="se">\x0e\x06\x03</span><span class="s1">U</span><span class="se">\x1d\x0f\x01\x01\xff\x04\x04\x03\x02\x02\xf4</span><span class="s1">0</span><span class="se">\x0c\x06\x03</span><span class="s1">U</span><span class="se">\x1d\x13\x01\x01\xff\x04\x02</span><span class="s1">0</span><span class="se">\x00</span><span class="s1">0</span><span class="se">\x81\x8d\x06\x03</span><span class="s1">U</span><span class="se">\x1d</span><span class="s1">#</span><span class="se">\x04\x81\x85</span><span class="s1">0</span><span class="se">\x81\x82\x80\x14\xda\xb8\xeb</span><span class="s1">H</span><span class="se">\x8d</span><span class="s1">:L</span><span class="se">\x0e\xde</span><span class="s1">q</span><span class="se">\\\xd5</span><span class="s1">n7</span><span class="se">\xca\xd9\xf1\x1c\xff</span><span class="s1">2</span><span class="se">\xa1</span><span class="s1">d</span><span class="se">\xa4</span><span class="s1">b0`1</span><span class="se">\x1f</span><span class="s1">0</span><span class="se">\x1d\x06\n\t\x92</span><span class="s1">&amp;</span><span class="se">\x89\x93\xf2</span><span class="s1">,d</span><span class="se">\x01\x19\x16\x0f</span><span class="s1">WIN-827MCDJDJOP1</span><span class="se">\x0b</span><span class="s1">0</span><span class="se">\t\x06\x03</span><span class="s1">U</span><span class="se">\x04\x06\x13\x02</span><span class="s1">US1</span><span class="se">\x10</span><span class="s1">0</span><span class="se">\x0e\x06\x03</span><span class="s1">U</span><span class="se">\x04\n\x0c\x07</span><span class="s1">Unknown1</span><span class="se">\x1e</span><span class="s1">0</span><span class="se">\x1c\x06\x03</span><span class="s1">U</span><span class="se">\x04\x03\x0c\x15</span><span class="s1">KEPServerEX/UA Server</span><span class="se">\x82\x04\x9d\xd3\x9b\x16</span><span class="s1">0 </span><span class="se">\x06\x03</span><span class="s1">U</span><span class="se">\x1d</span><span class="s1">%</span><span class="se">\x01\x01\xff\x04\x16</span><span class="s1">0</span><span class="se">\x14\x06\x08</span><span class="s1">+</span><span class="se">\x06\x01\x05\x05\x07\x03\x01\x06\x08</span><span class="s1">+</span><span class="se">\x06\x01\x05\x05\x07\x03\x02</span><span class="s1">0p</span><span class="se">\x06\t</span><span class="s1">`</span><span class="se">\x86</span><span class="s1">H</span><span class="se">\x01\x86\xf8</span><span class="s1">B</span><span class="se">\x01\r\x04</span><span class="s1">c</span><span class="se">\x16</span><span class="s1">aGenerated by SYSTEM@WIN-827MCDJDJOP on 2017-02-22T22:50:16.044 using OpenSSL 1.0.2h-1  3 May 20160P</span><span class="se">\x06\x03</span><span class="s1">U</span><span class="se">\x1d\x11\x04</span><span class="s1">I0G</span><span class="se">\x86</span><span class="s1">4urn:WIN-827MCDJDJOP:Kepware.KEPServerEX.V6:UA Server</span><span class="se">\x82\x0f</span><span class="s1">WIN-827MCDJDJOP0</span><span class="se">\r\x06\t</span><span class="s1">*</span><span class="se">\x86</span><span class="s1">H</span><span class="se">\x86\xf7\r\x01\x01\x05\x05\x00\x03\x82\x01\x01\x00\xc6</span><span class="s1">s</span><span class="se">\x89\x03\xfb\xc6\x84</span><span class="s1">M</span><span class="se">\xa6\xca</span><span class="s1">v</span><span class="se">\x0b\x10</span><span class="s1">N</span><span class="se">\xe6\x82\x16</span><span class="s1">b</span><span class="se">\x15\x15\x9a\x1d\xa8\xd2</span><span class="s1">MS</span><span class="se">\x1f</span><span class="s1">3;</span><span class="se">\xb2\xf5\xe1\x9d</span><span class="s1">G</span><span class="se">\x0f\xf5</span><span class="s1">uc4K9. d_</span><span class="se">\x1d</span><span class="s1">;</span><span class="se">\x89\xec</span><span class="s1">8</span><span class="se">\xdd</span><span class="s1">NU</span><span class="se">\xde\xe9</span><span class="s1">*&quot;</span><span class="se">\x9a\xe1\xc9\xe9\xa1\xeb\x1a\x94\xa4\xe4\x99\xa2\x84\xa4</span><span class="s1">&gt;e</span><span class="se">\x15</span><span class="s1">}</span><span class="se">\xed</span><span class="s1">H.</span><span class="se">\x82\xbf\x12\x8e\xdf</span><span class="s1">d9</span><span class="se">\xc4\x8e\\</span><span class="s1">gI</span><span class="se">\xa5</span><span class="s1">t|6</span><span class="se">\xc1\x9b</span><span class="s1">7&quot;</span><span class="se">\xac</span><span class="s1">&amp;O</span><span class="se">\x0c</span><span class="s1">*</span><span class="se">\x92\x11\xbf\xa9\xea\x9f</span><span class="s1">5Y$</span><span class="se">\xff</span><span class="s1">gO</span><span class="se">\x82\x03\x17\xb8\xb6\x04\x8b\r\x99\xcc\xa4\x90\xd2\x90\xe3</span><span class="s1">$</span><span class="se">\&#39;</span><span class="s1">&quot;&lt;</span><span class="se">\xcf</span><span class="s1">7</span><span class="se">\x1d\xf0</span><span class="s1">)</span><span class="se">\x86\xda\xf1\x1d</span><span class="s1">5</span><span class="se">\xb4</span><span class="s1">`</span><span class="se">\x99</span><span class="s1">W</span><span class="se">\x06\xbd</span><span class="s1">59</span><span class="se">\x95</span><span class="s1">T</span><span class="se">\xef</span><span class="s1">h</span><span class="se">\xdf\xbc\xac</span><span class="s1">v</span><span class="se">\x1c\xf3\xd6</span><span class="s1">:</span><span class="se">\\\xd0\x1e</span><span class="s1">.</span><span class="se">\xbf</span><span class="s1">9</span><span class="se">\x0b\xd0\x92\xa8</span><span class="s1">:</span><span class="se">\xd1\n</span><span class="s1">k&gt;N</span><span class="se">\xc9\xdf\xcc\xd2\x85\x10\x88\xab\xb4</span><span class="s1">G</span><span class="se">\x0c\xc4\xd0</span><span class="s1">/G:n,}</span><span class="se">\x95\xb8\x9e\xda</span><span class="s1">S[</span><span class="se">\x92\x9d\xb2\xaf</span><span class="s1">`N</span><span class="se">\x1c\x04\x11\xc3\x05\xc8\xfc</span><span class="s1">XAD</span><span class="se">\xa3\x04\xda\x1d\xd9</span><span class="s1">W</span><span class="se">\x0b</span><span class="s1">]2</span><span class="se">\xdb</span><span class="s1">#=cq&amp;D]</span><span class="se">\xc6</span><span class="s1">vd</span><span class="se">\xc7</span><span class="s1">7</span><span class="se">\xa4\xf6</span><span class="s1">k]</span><span class="se">\xfe\x17</span><span class="s1">&gt;5</span><span class="se">\x8d\xaa\x05</span><span class="s1">r</span><span class="se">\x8d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">SecurityMode</span><span class="p">:</span><span class="n">MessageSecurityMode</span><span class="o">.</span><span class="n">None_</span><span class="p">,</span> <span class="n">SecurityPolicyUri</span><span class="p">:</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">opcfoundation</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">UA</span><span class="o">/</span><span class="n">SecurityPolicy</span><span class="c1">#None, UserIdentityTokens:[UserTokenPolicy(PolicyId:UserName, TokenType:UserTokenType.UserName, IssuedTokenType:None, IssuerEndpointUrl:None, SecurityPolicyUri:http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15), UserTokenPolicy(PolicyId:Anonymous, TokenType:UserTokenType.Anonymous, IssuedTokenType:None, IssuerEndpointUrl:None, SecurityPolicyUri:http://opcfoundation.org/UA/SecurityPolicy#None)], TransportProfileUri:http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary, SecurityLevel:16)</span>
+</pre></div>
+<p>There is a lot of information there so let's break it down a little bit. First,
+somewhere in that mess is the SecurityPolicyUri field. Let's look at the
+SecurityPolicyUri field for all of the Endpoints.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">endpoint</span><span class="o">.</span><span class="n">SecurityPolicyUri</span> <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_endpoints</span><span class="p">()]</span>
+<span class="p">[</span><span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#None&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#Basic256&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#Basic256&#39;</span><span class="p">]</span>
+</pre></div>
+<p>This is telling us the type of security that each Endpoint is capable of using.
+Since we enabled the security policy 'None' in Kepware, you can see that one of
+Endpoints has that available.</p>
+<p>Now, let's see which Endpoint has the 'None' security policy in place so we can
+make sure we connect to it.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="p">[(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">EndpointUrl</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">SecurityPolicyUri</span><span class="p">)</span> <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_endpoints</span><span class="p">()]</span>
+<span class="p">[(</span><span class="s1">&#39;opc.tcp://127.0.0.1:49320&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#None&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;opc.tcp://127.0.0.1:49320&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;opc.tcp://127.0.0.1:49320&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;opc.tcp://127.0.0.1:49320&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#Basic256&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;opc.tcp://127.0.0.1:49320&#39;</span><span class="p">,</span> <span class="s1">&#39;http://opcfoundation.org/UA/SecurityPolicy#Basic256&#39;</span><span class="p">)]</span>
+</pre></div>
+<p>This shows us the URL 'opc.tcp://127.0.0.1:49320' is the one with the 'None'
+security policy enabled. Luckily, that is the one we connected to, so we don't
+need to change anything.</p>
+</div>
+</div>
+<div class="section" id="to-be-continued">
+<h2>To Be Continued...</h2>
+<p>I will continue reading the specification and try to figure out why the
+opcua-python examples work the way thay do.</p>
+</div>
+</div>
+		<div>
+			<h2>Comments</h2>
+<div id="disqus_thread"></div>		<div>
+	</div>
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Keith Gray</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>
