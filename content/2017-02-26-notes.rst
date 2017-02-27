@@ -1,0 +1,142 @@
+2017-02-26
+==========
+
+:date: 2017-02-26 11:30
+:modified: 2017-02-26
+:tags: OPC-UA
+:category: work
+:summary: Getting Started with OPC-UA
+
+
+Getting Started with OPC-UA
+---------------------------
+
+`About 2 years ago <http://idahogray.github.io/blog/writing-a-opc-client.html>`_,
+I was working on a project that offered an opportunity
+to write a OPC client to collect some information from a DNP server device.
+I was able to successfully implement that OPC client using Classic OPC,
+which was based on Microsoft's 
+`COM <https://www.google.com/webhp?#q=microsoft+component+object+model>`_ 
+technology. This technology has since been deprecated, even if it is still 
+supported by Microsoft. Most OPC servers we use, such as Kepware Kepserver EX,
+still support OPC Classic.  However, Kepserver EX V6 no longer ships with a 
+DLL that my Python code relied on. Therefore, I decided it was time to 
+learn about the next generation of OPC, called 
+`OPC-UA <https://en.wikipedia.org/wiki/OPC_Unified_Architecture>`_ 
+and standardized as `IEC 62541 <https://webstore.iec.ch/searchform&q=62541>`_.
+
+I was able to use the 
+`python-opcua <https://github.com/FreeOpcUa/python-opcua>`_ 
+library to get up and running quickly. However, I decided that I need to 
+understand what I was doing at a deeper level. I downloaded the 
+OPC-UA specification documents and started reading.  I finally made it to 
+Section 4 of the spec and found some information that I can test using 
+the python-opcua library. This post is some notes from that testing.
+
+Pre-requisites
+--------------
+
+I am using 
+`Kepware Kepserver EX V6 <https://www.kepware.com/en-us/products/kepserverex/>`_ 
+as my test OPC-UA server. It is free to download but has a 2-hour demo time 
+limit if it isn't licensed.
+
+I am also using the python-opcua library. This is an open-source library
+and installable through pypi.
+
+Configuring Security in the OPC-UA Server
+-----------------------------------------
+
+I had to do a little configuration in the Kepware OPC UA Configuration Manager
+before I could connect to it.
+
+**Please note that this bypasses the security mechanisms in OPC-UA when
+connecting to localhost.**
+
+My application does not require any security because it is just for testing.
+Production applications should use the appropriate level of security.
+
+#. Open OPC UA Configuration Manager by right-clicking the green 'ex' icon
+   in the task bar and selecting 'OPC UA Configuration'.
+
+#. Select the URL containing '127.0.0.1' on the Server Endpoints tab and press
+   the 'Edit...' button
+
+#. Select the 'None' Security Policy and press the 'OK' button.
+
+#. Close the OPC UA Configuration Manager by pressing the 'Close' button
+
+Using python-opcua
+------------------
+
+All of these commands were run in an ipython shell.
+
+.. code-block:: python
+
+   >>> # Import the OPC-UA Client from python-opcua
+   >>> from opcua import Client
+   >>> # Configure the client to connect to the Kepserver EX V6 OPC-UA Server
+   >>> client = Client("opc.tcp://127.0.0.1:49320")
+   >>> # Connect the client to the server
+   >>> client.connect()
+
+The 'connect' method used above actually does slightly more than just connect
+to the server. It connects to the server, opens the channel, creates a session,
+and then activates the session. I have to admit that I don't understand
+each of those step, yet. However, python-opcua makes it easy enough to actually
+get connected to the OPC-UA server.
+
+Discovery Service
+-----------------
+
+OPC-UA has many ways to inspect the server to determine how you want to use it
+and which of the features you want to use.
+
+One of those services is the Discovery Service Set described in Part 4 of the
+specification. Many of the functions of this service won't be used in my 
+application, but there are a few useful ones.
+
+GetEndpoints
+~~~~~~~~~~~~
+
+The 'GetEndpoints' function, described in Section 5.4.4 of Part 4 of the 
+specification, allows a client to ask the server what Endpoints are
+available and what security features are supported by each Endpoint.
+'GetEndpoints' returns a list of Endpoints. The example below shows how
+the function can be called and what it returns in my case.
+
+.. code-block:: python
+
+   >>> client.get_endpoints()[0]
+   EndpointDescription(EndpointUrl:opc.tcp://127.0.0.1:49320, Server:ApplicationDescription(ApplicationUri:urn:WIN-827MCDJDJOP:Kepware.KEPServerEX.V6:UA Server, ProductUri:urn:WIN-827MCDJDJOP:Kepware.KEPServerEX.V6:UA Server, ApplicationName:LocalizedText(Encoding:3, Locale:b'en', Text:b'KEPServerEX/UA@WIN-827MCDJDJOP'), ApplicationType:ApplicationType.Server, GatewayServerUri:None, DiscoveryProfileUri:None, DiscoveryUrls:['opc.tcp://127.0.0.1:49320']), ServerCertificate:b'0\x82\x04\xf70\x82\x03\xdf\xa0\x03\x02\x01\x02\x02\x04\x9d\xd3\x9b\x160\r\x06\t*\x86H\x86\xf7\r\x01\x01\x05\x05\x000`1\x1f0\x1d\x06\n\t\x92&\x89\x93\xf2,d\x01\x19\x16\x0fWIN-827MCDJDJOP1\x0b0\t\x06\x03U\x04\x06\x13\x02US1\x100\x0e\x06\x03U\x04\n\x0c\x07Unknown1\x1e0\x1c\x06\x03U\x04\x03\x0c\x15KEPServerEX/UA Server0\x1e\x17\r170222225016Z\x17\r270220225016Z0`1\x1f0\x1d\x06\n\t\x92&\x89\x93\xf2,d\x01\x19\x16\x0fWIN-827MCDJDJOP1\x0b0\t\x06\x03U\x04\x06\x13\x02US1\x100\x0e\x06\x03U\x04\n\x0c\x07Unknown1\x1e0\x1c\x06\x03U\x04\x03\x0c\x15KEPServerEX/UA Server0\x82\x01"0\r\x06\t*\x86H\x86\xf7\r\x01\x01\x01\x05\x00\x03\x82\x01\x0f\x000\x82\x01\n\x02\x82\x01\x01\x00\xd4\xb4\xf7\xff\xf4\xfa\x1a-\\\xab\x98\xa6\x12\x1f\xf0\x8cA\xd0\xec\x01\xcb)Y\xb7\x16V\xf4\x1db\x94\x0c6\xa7\xe6\xc0\x874\x10\n\x8d\xc7\xff^\xe7\x16\x9dz \xbc\\\x80K)\xf8L\x0b\x99\xc5r9\x83\xa6\x84\xf0b\xd1/bE\x85\xb9^\x17\xec/\x94\xac\xa9\xfe\xc6\x19\x148$T\xda\xb0\x8d\xd8\x8c\xebc|\x849\xa0\xa4L\xa1veJ\xe4\xe8\xbe\x9e\x82\xcdm9\xbeq\xbc>0Rp\xce\x87\x10\xa2\xf9\x18\x17\xc0\xba`\xf7\xe1\xf0d\xbb\xc7\\\xdf\x83\xa6\x1aP\x0b\xf0\x0fl\xce\x01\x1f\xa1M\x0bp0\x88.\x0bi\xff\x9b\xde\x0f\r\xf2M\x8fj\xa4\xe9\x04\xd9\x94\xdbro}\xb5n\xdb\x0eOR\xe3\x1c\xe0\xed>f\xf0\x05iO\xa4\xdb$\xaa\xa2\x82\x9b.p\\\xad\xa3#\x11S\x8d\xe6\x91e\xf6\xea\x81\x1f\x90\xdf\xe9"\xd8B\xf0\xf0\xe3\n\xbf\xda\xb9\xc6\xcd\x9c8W\xad\xe8\xdb\xc8;\xc4\x8d\xdd\xe2$\xa5\x16\x1f\xd8j\xa1d\xd2)\x94\xfeDA\xf6\xcay\x02\x03\x01\x00\x01\xa3\x82\x01\xb70\x82\x01\xb30\x1d\x06\x03U\x1d\x0e\x04\x16\x04\x14\xda\xb8\xebH\x8d:L\x0e\xdeq\\\xd5n7\xca\xd9\xf1\x1c\xff20\x0e\x06\x03U\x1d\x0f\x01\x01\xff\x04\x04\x03\x02\x02\xf40\x0c\x06\x03U\x1d\x13\x01\x01\xff\x04\x020\x000\x81\x8d\x06\x03U\x1d#\x04\x81\x850\x81\x82\x80\x14\xda\xb8\xebH\x8d:L\x0e\xdeq\\\xd5n7\xca\xd9\xf1\x1c\xff2\xa1d\xa4b0`1\x1f0\x1d\x06\n\t\x92&\x89\x93\xf2,d\x01\x19\x16\x0fWIN-827MCDJDJOP1\x0b0\t\x06\x03U\x04\x06\x13\x02US1\x100\x0e\x06\x03U\x04\n\x0c\x07Unknown1\x1e0\x1c\x06\x03U\x04\x03\x0c\x15KEPServerEX/UA Server\x82\x04\x9d\xd3\x9b\x160 \x06\x03U\x1d%\x01\x01\xff\x04\x160\x14\x06\x08+\x06\x01\x05\x05\x07\x03\x01\x06\x08+\x06\x01\x05\x05\x07\x03\x020p\x06\t`\x86H\x01\x86\xf8B\x01\r\x04c\x16aGenerated by SYSTEM@WIN-827MCDJDJOP on 2017-02-22T22:50:16.044 using OpenSSL 1.0.2h-1  3 May 20160P\x06\x03U\x1d\x11\x04I0G\x864urn:WIN-827MCDJDJOP:Kepware.KEPServerEX.V6:UA Server\x82\x0fWIN-827MCDJDJOP0\r\x06\t*\x86H\x86\xf7\r\x01\x01\x05\x05\x00\x03\x82\x01\x01\x00\xc6s\x89\x03\xfb\xc6\x84M\xa6\xcav\x0b\x10N\xe6\x82\x16b\x15\x15\x9a\x1d\xa8\xd2MS\x1f3;\xb2\xf5\xe1\x9dG\x0f\xf5uc4K9. d_\x1d;\x89\xec8\xddNU\xde\xe9*"\x9a\xe1\xc9\xe9\xa1\xeb\x1a\x94\xa4\xe4\x99\xa2\x84\xa4>e\x15}\xedH.\x82\xbf\x12\x8e\xdfd9\xc4\x8e\\gI\xa5t|6\xc1\x9b7"\xac&O\x0c*\x92\x11\xbf\xa9\xea\x9f5Y$\xffgO\x82\x03\x17\xb8\xb6\x04\x8b\r\x99\xcc\xa4\x90\xd2\x90\xe3$\'"<\xcf7\x1d\xf0)\x86\xda\xf1\x1d5\xb4`\x99W\x06\xbd59\x95T\xefh\xdf\xbc\xacv\x1c\xf3\xd6:\\\xd0\x1e.\xbf9\x0b\xd0\x92\xa8:\xd1\nk>N\xc9\xdf\xcc\xd2\x85\x10\x88\xab\xb4G\x0c\xc4\xd0/G:n,}\x95\xb8\x9e\xdaS[\x92\x9d\xb2\xaf`N\x1c\x04\x11\xc3\x05\xc8\xfcXAD\xa3\x04\xda\x1d\xd9W\x0b]2\xdb#=cq&D]\xc6vd\xc77\xa4\xf6k]\xfe\x17>5\x8d\xaa\x05r\x8d', SecurityMode:MessageSecurityMode.None_, SecurityPolicyUri:http://opcfoundation.org/UA/SecurityPolicy#None, UserIdentityTokens:[UserTokenPolicy(PolicyId:UserName, TokenType:UserTokenType.UserName, IssuedTokenType:None, IssuerEndpointUrl:None, SecurityPolicyUri:http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15), UserTokenPolicy(PolicyId:Anonymous, TokenType:UserTokenType.Anonymous, IssuedTokenType:None, IssuerEndpointUrl:None, SecurityPolicyUri:http://opcfoundation.org/UA/SecurityPolicy#None)], TransportProfileUri:http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary, SecurityLevel:16)
+
+There is a lot of information there so let's break it down a little bit. First,
+somewhere in that mess is the SecurityPolicyUri field. Let's look at the 
+SecurityPolicyUri field for all of the Endpoints.
+
+.. code-block:: python
+
+   >>> [endpoint.SecurityPolicyUri for endpoint in client.get_endpoints()]
+   ['http://opcfoundation.org/UA/SecurityPolicy#None', 'http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15', 'http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15', 'http://opcfoundation.org/UA/SecurityPolicy#Basic256', 'http://opcfoundation.org/UA/SecurityPolicy#Basic256']
+
+This is telling us the type of security that each Endpoint is capable of using.
+Since we enabled the security policy 'None' in Kepware, you can see that one of 
+Endpoints has that available.
+
+Now, let's see which Endpoint has the 'None' security policy in place so we can
+make sure we connect to it.
+
+.. code-block:: python
+
+   >>> [(endpoint.EndpointUrl, endpoint.SecurityPolicyUri) for endpoint in client.get_endpoints()]
+   [('opc.tcp://127.0.0.1:49320', 'http://opcfoundation.org/UA/SecurityPolicy#None'), ('opc.tcp://127.0.0.1:49320', 'http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15'), ('opc.tcp://127.0.0.1:49320', 'http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15'), ('opc.tcp://127.0.0.1:49320', 'http://opcfoundation.org/UA/SecurityPolicy#Basic256'), ('opc.tcp://127.0.0.1:49320', 'http://opcfoundation.org/UA/SecurityPolicy#Basic256')]
+
+This shows us the URL 'opc.tcp://127.0.0.1:49320' is the one with the 'None' 
+security policy enabled. Luckily, that is the one we connected to, so we don't 
+need to change anything.
+
+To Be Continued...
+------------------
+
+I will continue reading the specification and try to figure out why the 
+opcua-python examples work the way thay do.
