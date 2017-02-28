@@ -1,0 +1,119 @@
+2017-02-27
+==========
+
+:date: 2017-02-27 22:51
+:tags: OPC-UA
+:category: work
+:summary: Getting Server Information via OPC-UA
+
+Review
+------
+
+In the `previous post <{filename}./2017-02-26.rst>`_, I introduced 
+`OPC-UA <https://en.wikipedia.org/wiki/OPC_Unified_Architecture>`_.
+In this article, I am going to explore how to extract information
+about the OPC-UA server itself.
+
+Standard Objects
+----------------
+
+Part 5, Section 8, of the OPC-UA standard defines the *Standard
+Objects and their Variables*. Figure 1 shows that the OPC-UA
+AddressSpace starts out with a **Root** element. Below the **Root**
+element is the **Objects** element and under that is the **Server**
+element. It is this server element that I want to explore in this
+post.
+
+Root Folder Object
+~~~~~~~~~~~~~~~~~~
+
+The python-opcua library makes the **Root** Folder Object available via
+the Client.get_root_node method.
+
+.. code-block:: python
+
+   >>> from opcua import Client
+   >>> client = Client('opc.tcp://127.0.0.1:49320')
+   >>> client.connect()
+   >>> root = client.get_root_node()
+   >>> root.get_browse_name()
+   QualifiedName(0:Root)
+
+In the example above, I import the Client class from the python-opcua library.
+I then specify an endpoint and connect to the OPC-UA server, as was
+shown in the previous post. Next, I use the get_root_node method
+to get a reference to the root node, as described in the standard.
+Finally, I print out the root node's browse name. This returns
+a QualifiedName containing '0' and 'Root'. I think that '0' is the Namespace
+identifier described in the OPC-UA standard. Namespace '0' is the Namespace
+reserved for Nodes which the standard defines. I will be able to test this
+theory later on as I dig into this more.
+
+If I continue with this example, I can see that the root node has the children
+nodes defined by the standard.
+
+.. code-block:: python
+
+   >>> root.get_children_descriptions()
+   [ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:TwoByteNodeId(i=85), BrowseName:QualifiedName(0:Objects), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Objects'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:TwoByteNodeId(i=86), BrowseName:QualifiedName(0:Types), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Types'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:TwoByteNodeId(i=87), BrowseName:QualifiedName(0:Views), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Views'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61))]
+
+The node descriptions returned from get_children_descriptions include the 
+standard nodes of **Objects**, **Types**, and **Views**. I can use this 
+information to navigate to the **Objects** node and then to the **Server**
+node. I took a lucky guess at how to format the argument of get_child
+after running *help(roo.get_child)* and reviewing the provided information.
+
+.. code-block:: python
+
+   >>> objects = root.get_child("0:Objects")
+
+Now we can run get_children_descriptions() on the **Objects** node.
+
+.. code-block:: python
+
+   >>> objects.get_children_descriptions()
+   [ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:FourByteNodeId(i=2253), BrowseName:QualifiedName(0:Server), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Server'), NodeClass:NodeClass.Object, TypeDefinition:FourByteNodeId(i=2004)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=_ConnectionSharing), BrowseName:QualifiedName(2:_ConnectionSharing), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'_ConnectionSharing'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=_System), BrowseName:QualifiedName(2:_System), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'_System'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=16ESM-2300-1SCADA), BrowseName:QualifiedName(2:16ESM-2300-1SCADA), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'16ESM-2300-1SCADA'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=BriteSpot), BrowseName:QualifiedName(2:BriteSpot), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'BriteSpot'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=Elixir), BrowseName:QualifiedName(2:Elixir), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Elixir'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=LGC-3530-LPS-ANA-P), BrowseName:QualifiedName(2:LGC-3530-LPS-ANA-P), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'LGC-3530-LPS-ANA-P'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=LGC-3530-LPS-CTRL-P), BrowseName:QualifiedName(2:LGC-3530-LPS-CTRL-P), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'LGC-3530-LPS-CTRL-P'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=Mandan), BrowseName:QualifiedName(2:Mandan), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Mandan'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=Modbus-Serial), BrowseName:QualifiedName(2:Modbus-Serial), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Modbus-Serial'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=35), IsForward:True, NodeId:StringNodeId(ns=2;s=Simulator), BrowseName:QualifiedName(2:Simulator), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Simulator'), NodeClass:NodeClass.Object, TypeDefinition:TwoByteNodeId(i=61))]
+
+This returns a lot of interesting information, most of it I am going to ignore 
+today. it does confirm that the **Server** node is a child of the **Objects**
+node. Therefore, I can not retrieve the **Server** node.
+
+.. code-block:: python
+
+   >>> server = objects.get_child("0:Server")
+   >>> server.get_children_descriptions()
+   [ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=46), IsForward:True, NodeId:FourByteNodeId(i=2254), BrowseName:QualifiedName(0:ServerArray), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ServerArray'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=68)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=46), IsForward:True, NodeId:FourByteNodeId(i=2255), BrowseName:QualifiedName(0:NamespaceArray), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'NamespaceArray'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=68)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2256), BrowseName:QualifiedName(0:ServerStatus), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ServerStatus'), NodeClass:NodeClass.Variable, TypeDefinition:FourByteNodeId(i=2138)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=46), IsForward:True, NodeId:FourByteNodeId(i=2267), BrowseName:QualifiedName(0:ServiceLevel), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ServiceLevel'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=68)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=46), IsForward:True, NodeId:FourByteNodeId(i=2994), BrowseName:QualifiedName(0:Auditing), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'Auditing'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=68)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2268), BrowseName:QualifiedName(0:ServerCapabilities), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ServerCapabilities'), NodeClass:NodeClass.Object, TypeDefinition:FourByteNodeId(i=2013)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2274), BrowseName:QualifiedName(0:ServerDiagnostics), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ServerDiagnostics'), NodeClass:NodeClass.Object, TypeDefinition:FourByteNodeId(i=2020)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2295), BrowseName:QualifiedName(0:VendorServerInfo), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'VendorServerInfo'), NodeClass:NodeClass.Object, TypeDefinition:FourByteNodeId(i=2033)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2296), BrowseName:QualifiedName(0:ServerRedundancy), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ServerRedundancy'), NodeClass:NodeClass.Object, TypeDefinition:FourByteNodeId(i=2034))]
+
+Repeating the same process lists the descriptions of the children of **Server**.
+I think I want to inspect the **VendorServerInfo** node. The standard says 
+there are no mandatory components to the **VendorServerInfo** data type. It is
+completely up to the server vendor to populate it. Let's see how Kepware
+did it.
+
+.. code-block:: python
+
+   >>> server_status = server.get_child("0:ServerStatus")
+   >>> server_status.get_children_description()
+   [ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2257), BrowseName:QualifiedName(0:StartTime), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'StartTime'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2258), BrowseName:QualifiedName(0:CurrentTime), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'CurrentTime'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2259), BrowseName:QualifiedName(0:State), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'State'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2260), BrowseName:QualifiedName(0:BuildInfo), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'BuildInfo'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=0)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2992), BrowseName:QualifiedName(0:SecondsTillShutdown), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'SecondsTillShutdown'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2993), BrowseName:QualifiedName(0:ShutdownReason), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ShutdownReason'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63))]
+
+This node contains a bunch of good information. I am going to focus on the
+**BuildInfo** node.
+
+.. code-block:: python
+
+   >>> build_info = server_status.get_child("0:BuildInfo")
+   >>> build_info.get_children_descriptions()
+   [ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2262), BrowseName:QualifiedName(0:ProductUri), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ProductUri'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2263), BrowseName:QualifiedName(0:ManufacturerName), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ManufacturerName'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2261), BrowseName:QualifiedName(0:ProductName), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'ProductName'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2264), BrowseName:QualifiedName(0:SoftwareVersion), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'SoftwareVersion'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2265), BrowseName:QualifiedName(0:BuildNumber), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'BuildNumber'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63)), ReferenceDescription(ReferenceTypeId:TwoByteNodeId(i=47), IsForward:True, NodeId:FourByteNodeId(i=2266), BrowseName:QualifiedName(0:BuildDate), DisplayName:LocalizedText(Encoding:3, Locale:b'en', Text:b'BuildDate'), NodeClass:NodeClass.Variable, TypeDefinition:TwoByteNodeId(i=63))]
+
+We are getting close to some real information here. Let's go down to the 
+**Product Name**.
+
+.. code-block:: python
+
+   >>> product_name = server_status.get_child("0:ProductName")
+   >>> product_name.get_value()
+   'KEPServerEX'
+
+Finally, we have navigated through the nodes to get to some concrete 
+information. In this case, we are able to see that the value of the
+**ProductName** node is 'KEPServerEX'.
