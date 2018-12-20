@@ -110,8 +110,8 @@ Next Steps
 ----------
 
 The next step in this experiment will be to use this GOOSE message in a network
-packet created with scapy_ and transmit it on a network simulated using Linux
-Network Namespaces, as described in earlier posts.
+packet created with scapy_ and transmit it on a network interface using the scapy.sendp()
+function.
 
 .. _scapy: http://www.secdev.org/projects/scapy/
 .. _Wikipedia: https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One
