@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog - personal</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/personal.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2018-05-13T00:00:00-05:00</updated><entry><title>Mother's Day 2018</title><link href="http://idahogray.github.io/blog/mothers-day-2018.html" rel="alternate"></link><published>2018-05-13T00:00:00-05:00</published><updated>2018-05-13T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2018-05-13:/blog/mothers-day-2018.html</id><summary type="html">&lt;p class="first last"&gt;My Wife&lt;/p&gt;
-</summary><content type="html">&lt;p&gt;I am missing (another) Mother's day this year due to work.
-It isn't the first one I have missed and it probably won't be the last.
-Work finished a little early today so I wanted to take some time
-and write a note to Amy.&lt;/p&gt;
-&lt;p&gt;Amy, I want you to know that you are appreciated. You work harder
-than anyone I know. You are always on duty. This is doubly true
-because I am gone a lot for work. I know that puts a lot of pressure
-on you. Wyatt has baseball, Ava has soccer, you work at the library,
-grocery shop, keep the house from burning down, and on, and on, and on.&lt;/p&gt;
-&lt;p&gt;Our kids are growing into great people. They are kind, considerate,
-trustworthy, teammates, intelligent, and hard-working. This is all because
-of you! You set a great example for them and you guide them into making
-the right decisions.&lt;/p&gt;
-&lt;p&gt;I love you.&lt;/p&gt;
-&lt;p&gt;Keith&lt;/p&gt;
-</content></entry><entry><title>2016-09-01</title><link href="http://idahogray.github.io/blog/2016-09-01.html" rel="alternate"></link><published>2016-09-02T00:00:00-05:00</published><updated>2016-09-02T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-02:/blog/2016-09-01.html</id><summary type="html">&lt;p class="first last"&gt;Some notes from today&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keith's Blog - personal</title><link href="http://idahogray.github.io/blog/" rel="alternate"></link><link href="http://idahogray.github.com/feeds/personal.atom.xml" rel="self"></link><id>http://idahogray.github.io/blog/</id><updated>2016-09-02T00:00:00-05:00</updated><entry><title>2016-09-01</title><link href="http://idahogray.github.io/blog/2016-09-01.html" rel="alternate"></link><published>2016-09-02T00:00:00-05:00</published><updated>2016-09-02T00:00:00-05:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2016-09-02:/blog/2016-09-01.html</id><summary type="html">&lt;p class="first last"&gt;Some notes from today&lt;/p&gt;
 </summary><content type="html">&lt;div class="section" id="today"&gt;
 &lt;h2&gt;Today&lt;/h2&gt;
 &lt;p&gt;I watched a really interesting video about Python last night.

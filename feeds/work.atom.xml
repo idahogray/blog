@@ -88,8 +88,8 @@ are then added followed by the dynamic ASN.1 encoded fields.&lt;/p&gt;
 &lt;div class="section" id="next-steps"&gt;
 &lt;h2&gt;Next Steps&lt;/h2&gt;
 &lt;p&gt;The next step in this experiment will be to use this GOOSE message in a network
-packet created with &lt;a class="reference external" href="http://www.secdev.org/projects/scapy/"&gt;scapy&lt;/a&gt; and transmit it on a network simulated using Linux
-Network Namespaces, as described in earlier posts.&lt;/p&gt;
+packet created with &lt;a class="reference external" href="http://www.secdev.org/projects/scapy/"&gt;scapy&lt;/a&gt; and transmit it on a network interface using the scapy.sendp()
+function.&lt;/p&gt;
 &lt;/div&gt;
 </content><category term="GOOSE"></category><category term="python"></category><category term="IEC 61850"></category></entry><entry><title>2017-02-27</title><link href="http://idahogray.github.io/blog/2017-02-27.html" rel="alternate"></link><published>2017-02-27T22:51:00-06:00</published><updated>2017-02-27T22:51:00-06:00</updated><author><name>Keith Gray</name></author><id>tag:idahogray.github.io,2017-02-27:/blog/2017-02-27.html</id><summary type="html">&lt;p class="first last"&gt;Getting Server Information via OPC-UA&lt;/p&gt;
 </summary><content type="html">&lt;div class="section" id="review"&gt;
